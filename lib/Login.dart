@@ -1,25 +1,28 @@
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'SignUp.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/imges.png'), fit: BoxFit.cover)),
-        padding: EdgeInsets.only(top: 60, left: 40, right: 40),
+        padding: const EdgeInsets.only(top: 60, left: 40, right: 40),
         //color: Colors.white,
         child: ListView(
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "E-mail",
                 labelStyle: TextStyle(
                   color: Colors.white,
@@ -27,15 +30,15 @@ class LoginPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(color: Colors.grey, fontSize: 20),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextFormField(
               keyboardType: TextInputType.text,
-              obscureText: false,
-              decoration: InputDecoration(
+              obscureText: true,
+              decoration: const InputDecoration(
                 labelText: "Senha",
                 labelStyle: TextStyle(
                   color: Colors.white,
@@ -43,13 +46,13 @@ class LoginPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(color: Colors.grey, fontSize: 20),
             ),
             Container(
-              margin: EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20),
               height: 60,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -60,24 +63,26 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
                 borderRadius: BorderRadius.all(
-                  Radius.circular(5),
+                  Radius.circular(15),
                 ),
               ),
-              child: SizedBox.expand(
-                child: FlatButton(
+              child: SizedBox(
+                height: 60,
+                child: TextButton(
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
+                    //crossAxisAlignment: CrossAxisAlignment.center,
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const <Widget>[
+                      Expanded(
+                          child: Text(
                         "Login",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           fontSize: 20,
                         ),
-                        textAlign: TextAlign.right,
-                      ),
+                        textAlign: TextAlign.center,
+                      )),
                     ],
                   ),
                   onPressed: () {
@@ -91,29 +96,104 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
+            const SizedBox(
+              height: 80,
             ),
-            Container(
-              height: 40,
-              child: FlatButton(
+            const SizedBox(
+                height: 20,
                 child: Text(
-                  "Cadastre-se",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                  'Nao tem uma conta?',
+                  style: TextStyle(color: Colors.white),
                   textAlign: TextAlign.center,
+                )),
+            Container(
+                margin: const EdgeInsets.only(top: 5),
+                height: 60,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [0.3, 1],
+                    colors: [
+                      Color.fromARGB(255, 50, 15, 110),
+                      Colors.deepPurple,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignUpPage(),
-                    ),
-                  );
-                },
-              ),
-            ),
+                child: SizedBox(
+                  height: 60,
+                  child: SizedBox(
+                    child: TextButton(
+                        child: Row(children: const <Widget>[
+                          Expanded(
+                              child: Text(
+                            "Cadastre-se",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.center,
+                          )),
+                        ]),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpPage(),
+                            ),
+                          );
+                        }),
+                  ),
+                )),
+            Container(
+                margin: const EdgeInsets.only(top: 20),
+                height: 60,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [0.3, 1],
+                    colors: [
+                      Color.fromARGB(255, 50, 15, 110),
+                      Colors.deepPurple,
+                    ],
+                  ),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  ),
+                ),
+                child: SizedBox(
+                  height: 60,
+                  child: SizedBox(
+                    child: TextButton(
+                        child: Row(children: const <Widget>[
+                          Expanded(
+                              child: Text(
+                            "Demonstracao",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.center,
+                          )),
+                        ]),
+                        onPressed: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => SignupPage(),
+                          //   ),
+                          // );
+                        }),
+                  ),
+                )),
           ],
         ),
       ),
