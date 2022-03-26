@@ -6,8 +6,11 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/imges.png'), fit: BoxFit.cover)),
         padding: EdgeInsets.only(top: 60, left: 40, right: 40),
-        color: Colors.white,
+        //color: Colors.white,
         child: ListView(
           children: <Widget>[
             SizedBox(
@@ -19,7 +22,7 @@ class LoginPage extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: "E-mail",
                 labelStyle: TextStyle(
-                  color: Colors.black38,
+                  color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 20,
                 ),
@@ -31,11 +34,11 @@ class LoginPage extends StatelessWidget {
             ),
             TextFormField(
               keyboardType: TextInputType.text,
-              obscureText: true,
+              obscureText: false,
               decoration: InputDecoration(
                 labelText: "Senha",
                 labelStyle: TextStyle(
-                  color: Colors.black38,
+                  color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 20,
                 ),
@@ -96,6 +99,9 @@ class LoginPage extends StatelessWidget {
               child: FlatButton(
                 child: Text(
                   "Cadastre-se",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 onPressed: () {
