@@ -9,28 +9,15 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: BackButton(
-            onPressed: (() {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginPage(),
-                ),
-              );
-            }),
-          )),
-      backgroundColor: Colors.transparent,
-      extendBodyBehindAppBar: true,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/imges.png'), fit: BoxFit.cover)),
-        padding: const EdgeInsets.only(top: 60, left: 40, right: 40),
+        padding: EdgeInsets.only(top: 60, left: 40, right: 40),
+        //color: Colors.white,
         child: ListView(
           children: <Widget>[
-            const SizedBox(
+            SizedBox(
               height: 20,
             ),
             TextFormField(
@@ -43,11 +30,9 @@ class SignUpPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: const TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             TextFormField(
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
@@ -60,9 +45,7 @@ class SignUpPage extends StatelessWidget {
               ),
               style: const TextStyle(fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
@@ -73,11 +56,9 @@ class SignUpPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: const TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,
@@ -89,16 +70,14 @@ class SignUpPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: const TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: EdgeInsets.only(top: 20),
               height: 60,
               alignment: Alignment.centerLeft,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
