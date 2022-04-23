@@ -1,11 +1,8 @@
 import 'package:electrical_comsuption/login.dart';
 import 'package:flutter/material.dart';
+import 'luvas.dart';
 
 class SignUpPage extends StatelessWidget {
-  static const String username = 'Nome';
-  static const String cpf = 'CPF';
-  static const String btRSignUp = 'Cadastrar';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +33,7 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                  labelText: username,
+                  labelText: Luvas.username,
                   labelStyle: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -67,7 +64,7 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                  labelText: cpf,
+                  labelText: Luvas.cpf,
                   labelStyle: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -184,7 +181,7 @@ class SignUpPage extends StatelessWidget {
                       children: const <Widget>[
                         Expanded(
                           child: Text(
-                            btRSignUp,
+                            Luvas.btSigningUp,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,

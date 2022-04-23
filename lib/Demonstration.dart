@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'luvas.dart';
 import 'login.dart';
 
 class Demonstration extends StatefulWidget {
   @override
-  State<Demonstration> createState() => _WindowDemons();
+  State<Demonstration> createState() => _Demonstration();
 }
 
-class _WindowDemons extends State<Demonstration> {
-  static const comsWatts = 'Consumo em Watts:';
-  static const comsHours = 'Horas de uso por dia:';
-
+class _Demonstration extends State<Demonstration> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -47,7 +44,7 @@ class _WindowDemons extends State<Demonstration> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: comsWatts,
+                    labelText: Luvas.comsWatts,
                     labelStyle: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
@@ -64,7 +61,7 @@ class _WindowDemons extends State<Demonstration> {
                   keyboardType: TextInputType.text,
                   obscureText: true,
                   decoration: const InputDecoration(
-                    labelText: comsHours,
+                    labelText: Luvas.comsHours,
                     labelStyle: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
