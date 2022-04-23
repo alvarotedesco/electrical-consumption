@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 
 import 'login.dart';
 
-class Demonstration extends StatefulWidget {
+class demonstration extends StatefulWidget {
   @override
-  State<Demonstration> createState() => _WindowDemons();
+  State<demonstration> createState() => _WindowDemons();
 }
 
-class _WindowDemons extends State<Demonstration> {
+class _WindowDemons extends State<demonstration> {
   static const comsWatts = 'Consumo em Watts:';
   static const comsHours = 'Horas de uso por dia:';
 
