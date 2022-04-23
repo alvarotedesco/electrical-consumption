@@ -93,7 +93,12 @@ class LoginPage extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
-                        login();
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => SignUpPage(),
+                        //   ),
+                        // );
                       },
                     ),
                   ),
@@ -199,22 +204,4 @@ class LoginPage extends StatelessWidget {
           ),
         ));
   }
-}
-
-class _WindowDemons {}
-
-Future<http.Response> login() async {
-  var response = await http.get(
-    Uri.parse('https://www.google.com.br/'),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
-  );
-
-  print(json.decode(response.body));
-
-  print(response.statusCode);
-
-  return response;
 }
