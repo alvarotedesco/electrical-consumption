@@ -32,13 +32,31 @@ class LoginPage extends StatelessWidget {
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                    labelText: email,
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 20,
-                    ),
-                  ),
+                      labelText: email,
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                      ),
+                      errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 3, color: Colors.red),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          )),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: Color.fromARGB(255, 50, 15, 110)),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: Color.fromARGB(255, 50, 15, 110)),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ))),
                   style: const TextStyle(color: Colors.grey, fontSize: 20),
                 ),
                 const SizedBox(
@@ -48,13 +66,31 @@ class LoginPage extends StatelessWidget {
                   keyboardType: TextInputType.text,
                   obscureText: true,
                   decoration: const InputDecoration(
-                    labelText: password,
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 20,
-                    ),
-                  ),
+                      labelText: password,
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                      ),
+                      errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(width: 3, color: Colors.red),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          )),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: Color.fromARGB(255, 50, 15, 110)),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 3,
+                              color: Color.fromARGB(255, 50, 15, 110)),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ))),
                   style: const TextStyle(color: Colors.grey, fontSize: 20),
                 ),
                 Container(
