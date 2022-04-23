@@ -1,12 +1,9 @@
 import 'package:electrical_comsuption/login.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
+import 'themes/luvas.dart';
 
 class SignUpPage extends StatelessWidget {
-  static const String username = 'Nome';
-  static const String cpf = 'CPF';
-  static const String btRSignUp = 'Cadastrar';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,13 +34,29 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                labelText: username,
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                  labelText: Luvas.username,
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ))),
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(
@@ -52,13 +65,29 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                labelText: cpf,
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                  labelText: Luvas.cpf,
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ))),
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(
@@ -67,13 +96,29 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                labelText: LoginPage.email,
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                  labelText: Luvas.email,
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ))),
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(
@@ -83,20 +128,36 @@ class SignUpPage extends StatelessWidget {
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
-                labelText: LoginPage.password,
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                  labelText: Luvas.password,
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ))),
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(
               height: 10,
             ),
             AppButtonWidget(
-                texto: btRSignUp,
+                texto: Luvas.btSigningUp,
                 onPressed: () {
                   Navigator.push(
                       context,
