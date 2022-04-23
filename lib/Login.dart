@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'API.dart';
-import 'dart:convert';
 import 'SignUp.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -35,10 +33,6 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             const SizedBox(height: 20),
             TextFormField(
-              onChanged: (value) {
-                url =
-                    'https://google.com.br';
-              },
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: "E-mail",
@@ -202,11 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                         ]),
                         onPressed: () async {
-                          data = await getData(url);
-
-                          setState(() {
-                            Querytext = data;
-                          });
+                          data = await getData("url");
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(

@@ -13,11 +13,9 @@ Future<String> getData(url) async {
   var response =
       await http.get(Uri.parse(url), headers: {"Accept": "application/json"});
 
-  print(response);
   // decode retorna uma lista, onde eu pego o primeiro (0)
   // e o title é uma propriedade json.
   var title = json.decode(response.body)[0]['title'];
 
-  return "title";
+  return title;
 }
-
