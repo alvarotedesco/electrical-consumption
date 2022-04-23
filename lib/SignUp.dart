@@ -10,8 +10,11 @@ class SignUpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          title: const Text('Voltar'),
           backgroundColor: Colors.transparent,
-          leading: BackButton(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            tooltip: 'Voltar',
             onPressed: (() {
               Navigator.push(
                 context,

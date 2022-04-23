@@ -3,6 +3,7 @@ import 'dart:html';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'SignUp.dart';
+import 'Demonstration.dart';
 import 'package:http/http.dart' as http;
 
 class LoginPage extends StatelessWidget {
@@ -92,13 +93,7 @@ class LoginPage extends StatelessWidget {
                         ],
                       ),
                       onPressed: () {
-                        //teste();
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => LogonPage(),
-                        //   ),
-                        // );
+                        login();
                       },
                     ),
                   ),
@@ -191,7 +186,12 @@ class LoginPage extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               )),
                             ]),
-                            onPressed: () {}),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Demonstration()));
+                            }),
                       ),
                     )),
               ],
@@ -199,4 +199,22 @@ class LoginPage extends StatelessWidget {
           ),
         ));
   }
+}
+
+class _WindowDemons {}
+
+Future<http.Response> login() async {
+  var response = await http.get(
+    Uri.parse('https://www.google.com.br/'),
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    },
+  );
+
+  print(json.decode(response.body));
+
+  print(response.statusCode);
+
+  return response;
 }
