@@ -1,5 +1,6 @@
-import 'Login.dart';
-import 'SignUp.dart';
+import 'package:electrical_comsuption/user_area.dart';
+
+import 'login.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
