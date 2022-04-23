@@ -36,13 +36,29 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
-                labelText: username,
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                  labelText: username,
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ))),
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(
@@ -51,13 +67,29 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                labelText: cpf,
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                  labelText: cpf,
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ))),
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(
@@ -66,13 +98,29 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                labelText: LoginPage.email,
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                  labelText: LoginPage.email,
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ))),
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(
@@ -82,13 +130,29 @@ class SignUpPage extends StatelessWidget {
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
-                labelText: LoginPage.password,
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 20,
-                ),
-              ),
+                  labelText: LoginPage.password,
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Colors.red),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      )),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ))),
               style: const TextStyle(fontSize: 20),
             ),
             const SizedBox(
@@ -111,7 +175,7 @@ class SignUpPage extends StatelessWidget {
                       Colors.deepPurple,
                     ]),
                 borderRadius: BorderRadius.all(
-                  Radius.circular(5),
+                  Radius.circular(15),
                 ),
               ),
               child: SizedBox.expand(
