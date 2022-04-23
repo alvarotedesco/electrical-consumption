@@ -1,6 +1,6 @@
 import 'package:electrical_comsuption/login.dart';
 import 'package:flutter/material.dart';
-import 'luvas.dart';
+import 'themes/luvas.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
@@ -95,7 +95,7 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                  labelText: LoginPage.email,
+                  labelText: Luvas.email,
                   labelStyle: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -127,7 +127,7 @@ class SignUpPage extends StatelessWidget {
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
-                  labelText: LoginPage.password,
+                  labelText: Luvas.password,
                   labelStyle: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
