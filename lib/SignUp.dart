@@ -9,26 +9,6 @@ class SignUpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
-      appBar: AppBar(
-          title: const Text('Voltar'),
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            tooltip: 'Voltar',
-            onPressed: (() {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginPage(),
-                ),
-              );
-            }),
-          )),
-      backgroundColor: Colors.transparent,
-      extendBodyBehindAppBar: true,
-=======
->>>>>>> 1abdc7fb88734433f7eedda25e74ddf5673c28e5
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
