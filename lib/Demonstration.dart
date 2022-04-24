@@ -1,4 +1,5 @@
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'themes/luvas.dart';
@@ -16,7 +17,7 @@ class _Demonstration extends State<Demonstration> {
       home: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/imges.png'), fit: BoxFit.cover),
+              image: AssetImage(Meias.imges), fit: BoxFit.cover),
         ),
         child: Scaffold(
           appBar: AppBar(
@@ -46,11 +47,7 @@ class _Demonstration extends State<Demonstration> {
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: Luvas.comsWatts,
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 20,
-                    ),
+                    labelStyle: AppTextStyles.defaultStyleB,
                   ),
                   style: const TextStyle(color: Colors.grey, fontSize: 20),
                 ),

@@ -3,7 +3,7 @@ import 'package:electrical_comsuption/user_area.dart';
 import 'login_page.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: UserArea(),
+      home: const LoginPage(),
     );
   }
 }

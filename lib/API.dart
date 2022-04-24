@@ -23,3 +23,31 @@ Future<dynamic> getData(url) async {
   // decode retorna uma lista, onde eu pego o primeiro (0)
   // e o title é uma propriedade json.
 }
+
+Future<dynamic> postData(String url, data, {bool auth = false}) async {
+  data = json.encode(data);
+  Map<String, String> headers = {"Content-Type": "application/json"};
+
+  if (auth) {
+    headers = {
+      "Accept": "*/*",
+      "Content-Type": "application/json",
+      "Autorization": "bearer $token",
+    };
+  }
+
+  var response = await http.post(Uri.parse('${Underwear.baseURL}$url'),
+      headers: headers, body: data);
+
+  if (response.statusCode >= 200 && response.statusCode < 300) {
+    var resposta = json.decode(response.body);
+
+    return resposta[0];
+  } else {
+    print(response.statusCode);
+
+    return '{"error": "erro", "data": ${response}}';
+  }
+  // decode retorna uma lista, onde eu pego o primeiro (0)
+  // e o title é uma propriedade json.
+}

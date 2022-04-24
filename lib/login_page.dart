@@ -1,21 +1,36 @@
+import 'package:electrical_comsuption/API.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/themes/app_text_styles.dart';
+import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
 import 'sign_up.dart';
 import 'demonstration.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'themes/luvas.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool passwordVisible = false;
+
+  final userController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  String noacc = "nao tem acocondnas?";
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/imges.png'), fit: BoxFit.cover)),
+              image: AssetImage(Meias.imges), fit: BoxFit.cover)),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.transparent,
         body: Container(
           padding: const EdgeInsets.only(top: 60, left: 40, right: 40),
           child: ListView(
@@ -23,54 +38,55 @@ class LoginPage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: Luvas.email,
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
-                  ),
-                ),
-                style: const TextStyle(color: Colors.grey, fontSize: 20),
+              InputDecorationWidget(
+                textInputType: TextInputType.emailAddress,
+                controller: userController,
+                label: Luvas.email,
               ),
-              const SizedBox(
-                height: 10,
+              const SizedBox(height: 10),
+              InputDecorationWidget(
+                textInputType: TextInputType.text,
+                label: Luvas.password,
+                passwordVisible: passwordVisible,
+                controller: passwordController,
+                isPassword: true,
+                onPressed: () {
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
               ),
-              Container(
-                  height: 50,
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.circular(80),
-                    border: const Border.fromBorderSide(
-                      BorderSide(color: AppColors.secondary, width: 2),
-                    ),
-                  ),
-                  child: TextFormField(
-                    keyboardType: TextInputType.text,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: Luvas.password,
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                      ),
-                    ),
-                    style: const TextStyle(color: Colors.grey, fontSize: 20),
-                  )),
               AppButtonWidget(
                 texto: Luvas.btSignIn,
-                onPressed: () {},
+                onPressed: () {
+                  if (userController.text.isEmpty ||
+                      passwordController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Preencha todos os campos!"),
+                      backgroundColor: AppColors.white,
+                      duration: Duration(seconds: 3),
+                    ));
+                    return;
+                  }
+
+                  Map<String, String> data = {
+                    "username": "${userController.text}",
+                    "password": "${passwordController.text}"
+                  };
+
+                  postData(Underwear.loginURL, data).then((value) {
+                    setState(() {
+                      noacc = value.toString();
+                    });
+                  });
+                },
               ),
               const SizedBox(height: 80),
-              const SizedBox(
+              SizedBox(
                 height: 20,
                 child: Text(
-                  'Nao tem uma conta?',
-                  style: TextStyle(color: Colors.white),
+                  noacc,
+                  style: AppTextStyles.defaultStyleB,
                   textAlign: TextAlign.center,
                 ),
               ),

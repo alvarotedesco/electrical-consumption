@@ -22,10 +22,10 @@ class AppButtonWidget extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          stops: [0.3, 1],
+          stops: [0.2, 0.7],
           colors: [
             AppColors.primary,
-            Colors.deepPurple,
+            AppColors.orange,
           ],
         ),
         borderRadius: BorderRadius.all(
@@ -39,7 +39,7 @@ class AppButtonWidget extends StatelessWidget {
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               texto,
-              style: AppTextStyles.padraotelalogin,
+              style: AppTextStyles.defaultStyleB,
             ),
           ]),
         ),

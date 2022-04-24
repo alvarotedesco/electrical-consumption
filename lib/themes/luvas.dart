@@ -13,12 +13,13 @@ class Luvas {
 }
 
 class Meias {
-  static const String imges = 'assets/imges.png';
+  static const String imges = 'assets/space.png';
   static const String teste = 'assets/teste.png';
 }
 
 class Underwear {
-  static const String baseURL = '/leovaipassar/';
+  static const String baseURL = 'http://25.72.151.164:8080/';
   static const String getUserDataURL = 'leovaipassar/';
-  static const String postDataURL = 'leovaipassar/';
+  static const String loginURL = 'auth/login';
+  static const String registryURL = 'auth/registry';
 }
