@@ -1,8 +1,20 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:electrical_comsuption/login.dart';
+import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'luvas.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  bool passwordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,131 +42,30 @@ class SignUpPage extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             const SizedBox(height: 20),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              decoration: const InputDecoration(
-                  labelText: Luvas.username,
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
-                  ),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.red),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      )),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      )),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ))),
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                  labelText: Luvas.cpf,
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
-                  ),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.red),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      )),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      )),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ))),
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                  labelText: LoginPage.email,
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
-                  ),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.red),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      )),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      )),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ))),
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: const InputDecoration(
-                  labelText: LoginPage.password,
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20,
-                  ),
-                  errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Colors.red),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      )),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      )),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          width: 3, color: Color.fromARGB(255, 50, 15, 110)),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ))),
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+            InputDecorationWidget(
+                textInputType: TextInputType.text, label: Luvas.username),
+            const SizedBox(height: 10),
+            InputDecorationWidget(inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              CpfInputFormatter(),
+            ], textInputType: TextInputType.number, label: Luvas.cpf),
+            const SizedBox(height: 10),
+            InputDecorationWidget(
+                textInputType: TextInputType.emailAddress, label: Luvas.email),
+            const SizedBox(height: 10),
+            InputDecorationWidget(
+                isPassword: true,
+                passwordVisible: passwordVisible,
+                onPressed: () {
+                  setState(
+                    () {
+                      passwordVisible = !passwordVisible;
+                    },
+                  );
+                },
+                textInputType: TextInputType.text,
+                label: Luvas.password),
+            const SizedBox(height: 10),
             Container(
               margin: const EdgeInsets.only(top: 20),
               height: 60,

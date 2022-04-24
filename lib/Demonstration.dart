@@ -1,3 +1,4 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'luvas.dart';
@@ -58,8 +59,7 @@ class _Demonstration extends State<Demonstration> {
                 ),
                 TextFormField(
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  keyboardType: TextInputType.text,
-                  obscureText: true,
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: Luvas.comsHours,
                     labelStyle: TextStyle(
