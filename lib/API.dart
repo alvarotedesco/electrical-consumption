@@ -1,21 +1,25 @@
+import 'package:electrical_comsuption/themes/luvas.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-// Future<http.Response> GetData(url) async {
-//   http.Response response = await http.get(Uri.parse(url));
-//   print(response);
-//   print(url);
-//   print(response.body);
-//   return json.decode(response.body);
-// }
+String? token = "1";
 
-Future<String> getData(url) async {
-  var response =
-      await http.get(Uri.parse(url), headers: {"Accept": "application/json"});
+Future<dynamic> getData(url) async {
+  var response = await http.get(
+    Uri.parse('${Underwear.baseURL}$url'),
+    headers: {
+      "Accept": "application/json",
+      "Autorization": "bearer $token",
+    },
+  );
 
+  if (response.statusCode == 200) {
+    var resposta = json.decode(response.body);
+
+    return resposta[0];
+  } else {
+    return '{"error": "erro", "data": $response}';
+  }
   // decode retorna uma lista, onde eu pego o primeiro (0)
   // e o title é uma propriedade json.
-  var title = json.decode(response.body)[0]['title'];
-
-  return title;
 }

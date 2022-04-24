@@ -1,11 +1,13 @@
 import 'package:electrical_comsuption/user_area.dart';
 
-import 'login.dart';
+import 'login_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of our application.
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: LoginPage(),
+      home: UserArea(),
     );
   }
 }

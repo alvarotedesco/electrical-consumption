@@ -1,4 +1,7 @@
-import 'package:electrical_comsuption/login.dart';
+import 'package:electrical_comsuption/api.dart';
+import 'package:electrical_comsuption/login_page.dart';
+import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'themes/luvas.dart';
 
@@ -12,6 +15,24 @@ class UserArea extends StatefulWidget {
 class _UserAreaState extends State<UserArea> {
   String userName = "user";
   String userMail = "Email";
+  String userCPF = "405.560.458-07";
+
+  void getDatas() async {
+    var data = await getData(Underwear.getUserDataURL);
+
+    setState(() {
+      userName = data['name'];
+      userCPF = data['cpf'];
+      userMail = data['email'];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getDatas();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +40,70 @@ class _UserAreaState extends State<UserArea> {
       appBar: AppBar(
         title: const Text('Voltar'),
         backgroundColor: Colors.transparent,
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: (() {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
+                  ));
+            })),
       ),
-      body: Column(children: [
-        Container(
-            alignment: Alignment.center,
+      extendBodyBehindAppBar: true,
+      body: Container(
+        padding: const EdgeInsets.all(80),
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(Meias.imges), fit: BoxFit.cover)),
+        child: Column(children: [
+          const Center(
+            child: CircleAvatar(
+              child: CircleAvatar(
+                  backgroundColor: AppColors.primary,
+                  backgroundImage: AssetImage(Meias.teste),
+                  // TODO: Quando nao pegar a imagem / criar função
+                  radius: 90),
+              radius: 100,
+              backgroundColor: AppColors.secondary,
+            ),
+          ),
+          const SizedBox(height: 40),
+          Text(
+            "Thiago Luiz Rizzo Parrilo Souza Oliveira Ribeiro Anjo",
+            style: AppTextStyles.padraotelalogin,
+          ),
+          const SizedBox(height: 40),
+          Container(
+            width: double.infinity,
+            height: 50,
+            padding: const EdgeInsets.only(left: 20),
+            alignment: Alignment.centerLeft,
+            decoration: const BoxDecoration(
+                border: Border.fromBorderSide(
+                  BorderSide(color: AppColors.secondary, width: 2),
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(80))),
+            child: Text(userCPF, style: AppTextStyles.padraotelalogin),
+          ),
+          const SizedBox(height: 40),
+          Container(
+            width: double.infinity,
+            height: 50,
+            padding: const EdgeInsets.only(left: 20),
+            alignment: Alignment.centerLeft,
+            decoration: const BoxDecoration(
+                border: Border.fromBorderSide(
+                  BorderSide(color: AppColors.secondary, width: 2),
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(80))),
             child: Text(
-              "ola",
-              textAlign: TextAlign.end,
-            ))
-      ]),
+              userMail,
+              style: AppTextStyles.padraotelalogin,
+            ),
+          ),
+        ]),
+      ),
     );
   }
 }

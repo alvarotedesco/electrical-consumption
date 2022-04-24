@@ -11,3 +11,14 @@ class Luvas {
   static const String cpf = 'CPF';
   static const String btSigningUp = 'Cadastrar';
 }
+
+class Meias {
+  static const String imges = 'assets/imges.png';
+  static const String teste = 'assets/teste.png';
+}
+
+class Underwear {
+  static const String baseURL = '/leovaipassar/';
+  static const String getUserDataURL = 'leovaipassar/';
+  static const String postDataURL = 'leovaipassar/';
+}
