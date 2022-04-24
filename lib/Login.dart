@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'sign_up.dart';
 import 'demonstration.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
-import 'luvas.dart';
+import 'themes/luvas.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -90,7 +90,7 @@ class LoginPage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Demonstration(),
+                          builder: (context) => demonstration(),
                         ));
                   }),
             ],

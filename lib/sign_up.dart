@@ -1,6 +1,7 @@
 import 'package:electrical_comsuption/login.dart';
+import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
-import 'luvas.dart';
+import 'themes/luvas.dart';
 
 class SignUpPage extends StatelessWidget {
   @override
@@ -95,7 +96,7 @@ class SignUpPage extends StatelessWidget {
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
-                  labelText: LoginPage.email,
+                  labelText: Luvas.email,
                   labelStyle: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -127,7 +128,7 @@ class SignUpPage extends StatelessWidget {
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: const InputDecoration(
-                  labelText: LoginPage.password,
+                  labelText: Luvas.password,
                   labelStyle: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -155,52 +156,15 @@ class SignUpPage extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 20),
-              height: 60,
-              alignment: Alignment.centerLeft,
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [
-                      0.3,
-                      1
-                    ],
-                    colors: [
-                      Color.fromARGB(255, 50, 15, 110),
-                      Colors.deepPurple,
-                    ]),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(15),
-                ),
-              ),
-              child: SizedBox.expand(
-                child: TextButton(
-                    child: Row(
-                      children: const <Widget>[
-                        Expanded(
-                          child: Text(
-                            Luvas.btSigningUp,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: 20,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ],
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginPage(),
-                          ));
-                    }),
-              ),
-            ),
+            AppButtonWidget(
+                texto: Luvas.btSigningUp,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                      ));
+                }),
           ],
         ),
       ),
