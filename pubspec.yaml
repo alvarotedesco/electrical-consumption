@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  brasil_fields: ^1.1.4
   flutter:
     sdk: flutter
 
