@@ -1,4 +1,4 @@
-import 'package:electrical_comsuption/login.dart';
+import 'package:electrical_comsuption/login_page.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'themes/luvas.dart';
@@ -26,7 +26,7 @@ class SignUpPage extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/imges.png'), fit: BoxFit.cover)),
+                image: AssetImage(Meias.imges), fit: BoxFit.cover)),
         padding: const EdgeInsets.only(top: 60, left: 40, right: 40),
         child: ListView(
           children: <Widget>[
