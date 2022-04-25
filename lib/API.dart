@@ -24,7 +24,8 @@ Future<dynamic> getData(url) async {
   // e o title é uma propriedade json.
 }
 
-Future<dynamic> postData(String url, data, {bool auth = false}) async {
+Future<Map<String, String>> postData(String url, data,
+    [bool auth = false]) async {
   data = json.encode(data);
   Map<String, String> headers = {"Content-Type": "application/json"};
 
@@ -46,7 +47,7 @@ Future<dynamic> postData(String url, data, {bool auth = false}) async {
   } else {
     print(response.statusCode);
 
-    return '{"error": "erro", "data": ${response}}';
+    return {"error": "erro", "data": response.toString()};
   }
   // decode retorna uma lista, onde eu pego o primeiro (0)
   // e o title é uma propriedade json.

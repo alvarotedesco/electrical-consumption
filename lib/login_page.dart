@@ -1,7 +1,8 @@
-import 'package:electrical_comsuption/API.dart';
+import 'package:electrical_comsuption/api.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
+import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'sign_up.dart';
 import 'demonstration_page.dart';
@@ -18,7 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool passwordVisible = false;
 
-  final userController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   String noacc = "Não tem uma conta?";
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               InputDecorationWidget(
                 textInputType: TextInputType.emailAddress,
-                controller: userController,
+                controller: emailController,
                 label: Luvas.email,
               ),
               const SizedBox(height: 10),
@@ -62,42 +63,37 @@ class _LoginPageState extends State<LoginPage> {
               AppButtonWidget(
                 texto: Luvas.btSignIn,
                 onPressed: () {
-                  if (userController.text.isEmpty ||
-                      passwordController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          "Preencha todos os campos!",
-                          style: AppTextStyles.defaultWarning,
-                        ),
-                        backgroundColor: AppColors.white,
-                        duration: Duration(seconds: 3),
-                      ),
-                    );
+                  if (emailController.text.trim().isEmpty ||
+                      passwordController.text.trim().isEmpty) {
+                    AppSnackBar()
+                        .showSnack(context, "Preencha todos os campos!", 2);
                     return;
                   }
 
+                  var email = emailController.text.trim();
+                  var pass = passwordController.text.trim();
+
                   Map<String, String> data = {
-                    "username": "${userController.text}",
-                    "password": "${passwordController.text}"
+                    "username": email,
+                    "password": pass
                   };
 
-                  postData(Underwear.loginURL, data).then(
-                    (value) {
-                      setState(
-                        () {
-                          noacc = value.toString();
-                        },
-                      );
-                    },
-                  );
+                  postData(Underwear.loginURL, data).then((value) {
+                    value.forEach((k, v) {
+                      if (k == "bearer") {
+                        // TODO
+                      } else {
+                        // TODO
+                      }
+                    });
+                  });
                 },
               ),
               const SizedBox(height: 80),
-              SizedBox(
-                height: 23,
+              const SizedBox(
+                height: 20,
                 child: Text(
-                  noacc,
+                  Luvas.noAccount,
                   style: AppTextStyles.defaultStyleB,
                   textAlign: TextAlign.center,
                 ),

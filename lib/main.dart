@@ -1,3 +1,4 @@
+import 'package:electrical_comsuption/principal.dart';
 import 'package:electrical_comsuption/user_area.dart';
 import 'login_page.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const LoginPage(),
+      home: LoginPage(),
     );
   }
 }

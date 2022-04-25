@@ -15,6 +15,13 @@ class AppTextStyles {
     fontSize: 20,
   );
 
+  static const TextStyle snackBar = TextStyle(
+    fontFamily: "Montserrat",
+    color: AppColors.red,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
+
   static const TextStyle userName = TextStyle(
     fontFamily: "Montserrat",
     color: AppColors.white,
