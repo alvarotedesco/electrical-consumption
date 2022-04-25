@@ -60,12 +60,6 @@ class InputDecorationWidget extends StatelessWidget {
             Radius.circular(80),
           ),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 6, color: AppColors.red),
-          borderRadius: BorderRadius.all(
-            Radius.circular(80),
-          ),
-        ),
       ),
     );
   }

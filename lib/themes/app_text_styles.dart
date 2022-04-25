@@ -28,4 +28,10 @@ class AppTextStyles {
     fontSize: 28,
     fontWeight: FontWeight.bold,
   );
+
+  static const TextStyle defaultWarning = TextStyle(
+    fontFamily: "Montserrat",
+    color: AppColors.primary,
+    fontSize: 25,
+  );
 }
