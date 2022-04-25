@@ -85,7 +85,7 @@ class _UserAreaState extends State<UserArea> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: AppColors.whiteOpacity,
+                  color: AppColors.white60,
                 ),
                 width: double.infinity,
                 padding: EdgeInsets.all(20),
