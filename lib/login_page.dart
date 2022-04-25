@@ -5,7 +5,7 @@ import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'sign_up.dart';
-import 'demonstration.dart';
+import 'demonstration_page.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'themes/luvas.dart';
 
