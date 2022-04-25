@@ -46,7 +46,7 @@ class _Demonstration extends State<Demonstration> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: Luvas.comsWatts,
+                    labelText: Luvas.consWatts,
                     labelStyle: AppTextStyles.defaultStyleB,
                   ),
                   style: const TextStyle(color: Colors.grey, fontSize: 20),
@@ -58,7 +58,7 @@ class _Demonstration extends State<Demonstration> {
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: Luvas.comsHours,
+                    labelText: Luvas.consHours,
                     labelStyle: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
