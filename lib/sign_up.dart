@@ -1,6 +1,7 @@
 import 'package:electrical_comsuption/API.dart';
 import 'package:electrical_comsuption/login_page.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -88,11 +89,16 @@ class _SignUpPageState extends State<SignUpPage> {
                     userCPFController.text.isEmpty ||
                     emailController.text.isEmpty ||
                     passwordController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("Preencha todos os campos!"),
-                    backgroundColor: AppColors.white,
-                    duration: Duration(seconds: 3),
-                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        "Preencha todos os campos!",
+                        style: AppTextStyles.defaultWarning,
+                      ),
+                      backgroundColor: AppColors.white,
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
                   return;
                 }
 

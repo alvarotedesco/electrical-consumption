@@ -1,5 +1,4 @@
 import 'package:electrical_comsuption/user_area.dart';
-
 import 'login_page.dart';
 import 'package:flutter/material.dart';
 

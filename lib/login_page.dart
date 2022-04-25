@@ -21,14 +21,15 @@ class _LoginPageState extends State<LoginPage> {
   final userController = TextEditingController();
   final passwordController = TextEditingController();
 
-  String noacc = "nao tem acocondnas?";
+  String noacc = "Não tem uma conta?";
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(Meias.imges), fit: BoxFit.cover)),
+        image:
+            DecorationImage(image: AssetImage(Meias.imges), fit: BoxFit.cover),
+      ),
       child: Scaffold(
         backgroundColor: AppColors.transparent,
         body: Container(
@@ -51,9 +52,11 @@ class _LoginPageState extends State<LoginPage> {
                 controller: passwordController,
                 isPassword: true,
                 onPressed: () {
-                  setState(() {
-                    passwordVisible = !passwordVisible;
-                  });
+                  setState(
+                    () {
+                      passwordVisible = !passwordVisible;
+                    },
+                  );
                 },
               ),
               AppButtonWidget(
@@ -61,11 +64,16 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   if (userController.text.isEmpty ||
                       passwordController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Preencha todos os campos!"),
-                      backgroundColor: AppColors.white,
-                      duration: Duration(seconds: 3),
-                    ));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Preencha todos os campos!",
+                          style: AppTextStyles.defaultWarning,
+                        ),
+                        backgroundColor: AppColors.white,
+                        duration: Duration(seconds: 3),
+                      ),
+                    );
                     return;
                   }
 
@@ -74,16 +82,20 @@ class _LoginPageState extends State<LoginPage> {
                     "password": "${passwordController.text}"
                   };
 
-                  postData(Underwear.loginURL, data).then((value) {
-                    setState(() {
-                      noacc = value.toString();
-                    });
-                  });
+                  postData(Underwear.loginURL, data).then(
+                    (value) {
+                      setState(
+                        () {
+                          noacc = value.toString();
+                        },
+                      );
+                    },
+                  );
                 },
               ),
               const SizedBox(height: 80),
               SizedBox(
-                height: 20,
+                height: 23,
                 child: Text(
                   noacc,
                   style: AppTextStyles.defaultStyleB,
@@ -91,23 +103,27 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               AppButtonWidget(
-                  texto: Luvas.btSignUp,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SignUpPage(),
-                        ));
-                  }),
+                texto: Luvas.btSignUp,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignUpPage(),
+                    ),
+                  );
+                },
+              ),
               AppButtonWidget(
-                  texto: Luvas.btDemonstration,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Demonstration(),
-                        ));
-                  }),
+                texto: Luvas.btDemonstration,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Demonstration(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
