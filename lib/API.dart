@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:electrical_comsuption/themes/luvas.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,7 +26,7 @@ Future<dynamic> getData(url) async {
   // e o title é uma propriedade json.
 }
 
-Future<Map<String, String>> postData(String url, data,
+Future<Map<String, dynamic>> postData(String url, data,
     [bool auth = false]) async {
   data = json.encode(data);
   Map<String, String> headers = {"Content-Type": "application/json"};
@@ -41,9 +43,10 @@ Future<Map<String, String>> postData(String url, data,
       headers: headers, body: data);
 
   if (response.statusCode >= 200 && response.statusCode < 300) {
-    var resposta = json.decode(response.body);
+    Map<String, dynamic> resposta = json.decode(response.body);
 
-    return resposta[0];
+    sleep(Duration(milliseconds: 2000));
+    return resposta;
   } else {
     print(response.statusCode);
 

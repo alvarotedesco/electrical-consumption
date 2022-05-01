@@ -16,16 +16,16 @@ class AppButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 20),
-      height: 60,
+      height: 50,
       alignment: Alignment.center,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          stops: [0.2, 0.7],
+          stops: [0.35, 1],
           colors: [
             AppColors.primary,
-            AppColors.orange,
+            AppColors.secondary,
           ],
         ),
         borderRadius: BorderRadius.all(

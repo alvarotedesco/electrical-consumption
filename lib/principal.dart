@@ -43,15 +43,11 @@ class _PrincipalState extends State<Principal> {
         ),
         child: ListView(children: <Widget>[
           // Trocar por uma imagem
-          InkWell(
-            child: IconButton(
-              icon: Icon(Icons.lock),
-              onPressed: () {},
-            ),
+          IconButton(
+            icon: Icon(Icons.lock),
+            onPressed: () {},
           ),
           // Trocar por uma imagem
-
-          TextField()
         ]),
       ),
     );

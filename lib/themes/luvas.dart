@@ -15,15 +15,16 @@ class Luvas {
   static const String costRS = 'Custo R\$';
   static const String twentyDays = '20';
   static const String thirtyDays = '30';
-  static const String twentyCostRS = '0';
-  static const String twentyConskW = '0';
-  static const String thirtyConskW = '0';
-  static const String thirtyCostRS = '0';
+  static String twentyCostRS = '0';
+  static String twentyConskW = '0';
+  static String thirtyConskW = '0';
+  static String thirtyCostRS = '0';
   static const String calculate = 'Calcular';
 }
 
 class Meias {
-  static const String imges = 'assets/space.png';
+  static const String imges = 'assets/imges.png';
+  static const String space = 'assets/space.png';
   static const String teste = 'assets/teste.png';
 }
 

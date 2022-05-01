@@ -14,24 +14,24 @@ class UserArea extends StatefulWidget {
 
 class _UserAreaState extends State<UserArea> {
   String userName = "user";
-  String userMail = "Email";
-  String userCPF = "405.560.458-07";
+  String userMail = "teste@teste.com.br";
+  String userCPF = "123.456.789-10";
 
-  void getDatas() async {
-    var data = await getData(Underwear.getUserDataURL);
+  // void getDatas() async {
+  //   var data = await getData(Underwear.getUserDataURL);
 
-    setState(() {
-      userName = data['name'];
-      userCPF = data['cpf'];
-      userMail = data['email'];
-    });
-  }
+  //   setState(() {
+  //     userName = data['name'];
+  //     userCPF = data['cpf'];
+  //     userMail = data['email'];
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
 
-    getDatas();
+    // getDatas();
   }
 
   @override
@@ -53,7 +53,7 @@ class _UserAreaState extends State<UserArea> {
       extendBodyBehindAppBar: true,
       body: Container(
         height: double.infinity,
-        padding: const EdgeInsets.fromLTRB(25, 70, 25, 25),
+        padding: const EdgeInsets.fromLTRB(25, 120, 25, 25),
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(Meias.imges), fit: BoxFit.cover),
@@ -61,8 +61,8 @@ class _UserAreaState extends State<UserArea> {
         child: Container(
           padding: const EdgeInsets.all(25),
           decoration: BoxDecoration(
-            color: AppColors.primary,
-          ),
+              //color: AppColors.primary,
+              ),
           child: SingleChildScrollView(
             child: Column(children: [
               const Center(
@@ -78,14 +78,14 @@ class _UserAreaState extends State<UserArea> {
               ),
               const SizedBox(height: 40),
               Text(
-                "Thiago Luiz Rizzo Parrilo Souza Oliveira Ribeiro Anjo",
+                "Ricardo Tappares",
                 style: AppTextStyles.userName,
               ),
               const SizedBox(height: 40),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: AppColors.white60,
+                  color: AppColors.black60,
                 ),
                 width: double.infinity,
                 padding: EdgeInsets.all(20),

@@ -1,6 +1,7 @@
 import 'package:electrical_comsuption/api.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
+import 'package:electrical_comsuption/user_area.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
@@ -80,8 +81,13 @@ class _LoginPageState extends State<LoginPage> {
 
                   postData(Underwear.loginURL, data).then((value) {
                     value.forEach((k, v) {
-                      if (k == "bearer") {
-                        // TODO
+                      if (k == "token") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserArea(),
+                          ),
+                        );
                       } else {
                         // TODO
                       }
