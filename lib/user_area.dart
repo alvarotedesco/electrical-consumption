@@ -53,7 +53,7 @@ class _UserAreaState extends State<UserArea> {
       extendBodyBehindAppBar: true,
       body: Container(
         height: double.infinity,
-        padding: const EdgeInsets.fromLTRB(25, 120, 25, 25),
+        padding: const EdgeInsets.fromLTRB(25, 80, 25, 25),
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(Meias.imges), fit: BoxFit.cover),

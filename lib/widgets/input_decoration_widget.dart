@@ -32,7 +32,7 @@ class InputDecorationWidget extends StatelessWidget {
       controller: controller,
       style: AppTextStyles.defaultStyle,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(left: 30),
+        contentPadding: const EdgeInsets.only(left: 25),
         labelText: label,
         labelStyle: AppTextStyles.defaultStyleB,
         suffixIcon: Visibility(
