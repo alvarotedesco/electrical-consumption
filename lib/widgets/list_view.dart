@@ -15,9 +15,9 @@ class ListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: AppColors.black60, borderRadius: BorderRadius.circular(20)),
+          color: AppColors.white60, borderRadius: BorderRadius.circular(20)),
       child: Scaffold(
-        backgroundColor: AppColors.white60,
+        backgroundColor: AppColors.transparent,
         body: ListView.builder(
           padding: const EdgeInsets.all(10),
           itemCount: devices.length,
