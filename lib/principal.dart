@@ -152,9 +152,14 @@ class _PrincipalState extends State<Principal> {
                     );
                   }).toList(),
                   onChanged: ((value) {
-                    setState(() {
-                      devices.add(dropDevices);
-                    });
+                    for (var item in dropDevices) {
+                      if (item["id"].toString() == value.toString()) {
+                        print(item);
+                        setState(() {
+                          devices.add(item);
+                        });
+                      }
+                    }
                   }),
                 ),
                 const SizedBox(height: 20),

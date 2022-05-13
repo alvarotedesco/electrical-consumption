@@ -18,8 +18,6 @@ Future<dynamic> getData(url) async {
     },
   );
 
-  sleep(Duration(milliseconds: 4000));
-
   if (response.statusCode >= 200) {
     var resposta = json.decode(response.body);
 
@@ -50,7 +48,6 @@ Future<Map<String, dynamic>> postData(String url, data,
   if (response.statusCode >= 200 && response.statusCode < 300) {
     Map<String, dynamic> resposta = json.decode(response.body);
 
-    sleep(Duration(milliseconds: 2000));
     return resposta;
   } else {
     return {"error": "erro", "data": response.toString()};
@@ -73,7 +70,6 @@ Future<Map<String, dynamic>> doLogin(String url, data) async {
 
     prefs.setString("tokenjwt", resposta["token"]);
 
-    sleep(Duration(milliseconds: 2000));
     return resposta;
   } else {
     return {"error": "erro", "data": response.toString()};
