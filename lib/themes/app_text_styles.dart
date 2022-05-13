@@ -34,4 +34,11 @@ class AppTextStyles {
     color: AppColors.primary,
     fontSize: 25,
   );
+
+  static const TextStyle styleListB = TextStyle(
+    fontFamily: "Montserrat",
+    color: AppColors.white,
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+  );
 }

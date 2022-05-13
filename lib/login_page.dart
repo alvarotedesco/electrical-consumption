@@ -1,10 +1,11 @@
-import 'package:electrical_comsuption/api.dart';
+import 'package:electrical_comsuption/principal.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/user_area.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
+import 'API.dart';
 import 'sign_up.dart';
 import 'demonstration_page.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
@@ -79,13 +80,13 @@ class _LoginPageState extends State<LoginPage> {
                     "password": pass
                   };
 
-                  postData(Underwear.loginURL, data).then((value) {
+                  doLogin(Underwear.loginURL, data).then((value) {
                     value.forEach((k, v) {
                       if (k == "token") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UserArea(),
+                            builder: (context) => Principal(),
                           ),
                         );
                       } else {

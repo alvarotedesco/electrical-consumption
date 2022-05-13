@@ -33,4 +33,6 @@ class Underwear {
   static const String getUserDataURL = 'auth/';
   static const String loginURL = 'auth/login';
   static const String registryURL = 'auth/registry';
+  static const String listDevices = 'device/list?page=0';
+  static const String saveDevice = 'device/save';
 }

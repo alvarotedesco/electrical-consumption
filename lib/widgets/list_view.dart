@@ -30,26 +30,26 @@ class ListWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 210,
+                      width: 150,
                       child: Text(
                         devices[index]["name"],
-                        style: AppTextStyles.defaultStyleB,
+                        style: AppTextStyles.styleListB,
                       ),
                     ),
                     Container(
                       width: 70,
                       child: Center(
                         child: Text(
-                          devices[index]["power"],
-                          style: AppTextStyles.defaultStyleB,
+                          devices[index]["power"].toString(),
+                          style: AppTextStyles.styleListB,
                         ),
                       ),
                     ),
                     SizedBox(
-                      width: 30,
+                      width: 20,
                       child: TextField(
                         controller: hoursControllers[index],
-                        style: AppTextStyles.defaultStyleB,
+                        style: AppTextStyles.styleListB,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(2),
                           FilteringTextInputFormatter.digitsOnly
@@ -62,10 +62,10 @@ class ListWidget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 30,
+                      width: 20,
                       child: TextField(
                         controller: daysControllers[index],
-                        style: AppTextStyles.defaultStyleB,
+                        style: AppTextStyles.styleListB,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -77,10 +77,10 @@ class ListWidget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 35,
+                      width: 25,
                       child: TextField(
                         controller: qtdControllers[index],
-                        style: AppTextStyles.defaultStyleB,
+                        style: AppTextStyles.styleListB,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],

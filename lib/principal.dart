@@ -22,14 +22,8 @@ class _PrincipalState extends State<Principal> {
   final pwrEqController = TextEditingController();
   final control = TextEditingController();
   bool addEq = false;
-  List devices = [
-    {"name": "Chuveiro", "power": "1500"},
-    {"name": "Microondas", "power": "10000"},
-    {"name": "TV", "power": "90"},
-    {"name": "Fonte Note", "power": "60"},
-    {"name": "Pilha", "power": "2"},
-    {"name": "Tesla", "power": "100000"}
-  ];
+  List devices = [];
+  List dropDevices = [];
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +47,7 @@ class _PrincipalState extends State<Principal> {
         children: [
           Container(
             height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(Meias.imges),
@@ -77,7 +71,7 @@ class _PrincipalState extends State<Principal> {
                     ),
                     InkWell(
                       child: Text(
-                        "Adicionar novo Equipamento",
+                        "Cadastrar novo Equipamento",
                         style: AppTextStyles.defaultStyleB,
                       ),
                       onTap: () {
@@ -88,7 +82,7 @@ class _PrincipalState extends State<Principal> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 8),
                 Visibility(
                   visible: addEq,
                   child: Row(
@@ -99,6 +93,7 @@ class _PrincipalState extends State<Principal> {
                           controller: nomeEqController,
                           label: "Nome do dispositivo",
                           textInputType: TextInputType.name,
+                          style: AppTextStyles.styleListB,
                         ),
                       ),
                       Expanded(
@@ -107,6 +102,7 @@ class _PrincipalState extends State<Principal> {
                           controller: pwrEqController,
                           label: "Potencia (W)",
                           textInputType: TextInputType.number,
+                          style: AppTextStyles.styleListB,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
@@ -120,13 +116,46 @@ class _PrincipalState extends State<Principal> {
                   child: AppButtonWidget(
                     texto: "Salvar",
                     onPressed: () {
-                      setState(() {
-                        addEq = !addEq;
-                        pwrEqController.text = "";
-                        nomeEqController.text = "";
-                      });
+                      if (pwrEqController.text.isNotEmpty &&
+                          nomeEqController.text.isNotEmpty) {
+                        var data = {
+                          "name": nomeEqController.text,
+                          "description": "",
+                          "power": int.tryParse(pwrEqController.text)
+                        };
+                        postData(Underwear.saveDevice, data).then((value) {
+                          setState(() {
+                            addEq = !addEq;
+                            pwrEqController.text = "";
+                            nomeEqController.text = "";
+                          });
+                        });
+                      }
                     },
                   ),
+                ),
+                AppButtonWidget(
+                  onPressed: () {
+                    getData(Underwear.listDevices).then((value) {
+                      setState(() {
+                        dropDevices = value["content"];
+                      });
+                    });
+                  },
+                  texto: "atualiza",
+                ),
+                DropdownButton(
+                  items: dropDevices.map<DropdownMenuItem<String>>((value) {
+                    return DropdownMenuItem<String>(
+                      value: value["id"].toString(),
+                      child: Text(value["name"]),
+                    );
+                  }).toList(),
+                  onChanged: ((value) {
+                    setState(() {
+                      devices.add(dropDevices);
+                    });
+                  }),
                 ),
                 const SizedBox(height: 20),
                 const Center(
@@ -149,11 +178,4 @@ class _PrincipalState extends State<Principal> {
       ),
     );
   }
-}
-
-Future<dynamic> testeGet() {
-  dynamic urll = "device/list?page=0";
-  var teste = getData(urll);
-  print(teste);
-  return teste;
 }

@@ -11,12 +11,14 @@ class InputDecorationWidget extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isPassword;
   final TextEditingController? controller;
+  final TextStyle? style;
 
   const InputDecorationWidget({
     Key? key,
     required this.controller,
     required this.label,
     required this.textInputType,
+    this.style,
     this.inputFormatters,
     this.onPressed,
     this.isPassword = false,
@@ -32,9 +34,9 @@ class InputDecorationWidget extends StatelessWidget {
       controller: controller,
       style: AppTextStyles.defaultStyle,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(left: 25),
+        contentPadding: const EdgeInsets.only(left: 15),
         labelText: label,
-        labelStyle: AppTextStyles.defaultStyleB,
+        labelStyle: style ?? AppTextStyles.defaultStyleB,
         suffixIcon: Visibility(
           visible: isPassword,
           child: Container(
