@@ -16,7 +16,11 @@ Future<dynamic> getData(url) async {
       "Accept": "application/json",
       "Authorization": "Bearer $token",
     },
-  );
+  ).catchError((e) {
+    print('servidor desligado, Provavelmente');
+  }).timeout(const Duration(seconds: 30));
+
+  if (response.statusCode == 401) {}
 
   if (response.statusCode >= 200) {
     var resposta = json.decode(response.body);
@@ -29,15 +33,12 @@ Future<dynamic> getData(url) async {
   // e o title é uma propriedade json.
 }
 
-Future<Map<String, dynamic>> postData(String url, data,
-    [bool auth = false]) async {
-  Map<String, String> headers = {"Content-Type": "application/json"};
-  data = json.encode(data);
-
+Future<Map<String, dynamic>> postData(String url, data) async {
   var prefs = await SharedPreferences.getInstance();
   var token = (prefs.getString("tokenjwt") ?? "");
+  data = json.encode(data);
 
-  headers = {
+  Map<String, String> headers = {
     "Content-Type": "application/json",
     "Authorization": "Bearer $token",
   };
@@ -50,10 +51,8 @@ Future<Map<String, dynamic>> postData(String url, data,
 
     return resposta;
   } else {
-    return {"error": "erro", "data": response.toString()};
+    return {"error": "erro", "data": response.statusCode};
   }
-  // decode retorna uma lista, onde eu pego o primeiro (0)
-  // e o title é uma propriedade json.
 }
 
 Future<Map<String, dynamic>> doLogin(String url, data) async {
@@ -74,4 +73,19 @@ Future<Map<String, dynamic>> doLogin(String url, data) async {
   } else {
     return {"error": "erro", "data": response.toString()};
   }
+}
+
+Future<double> getTotal() async {
+  var prefs = await SharedPreferences.getInstance();
+  var ind = prefs.getInt('qtdIndex') ?? 0;
+
+  for (var i = 0; i < ind; i++) {
+    var hour = int.parse(prefs.getString('hoursControls$i'));
+    var day = int.parse(prefs.getString('daysControls$i'));
+    var qtd = int.parse(prefs.getString('qtdControls$i'));
+    var pwr = prefs.getDouble('pwrDevices$i');
+
+    return hour * day * qtd * pwr / 1000;
+  }
+  return 0.0;
 }

@@ -4,10 +4,10 @@ import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/widgets/list_view.dart';
+import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:electrical_comsuption/themes/luvas.dart';
 import 'package:flutter/services.dart';
-import 'login_page.dart';
 
 class Principal extends StatefulWidget {
   const Principal({Key? key}) : super(key: key);
@@ -21,9 +21,30 @@ class _PrincipalState extends State<Principal> {
   final nomeEqController = TextEditingController();
   final pwrEqController = TextEditingController();
   final control = TextEditingController();
+  String totalKw = "0";
+  int onOpen = 375;
   bool addEq = false;
   List devices = [];
   List dropDevices = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    getTotal().then((value) {
+      setState(() {
+        totalKw = value.toString();
+      });
+    });
+
+    getData(Underwear.listDevices).then((value) {
+      setState(() {
+        dropDevices = value["content"];
+      });
+    }).catchError((e) {
+      AppSnackBar().showSnack(context, "Error ao pegar os dados $e", 2);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +82,26 @@ class _PrincipalState extends State<Principal> {
                   children: [
                     IconButton(
                       iconSize: 35,
-                      icon: Icon(Icons.add_circle),
+                      icon: const Icon(Icons.add_circle),
                       color: AppColors.white,
                       onPressed: () {
                         setState(() {
                           addEq = !addEq;
                         });
+
+                        if (addEq) {
+                          setState(() {
+                            onOpen = 480;
+                          });
+                        } else {
+                          setState(() {
+                            onOpen = 375;
+                          });
+                        }
                       },
                     ),
                     InkWell(
-                      child: Text(
+                      child: const Text(
                         "Cadastrar novo Equipamento",
                         style: AppTextStyles.defaultStyleB,
                       ),
@@ -78,11 +109,21 @@ class _PrincipalState extends State<Principal> {
                         setState(() {
                           addEq = !addEq;
                         });
+
+                        if (addEq) {
+                          setState(() {
+                            onOpen = 480;
+                          });
+                        } else {
+                          setState(() {
+                            onOpen = 375;
+                          });
+                        }
                       },
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Visibility(
                   visible: addEq,
                   child: Row(
@@ -129,51 +170,80 @@ class _PrincipalState extends State<Principal> {
                             pwrEqController.text = "";
                             nomeEqController.text = "";
                           });
+
+                          if (addEq) {
+                            setState(() {
+                              onOpen = 480;
+                            });
+                          } else {
+                            setState(() {
+                              onOpen = 375;
+                            });
+                          }
                         });
                       }
                     },
                   ),
                 ),
-                AppButtonWidget(
-                  onPressed: () {
-                    getData(Underwear.listDevices).then((value) {
-                      setState(() {
-                        dropDevices = value["content"];
-                      });
-                    });
-                  },
-                  texto: "atualiza",
-                ),
-                DropdownButton(
-                  items: dropDevices.map<DropdownMenuItem<String>>((value) {
-                    return DropdownMenuItem<String>(
-                      value: value["id"].toString(),
-                      child: Text(value["name"]),
-                    );
-                  }).toList(),
-                  onChanged: ((value) {
-                    for (var item in dropDevices) {
-                      if (item["id"].toString() == value.toString()) {
-                        print(item);
-                        setState(() {
-                          devices.add(item);
-                        });
+                Container(
+                  padding: const EdgeInsets.only(left: 16, right: 21),
+                  child: DropdownButton(
+                    borderRadius: BorderRadius.circular(10),
+                    elevation: 5,
+                    isExpanded: true,
+                    hint: const Text(
+                      'Selecione um Equipamento',
+                      style: AppTextStyles.defaultStyleB,
+                    ),
+                    items: dropDevices.map<DropdownMenuItem<String>>((value) {
+                      return DropdownMenuItem<String>(
+                        value: value["id"].toString(),
+                        child: Text(value["name"]),
+                      );
+                    }).toList(),
+                    onChanged: ((value) {
+                      for (var item in dropDevices) {
+                        if (item["id"].toString() == value.toString()) {
+                          print(item);
+                          setState(() {
+                            devices.add(item);
+                          });
+                        }
                       }
-                    }
-                  }),
+                    }),
+                  ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 const Center(
                   child: Text(
                     "meu painel",
                     style: AppTextStyles.defaultStyleB,
                   ),
                 ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 360,
+                const SizedBox(height: 10),
+                Container(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height - onOpen,
+                    maxWidth: MediaQuery.of(context).size.width,
+                  ),
                   child: ListWidget(
                     devices: devices,
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const Text(
+                            "Total (Kw/h)",
+                            style: AppTextStyles.defaultStyleB,
+                          ),
+                          Text(totalKw, style: AppTextStyles.defaultStyleB),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ],
