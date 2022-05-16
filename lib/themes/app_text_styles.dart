@@ -41,4 +41,11 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.bold,
   );
+
+  static const TextStyle totalStyle = TextStyle(
+    fontFamily: "Montserrat",
+    color: AppColors.black,
+    fontSize: 20,
+    fontWeight: FontWeight.bold,
+  );
 }

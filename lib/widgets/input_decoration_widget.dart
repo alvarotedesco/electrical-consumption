@@ -34,22 +34,24 @@ class InputDecorationWidget extends StatelessWidget {
       controller: controller,
       style: AppTextStyles.defaultStyle,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.only(left: 15),
+        contentPadding: EdgeInsets.only(left: 20, right: isPassword ? 0 : 20),
         labelText: label,
         labelStyle: style ?? AppTextStyles.defaultStyleB,
-        suffixIcon: Visibility(
-          visible: isPassword,
-          child: Container(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: Icon(
-                passwordVisible ? Icons.visibility : Icons.visibility_off,
-                color: Theme.of(context).primaryColorDark,
-              ),
-              onPressed: onPressed,
-            ),
-          ),
-        ),
+        suffixIcon: isPassword
+            ? Visibility(
+                visible: isPassword,
+                child: Container(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: IconButton(
+                    icon: Icon(
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    onPressed: onPressed,
+                  ),
+                ),
+              )
+            : null,
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(width: 3, color: AppColors.primary),
           borderRadius: BorderRadius.all(

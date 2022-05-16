@@ -74,18 +74,3 @@ Future<Map<String, dynamic>> doLogin(String url, data) async {
     return {"error": "erro", "data": response.toString()};
   }
 }
-
-Future<double> getTotal() async {
-  var prefs = await SharedPreferences.getInstance();
-  var ind = prefs.getInt('qtdIndex') ?? 0;
-
-  for (var i = 0; i < ind; i++) {
-    var hour = int.parse(prefs.getString('hoursControls$i'));
-    var day = int.parse(prefs.getString('daysControls$i'));
-    var qtd = int.parse(prefs.getString('qtdControls$i'));
-    var pwr = prefs.getDouble('pwrDevices$i');
-
-    return hour * day * qtd * pwr / 1000;
-  }
-  return 0.0;
-}
