@@ -20,6 +20,8 @@ class Luvas {
   static String thirtyConskW = '0';
   static String thirtyCostRS = '0';
   static const String calculate = 'Calcular';
+  static const String nameDevice = 'Nome do Dispositivo';
+  static const String powerDevice = 'Potência';
 }
 
 class Meias {
