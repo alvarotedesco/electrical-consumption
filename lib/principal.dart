@@ -1,4 +1,5 @@
 import 'package:electrical_comsuption/API.dart';
+import 'package:electrical_comsuption/edit_item.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/user_area.dart';
@@ -167,9 +168,7 @@ class _PrincipalState extends State<Principal> {
                         label: "Potencia (W)",
                         textInputType: TextInputType.number,
                         style: AppTextStyles.styleListB,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
+                        
                       ),
                     ),
                   ],
@@ -222,7 +221,7 @@ class _PrincipalState extends State<Principal> {
                   onChanged: ((value) {
                     for (var item in dropDevices) {
                       if (item["id"].toString() == value.toString()) {
-                        print(item);
+                        print({'Item selecionado => ' : item});
                         setState(() {
                           devices.add(item);
                           hoursControllers.add(TextEditingController());
@@ -297,9 +296,25 @@ class _PrincipalState extends State<Principal> {
                               children: [
                                 SizedBox(
                                   width: 160,
-                                  child: Text(
-                                    devices[index]["name"],
-                                    style: AppTextStyles.styleListB,
+                                  child: InkWell(
+                                    child: Text(
+                                      devices[index]["name"],
+                                      style: AppTextStyles.styleListB,
+                                    ),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditItem(),
+                                          settings: RouteSettings(
+                                            arguments: {
+                                              'Índice => ' : index,
+                                              'Dispositivo => ': devices[index],
+                                              },
+                                            ),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                                 SizedBox(
@@ -319,7 +334,7 @@ class _PrincipalState extends State<Principal> {
                                     style: AppTextStyles.styleListB,
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(2),
-                                      FilteringTextInputFormatter.digitsOnly
+                                      
                                     ],
                                     keyboardType: TextInputType.number,
                                     onChanged: (tex) async {
@@ -338,9 +353,7 @@ class _PrincipalState extends State<Principal> {
                                     textAlign: TextAlign.center,
                                     controller: daysControllers[index],
                                     style: AppTextStyles.styleListB,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
+                                   
                                     keyboardType: TextInputType.number,
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 99) {
@@ -358,9 +371,7 @@ class _PrincipalState extends State<Principal> {
                                     textAlign: TextAlign.center,
                                     controller: qtdControllers[index],
                                     style: AppTextStyles.styleListB,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
+                                   
                                     keyboardType: TextInputType.number,
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 999) {

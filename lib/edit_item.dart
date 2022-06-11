@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 
 class EditItem extends StatefulWidget {
-  const EditItem({Key? key}) : super(key: key);
 
   @override
   State<EditItem> createState() => _EditItemState();
@@ -19,6 +18,9 @@ class _EditItemState extends State<EditItem> {
 
   @override
   Widget build(BuildContext context) {
+
+    Object? data = ModalRoute.of(context)?.settings.arguments;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Voltar'),
@@ -59,7 +61,10 @@ class _EditItemState extends State<EditItem> {
             const SizedBox(height: 20),
             AppButtonWidget(
               texto: "Salvar",
-              onPressed: () {},
+              onPressed: () {
+                print(data);
+                Navigator.of(context).pop();
+              },
             ),
           ],
         ),
@@ -67,5 +72,3 @@ class _EditItemState extends State<EditItem> {
     );
   }
 }
-
-class FilteringTextInputFormatter {}
