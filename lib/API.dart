@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<dynamic> getData(url) async {
+Future<Map<String, dynamic>> getData(url) async {
   var prefs = await SharedPreferences.getInstance();
   var token = (prefs.getString("tokenjwt") ?? "");
 
@@ -25,9 +25,9 @@ Future<dynamic> getData(url) async {
   if (response.statusCode >= 200) {
     var resposta = json.decode(response.body);
 
-    return resposta;
+    return {"status": "success", "data": resposta};
   } else {
-    return [response];
+    return {"status": "error", "data": response};
   }
   // decode retorna uma lista, onde eu pego o primeiro (0)
   // e o title é uma propriedade json.
@@ -46,12 +46,15 @@ Future<Map<String, dynamic>> postData(String url, data) async {
   var response = await http.post(Uri.parse('${Underwear.baseURL}$url'),
       headers: headers, body: data);
 
-  if (response.statusCode >= 200 && response.statusCode < 300) {
-    Map<String, dynamic> resposta = json.decode(response.body);
-
-    return resposta;
+  if (response.statusCode == 200) {
+    if (response.body != null || response.body != '') {
+      return {"status": "error", "data": response.body};
+    } else {
+      Map<String, dynamic> resposta = jsonDecode(response.body);
+      return {"status": "success", "data": resposta};
+    }
   } else {
-    return {"error": "erro", "data": response.statusCode};
+    return {"status": "error", "data": response.statusCode};
   }
 }
 
@@ -59,18 +62,17 @@ Future<Map<String, dynamic>> doLogin(String url, data) async {
   Map<String, String> headers = {"Content-Type": "application/json"};
   data = json.encode(data);
 
-  var prefs = await SharedPreferences.getInstance();
-
   var response = await http.post(Uri.parse('${Underwear.baseURL}$url'),
       headers: headers, body: data);
 
-  if (response.statusCode >= 200 && response.statusCode < 300) {
-    Map<String, dynamic> resposta = json.decode(response.body);
+  if (response.statusCode == 200) {
+    Map<String, dynamic> resposta = jsonDecode(response.body);
 
+    var prefs = await SharedPreferences.getInstance();
     prefs.setString("tokenjwt", resposta["token"]);
 
-    return resposta;
+    return {"status": "success", "data": resposta};
   } else {
-    return {"error": "erro", "data": response.toString()};
+    return {"status": "error", "data": response.toString()};
   }
 }

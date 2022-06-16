@@ -9,6 +9,7 @@ import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:electrical_comsuption/themes/luvas.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Principal extends StatefulWidget {
   const Principal({Key? key}) : super(key: key);
@@ -74,9 +75,13 @@ class _PrincipalState extends State<Principal> {
     super.initState();
 
     getData(Underwear.listDevices).then((value) {
-      setState(() {
-        dropDevices = value["content"];
-      });
+      if (value['status'] == 'success') {
+        setState(() {
+          dropDevices = value['data']["content"];
+        });
+      } else {
+        AppSnackBar().showSnack(context, "Error ao pegar os dados", 2);
+      }
     }).catchError((e) {
       AppSnackBar().showSnack(context, "Error ao pegar os dados", 2);
     });
@@ -186,13 +191,18 @@ class _PrincipalState extends State<Principal> {
                         "power": int.tryParse(pwrEqController.text)
                       };
                       postData(Underwear.saveDevice, data).then((value) {
-                        setState(() {
-                          addEq = !addEq;
-                          pwrEqController.text = "";
-                          nomeEqController.text = "";
-                        });
+                        if (value['status'] == 'success') {
+                          setState(() {
+                            addEq = !addEq;
+                            pwrEqController.text = "";
+                            nomeEqController.text = "";
+                          });
 
-                        changeSize(addEq);
+                          changeSize(addEq);
+                        } else {
+                          AppSnackBar().showSnack(context,
+                              "Não foi possivel salvar seu Dispositivo!", 2);
+                        }
                       }).catchError((e) {
                         AppSnackBar().showSnack(context,
                             "Não foi possivel salvar seu Dispositivo!", 2);
@@ -301,18 +311,44 @@ class _PrincipalState extends State<Principal> {
                                       style: AppTextStyles.styleListB,
                                     ),
                                     onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => EditItem(),
-                                          settings: RouteSettings(
-                                            arguments: {
-                                              index,
-                                              devices[index],
-                                            },
-                                          ),
-                                        ),
-                                      );
+                                      SharedPreferences.getInstance().then(
+                                          (inst) {
+                                        inst.setString('nameEdit',
+                                            devices[index]['name'].toString());
+                                        inst.setInt(
+                                            'idEdit', devices[index]['id']);
+                                        inst.setString('powerEdit',
+                                            devices[index]['power'].toString());
+                                      }).then((value) => {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditItem(),
+                                              ),
+                                            ).then((v) {
+                                              getData(Underwear.listDevices)
+                                                  .then((value) {
+                                                if (value['status'] ==
+                                                    'success') {
+                                                  setState(() {
+                                                    dropDevices = value['data']
+                                                        ["content"];
+                                                  });
+                                                } else {
+                                                  AppSnackBar().showSnack(
+                                                      context,
+                                                      "Error ao pegar os dados",
+                                                      2);
+                                                }
+                                              }).catchError((e) {
+                                                AppSnackBar().showSnack(
+                                                    context,
+                                                    "Error ao pegar os dados",
+                                                    2);
+                                              });
+                                            })
+                                          });
                                     },
                                   ),
                                 ),
