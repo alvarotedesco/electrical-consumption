@@ -55,11 +55,9 @@ class _LoginPageState extends State<LoginPage> {
                 controller: passwordController,
                 isPassword: true,
                 onPressed: () {
-                  setState(
-                    () {
-                      passwordVisible = !passwordVisible;
-                    },
-                  );
+                  setState(() {
+                    passwordVisible = !passwordVisible;
+                  });
                 },
               ),
               AppButtonWidget(
@@ -81,18 +79,21 @@ class _LoginPageState extends State<LoginPage> {
                   };
 
                   doLogin(Underwear.loginURL, data).then((value) {
-                    value.forEach((k, v) {
-                      if (k == "token") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Principal(),
-                          ),
-                        );
-                      } else {
-                        // TODO: mensagem quando o login falhar
-                      }
-                    });
+                    if (value['status'] == 'success') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Principal(),
+                        ),
+                      );
+                    } else {
+                      AppSnackBar().showSnack(context,
+                          "Erro de Login, tente novamente mais tarde!", 3);
+                    }
+                  }).catchError((e) {
+                    AppSnackBar().showSnack(context,
+                        "Erro de Login, tente novamente mais tarde!", 3);
+                    print(e);
                   });
                 },
               ),
