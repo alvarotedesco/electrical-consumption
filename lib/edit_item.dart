@@ -6,8 +6,9 @@ import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 
-class EditItem extends StatefulWidget {
+import 'API.dart';
 
+class EditItem extends StatefulWidget {
   @override
   State<EditItem> createState() => _EditItemState();
 }
@@ -18,9 +19,6 @@ class _EditItemState extends State<EditItem> {
 
   @override
   Widget build(BuildContext context) {
-
-    Object? data = ModalRoute.of(context)?.settings.arguments;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Voltar'),
@@ -62,7 +60,6 @@ class _EditItemState extends State<EditItem> {
             AppButtonWidget(
               texto: "Salvar",
               onPressed: () {
-                print(data);
                 Navigator.of(context).pop();
               },
             ),

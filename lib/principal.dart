@@ -168,7 +168,6 @@ class _PrincipalState extends State<Principal> {
                         label: "Potencia (W)",
                         textInputType: TextInputType.number,
                         style: AppTextStyles.styleListB,
-                        
                       ),
                     ),
                   ],
@@ -221,7 +220,7 @@ class _PrincipalState extends State<Principal> {
                   onChanged: ((value) {
                     for (var item in dropDevices) {
                       if (item["id"].toString() == value.toString()) {
-                        print({'Item selecionado => ' : item});
+                        print({'Item selecionado => ': item});
                         setState(() {
                           devices.add(item);
                           hoursControllers.add(TextEditingController());
@@ -308,10 +307,10 @@ class _PrincipalState extends State<Principal> {
                                           builder: (context) => EditItem(),
                                           settings: RouteSettings(
                                             arguments: {
-                                              'Índice => ' : index,
-                                              'Dispositivo => ': devices[index],
-                                              },
-                                            ),
+                                              index,
+                                              devices[index],
+                                            },
+                                          ),
                                         ),
                                       );
                                     },
@@ -334,7 +333,6 @@ class _PrincipalState extends State<Principal> {
                                     style: AppTextStyles.styleListB,
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(2),
-                                      
                                     ],
                                     keyboardType: TextInputType.number,
                                     onChanged: (tex) async {
@@ -353,7 +351,6 @@ class _PrincipalState extends State<Principal> {
                                     textAlign: TextAlign.center,
                                     controller: daysControllers[index],
                                     style: AppTextStyles.styleListB,
-                                   
                                     keyboardType: TextInputType.number,
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 99) {
@@ -371,7 +368,6 @@ class _PrincipalState extends State<Principal> {
                                     textAlign: TextAlign.center,
                                     controller: qtdControllers[index],
                                     style: AppTextStyles.styleListB,
-                                   
                                     keyboardType: TextInputType.number,
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 999) {

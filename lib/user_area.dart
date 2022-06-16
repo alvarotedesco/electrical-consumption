@@ -22,13 +22,13 @@ class _UserAreaState extends State<UserArea> {
   void initState() {
     super.initState();
 
-    // getData(Underwear.getUserDataURL).then((resp) {
-    //   setState(() {
-    //     userName = resp['name'];
-    //     userCPF = resp['cpf'];
-    //     userMail = resp['email'];
-    //   });
-    // });
+    getData(Underwear.getUserDataURL).then((resp) {
+      setState(() {
+        userName = resp['name'];
+        userCPF = resp['cpf'];
+        userMail = resp['email'];
+      });
+    });
   }
 
   @override
