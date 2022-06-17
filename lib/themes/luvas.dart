@@ -28,6 +28,13 @@ class Meias {
   static const String imges = 'assets/imges.png';
   static const String space = 'assets/space.png';
   static const String teste = 'assets/teste.png';
+  static const List<String> flags = [
+    'flag-green.png',
+    'flag-yellow.png',
+    'flag-red.png',
+    'flag-black-red.png',
+    'flag-black.png'
+  ];
 }
 
 class Underwear {
@@ -37,4 +44,6 @@ class Underwear {
   static const String registryURL = 'auth/registry';
   static const String listDevices = 'device/list?page=0';
   static const String saveDevice = 'device/save';
+  static const String dicasURL =
+      'https://www.grupocpfl.com.br/energias-sustentaveis/dicas-de-consumo-inteligente';
 }

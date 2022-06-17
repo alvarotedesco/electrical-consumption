@@ -1,4 +1,5 @@
-import 'package:electrical_comsuption/edit_item.dart';
+import 'package:electrical_comsuption/containers.dart';
+import 'package:electrical_comsuption/device_area.dart';
 import 'package:electrical_comsuption/principal.dart';
 import 'package:electrical_comsuption/user_area.dart';
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: LoginPage(),
+      home: Containers(),
     );
   }
 }

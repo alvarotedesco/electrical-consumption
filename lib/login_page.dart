@@ -91,8 +91,10 @@ class _LoginPageState extends State<LoginPage> {
                           "Erro de Login, tente novamente mais tarde!", 3);
                     }
                   }).catchError((e) {
-                    AppSnackBar().showSnack(context,
-                        "Erro de Login, tente novamente mais tarde!", 3);
+                    AppSnackBar().showSnack(
+                        context,
+                        "Erro inesperado, Erro de Login, tente novamente mais tarde!",
+                        3);
                     print(e);
                   });
                 },

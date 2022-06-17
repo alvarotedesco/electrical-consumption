@@ -1,14 +1,13 @@
 import 'package:electrical_comsuption/API.dart';
-import 'package:electrical_comsuption/edit_item.dart';
+import 'package:electrical_comsuption/device_area.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/user_area.dart';
-import 'package:electrical_comsuption/widgets/button_widget.dart';
-import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:electrical_comsuption/themes/luvas.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Principal extends StatefulWidget {
@@ -28,24 +27,10 @@ class _PrincipalState extends State<Principal> {
   final List<TextEditingController> qtdControllers = [];
   String totalReais = "0.0";
   String totalKw = "0.0";
-  double onOpen = 2.0;
-  bool addEq = false;
   List devices = [];
   List dropDevices = [
-    {'id': '1', 'name': "ventilador", "power": 600.0}
+    {'id': '1', 'name': "ventilador", "power": 600.0, "feeFlag": 3}
   ];
-
-  void changeSize(addEq) {
-    if (addEq) {
-      setState(() {
-        onOpen = 2.6;
-      });
-    } else {
-      setState(() {
-        onOpen = 1.9;
-      });
-    }
-  }
 
   void getTotal() {
     var ind = devices.length;
@@ -80,10 +65,11 @@ class _PrincipalState extends State<Principal> {
           dropDevices = value['data']["content"];
         });
       } else {
-        AppSnackBar().showSnack(context, "Error ao pegar os dados", 2);
+        AppSnackBar().showSnack(context, "Erro ao pegar os dados", 2);
       }
     }).catchError((e) {
-      AppSnackBar().showSnack(context, "Error ao pegar os dados", 2);
+      AppSnackBar()
+          .showSnack(context, "Erro inesperado, Erro ao pegar os dados", 2);
     });
   }
 
@@ -102,11 +88,27 @@ class _PrincipalState extends State<Principal> {
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const UserArea()));
-              },
-              icon: const Icon(Icons.account_circle))
+            onPressed: () async {
+              if (await canLaunch(Underwear.dicasURL)) {
+                await launch(Underwear.dicasURL);
+              } else {
+                AppSnackBar().showSnack(
+                    context, "Não foi possivel acessar as Dicas!", 3);
+              }
+            },
+            icon: const Icon(Icons.lightbulb_outline),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserArea(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.account_circle),
+          )
         ],
       ),
       extendBodyBehindAppBar: true,
@@ -130,86 +132,54 @@ class _PrincipalState extends State<Principal> {
                     icon: const Icon(Icons.add_circle),
                     color: AppColors.white,
                     onPressed: () {
-                      setState(() {
-                        addEq = !addEq;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DeviceArea(),
+                          )).then((v) {
+                        getData(Underwear.listDevices).then((resp) {
+                          if (resp['status'] == 'success') {
+                            setState(() {
+                              dropDevices = resp['data']["content"];
+                            });
+                          } else {
+                            AppSnackBar().showSnack(
+                                context, "Erro ao pegar os dados", 2);
+                          }
+                        }).catchError((e) {
+                          AppSnackBar().showSnack(context,
+                              "Erro inesperado, Erro ao pegar os dados", 2);
+                        });
                       });
-
-                      changeSize(addEq);
                     },
                   ),
                   InkWell(
-                    child: const Text(
-                      "Cadastrar novo Dispositivo",
-                      style: AppTextStyles.defaultStyleB,
-                    ),
-                    onTap: () {
-                      setState(() {
-                        addEq = !addEq;
-                      });
-
-                      changeSize(addEq);
-                    },
-                  ),
-                ],
-              ),
-              Visibility(
-                visible: addEq,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: InputDecorationWidget(
-                        controller: nomeEqController,
-                        label: "Nome do dispositivo",
-                        textInputType: TextInputType.name,
-                        style: AppTextStyles.styleListB,
+                      child: const Text(
+                        "Cadastrar novo Dispositivo",
+                        style: AppTextStyles.defaultStyleB,
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      flex: 2,
-                      child: InputDecorationWidget(
-                        controller: pwrEqController,
-                        label: "Potencia (W)",
-                        textInputType: TextInputType.number,
-                        style: AppTextStyles.styleListB,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Visibility(
-                visible: addEq,
-                child: AppButtonWidget(
-                  texto: "Salvar",
-                  onPressed: () {
-                    if (pwrEqController.text.isNotEmpty &&
-                        nomeEqController.text.isNotEmpty) {
-                      var data = {
-                        "name": nomeEqController.text,
-                        "description": "",
-                        "power": int.tryParse(pwrEqController.text)
-                      };
-                      postData(Underwear.saveDevice, data).then((value) {
-                        if (value['status'] == 'success') {
-                          setState(() {
-                            addEq = !addEq;
-                            pwrEqController.text = "";
-                            nomeEqController.text = "";
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DeviceArea(),
+                            )).then((v) {
+                          getData(Underwear.listDevices).then((resp) {
+                            if (resp['status'] == 'success') {
+                              setState(() {
+                                dropDevices = resp['data']["content"];
+                              });
+                            } else {
+                              AppSnackBar().showSnack(
+                                  context, "Erro ao pegar os dados", 2);
+                            }
+                          }).catchError((e) {
+                            AppSnackBar().showSnack(context,
+                                "Erro inesperado, Erro ao pegar os dados", 2);
                           });
-
-                          changeSize(addEq);
-                        } else {
-                          AppSnackBar().showSnack(context,
-                              "Não foi possivel salvar seu Dispositivo!", 2);
-                        }
-                      }).catchError((e) {
-                        AppSnackBar().showSnack(context,
-                            "Não foi possivel salvar seu Dispositivo!", 2);
-                      });
-                    }
-                  },
-                ),
+                        });
+                      }),
+                ],
               ),
               Container(
                 padding: const EdgeInsets.only(left: 16, right: 21),
@@ -292,7 +262,7 @@ class _PrincipalState extends State<Principal> {
                     ),
                     Container(
                       constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.height / onOpen,
+                        maxHeight: MediaQuery.of(context).size.height / 2,
                         maxWidth: MediaQuery.of(context).size.width,
                       ),
                       child: ListView.builder(
@@ -311,44 +281,47 @@ class _PrincipalState extends State<Principal> {
                                       style: AppTextStyles.styleListB,
                                     ),
                                     onTap: () {
-                                      SharedPreferences.getInstance().then(
-                                          (inst) {
+                                      SharedPreferences.getInstance()
+                                          .then((inst) {
+                                        inst.setInt(
+                                            'idEdit',
+                                            int.tryParse(devices[index]['id']
+                                                .toString()));
                                         inst.setString('nameEdit',
                                             devices[index]['name'].toString());
-                                        inst.setInt(
-                                            'idEdit', devices[index]['id']);
                                         inst.setString('powerEdit',
                                             devices[index]['power'].toString());
-                                      }).then((value) => {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EditItem(),
-                                              ),
-                                            ).then((v) {
-                                              getData(Underwear.listDevices)
-                                                  .then((value) {
-                                                if (value['status'] ==
-                                                    'success') {
-                                                  setState(() {
-                                                    dropDevices = value['data']
-                                                        ["content"];
-                                                  });
-                                                } else {
-                                                  AppSnackBar().showSnack(
-                                                      context,
-                                                      "Error ao pegar os dados",
-                                                      2);
-                                                }
-                                              }).catchError((e) {
-                                                AppSnackBar().showSnack(
-                                                    context,
-                                                    "Error ao pegar os dados",
-                                                    2);
+                                        inst.setInt(
+                                            'feeFlagEdit',
+                                            int.tryParse(devices[index]
+                                                    ['feeFlag']
+                                                .toString()));
+                                      }).then((val) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DeviceArea(),
+                                          ),
+                                        ).then((v) {
+                                          getData(Underwear.listDevices)
+                                              .then((resp) {
+                                            if (resp['status'] == 'success') {
+                                              setState(() {
+                                                dropDevices =
+                                                    resp['data']["content"];
                                               });
-                                            })
+                                            } else {
+                                              AppSnackBar().showSnack(context,
+                                                  "Erro ao pegar os dados", 2);
+                                            }
+                                          }).catchError((e) {
+                                            AppSnackBar().showSnack(
+                                                context,
+                                                "Erro inesperado, Erro ao pegar os dados",
+                                                2);
                                           });
+                                        });
+                                      });
                                     },
                                   ),
                                 ),

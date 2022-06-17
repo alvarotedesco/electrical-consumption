@@ -47,12 +47,9 @@ Future<Map<String, dynamic>> postData(String url, data) async {
       headers: headers, body: data);
 
   if (response.statusCode == 200) {
-    if (response.body != null || response.body != '') {
-      return {"status": "error", "data": response.body};
-    } else {
-      Map<String, dynamic> resposta = jsonDecode(response.body);
-      return {"status": "success", "data": resposta};
-    }
+    Map<String, dynamic> resposta = jsonDecode(response.body);
+
+    return {"status": "success", "data": resposta};
   } else {
     return {"status": "error", "data": response.statusCode};
   }
@@ -74,5 +71,25 @@ Future<Map<String, dynamic>> doLogin(String url, data) async {
     return {"status": "success", "data": resposta};
   } else {
     return {"status": "error", "data": response.toString()};
+  }
+}
+
+Future<Map<String, dynamic>> updateDevice(String url, data) async {
+  var prefs = await SharedPreferences.getInstance();
+  var token = (prefs.getString("tokenjwt") ?? "");
+  data = json.encode(data);
+
+  Map<String, String> headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer $token",
+  };
+
+  var response = await http.post(Uri.parse('${Underwear.baseURL}$url'),
+      headers: headers, body: data);
+
+  if (response.statusCode == 200) {
+    return {"status": "success", "data": response.body};
+  } else {
+    return {"status": "error", "data": response.statusCode};
   }
 }
