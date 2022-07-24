@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'auth/login_page.dart';
+import 'demo/demonstration_page.dart';
 
 void main() => runApp(const MyApp());
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Electrical Consumption',
-      home: LoginPage(),
+      home: Demonstration(),
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
