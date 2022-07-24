@@ -39,10 +39,10 @@ class Meias {
 
 class Underwear {
   static const String baseURL = 'http://25.72.151.164:8080/';
-  static const String getUserDataURL = 'auth/';
+  static const String getUserDataURL = 'user/info';
+  static const String listDevices = 'device/list?page=0';
   static const String loginURL = 'auth/login';
   static const String registryURL = 'auth/registry';
-  static const String listDevices = 'device/list?page=0';
   static const String saveDevice = 'device/save';
   static const String dicasURL =
       'https://www.grupocpfl.com.br/energias-sustentaveis/dicas-de-consumo-inteligente';

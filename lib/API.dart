@@ -1,10 +1,7 @@
-import 'dart:io';
-
-import 'package:electrical_comsuption/themes/luvas.dart';
+import 'package:electrical_comsuption/themes/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<Map<String, dynamic>> getData(url) async {
   var prefs = await SharedPreferences.getInstance();
@@ -29,29 +26,34 @@ Future<Map<String, dynamic>> getData(url) async {
   } else {
     return {"status": "error", "data": response};
   }
-  // decode retorna uma lista, onde eu pego o primeiro (0)
-  // e o title é uma propriedade json.
 }
 
 Future<Map<String, dynamic>> postData(String url, data) async {
   var prefs = await SharedPreferences.getInstance();
   var token = (prefs.getString("tokenjwt") ?? "");
-  data = json.encode(data);
+  if (token != '') {
+    data = json.encode(data);
 
-  Map<String, String> headers = {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer $token",
-  };
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    };
 
-  var response = await http.post(Uri.parse('${Underwear.baseURL}$url'),
-      headers: headers, body: data);
+    var response = await http.post(Uri.parse('${Underwear.baseURL}$url'),
+        headers: headers, body: data);
 
-  if (response.statusCode == 200) {
-    Map<String, dynamic> resposta = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposta = jsonDecode(response.body);
 
-    return {"status": "success", "data": resposta};
+      return {"status": "success", "data": resposta};
+    } else {
+      return {"status": "error", "data": response.statusCode};
+    }
   } else {
-    return {"status": "error", "data": response.statusCode};
+    return {
+      "status": "error",
+      "data": "Token Expirado, faça o Login novamente!!"
+    };
   }
 }
 
@@ -74,7 +76,7 @@ Future<Map<String, dynamic>> doLogin(String url, data) async {
   }
 }
 
-Future<Map<String, dynamic>> updateDevice(String url, data) async {
+Future<Map<String, dynamic>> postDevice(String url, data) async {
   var prefs = await SharedPreferences.getInstance();
   var token = (prefs.getString("tokenjwt") ?? "");
   data = json.encode(data);
@@ -88,7 +90,7 @@ Future<Map<String, dynamic>> updateDevice(String url, data) async {
       headers: headers, body: data);
 
   if (response.statusCode == 200) {
-    return {"status": "success", "data": response.body};
+    return {"status": "success", "Message": "deu certo"};
   } else {
     return {"status": "error", "data": response.statusCode};
   }

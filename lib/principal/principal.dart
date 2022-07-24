@@ -1,14 +1,14 @@
-import 'package:electrical_comsuption/API.dart';
-import 'package:electrical_comsuption/device_area.dart';
-import 'package:electrical_comsuption/themes/app_colors.dart';
-import 'package:electrical_comsuption/themes/app_text_styles.dart';
-import 'package:electrical_comsuption/user_area.dart';
 import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:electrical_comsuption/themes/luvas.dart';
-import 'package:flutter/services.dart';
+import 'package:electrical_comsuption/themes/app_text_styles.dart';
+import 'package:electrical_comsuption/device/device_area.dart';
+import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/themes/constants.dart';
+import 'package:electrical_comsuption/user/user_area.dart';
+import 'package:electrical_comsuption/models/device.dart';
+import 'package:electrical_comsuption/api.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Principal extends StatefulWidget {
   const Principal({Key? key}) : super(key: key);
@@ -18,13 +18,13 @@ class Principal extends StatefulWidget {
 }
 
 class _PrincipalState extends State<Principal> {
+  final List<TextEditingController> hoursControllers = [];
+  final List<TextEditingController> daysControllers = [];
+  final List<TextEditingController> qtdControllers = [];
   final productController = TextEditingController();
   final nomeEqController = TextEditingController();
   final pwrEqController = TextEditingController();
   final control = TextEditingController();
-  final List<TextEditingController> hoursControllers = [];
-  final List<TextEditingController> daysControllers = [];
-  final List<TextEditingController> qtdControllers = [];
   String totalReais = "0.0";
   String totalKw = "0.0";
   List devices = [];
@@ -77,17 +77,16 @@ class _PrincipalState extends State<Principal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Voltar'),
         backgroundColor: Colors.transparent,
+        title: const Text('Voltar'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           tooltip: 'Voltar',
-          onPressed: (() {
-            Navigator.pop(context);
-          }),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.lightbulb_outline),
             onPressed: () async {
               if (await canLaunch(Underwear.dicasURL)) {
                 await launch(Underwear.dicasURL);
@@ -96,9 +95,9 @@ class _PrincipalState extends State<Principal> {
                     context, "Não foi possivel acessar as Dicas!", 3);
               }
             },
-            icon: const Icon(Icons.lightbulb_outline),
           ),
           IconButton(
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
               Navigator.push(
                 context,
@@ -107,14 +106,13 @@ class _PrincipalState extends State<Principal> {
                 ),
               );
             },
-            icon: const Icon(Icons.account_circle),
           )
         ],
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.only(top: 130, left: 20, right: 20),
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(Meias.imges),
@@ -133,10 +131,11 @@ class _PrincipalState extends State<Principal> {
                     color: AppColors.white,
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DeviceArea(),
-                          )).then((v) {
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DeviceArea(),
+                        ),
+                      ).then((v) {
                         getData(Underwear.listDevices).then((resp) {
                           if (resp['status'] == 'success') {
                             setState(() {
@@ -144,49 +143,63 @@ class _PrincipalState extends State<Principal> {
                             });
                           } else {
                             AppSnackBar().showSnack(
-                                context, "Erro ao pegar os dados", 2);
+                              context,
+                              "Erro ao pegar os dados",
+                              2,
+                            );
                           }
                         }).catchError((e) {
-                          AppSnackBar().showSnack(context,
-                              "Erro inesperado, Erro ao pegar os dados", 2);
+                          AppSnackBar().showSnack(
+                            context,
+                            "Erro inesperado, Erro ao pegar os dados",
+                            2,
+                          );
                         });
                       });
                     },
                   ),
                   InkWell(
-                      child: const Text(
-                        "Cadastrar novo Dispositivo",
-                        style: AppTextStyles.defaultStyleB,
-                      ),
-                      onTap: () {
-                        Navigator.push(
+                    child: const Text(
+                      "Cadastrar novo Dispositivo",
+                      style: AppTextStyles.defaultStyleB,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DeviceArea(),
+                        ),
+                      ).then((v) {
+                        getData(Underwear.listDevices).then((resp) {
+                          if (resp['status'] == 'success') {
+                            setState(() {
+                              dropDevices = resp['data']["content"];
+                            });
+                          } else {
+                            AppSnackBar().showSnack(
+                              context,
+                              "Erro ao pegar os dados",
+                              2,
+                            );
+                          }
+                        }).catchError((e) {
+                          AppSnackBar().showSnack(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => DeviceArea(),
-                            )).then((v) {
-                          getData(Underwear.listDevices).then((resp) {
-                            if (resp['status'] == 'success') {
-                              setState(() {
-                                dropDevices = resp['data']["content"];
-                              });
-                            } else {
-                              AppSnackBar().showSnack(
-                                  context, "Erro ao pegar os dados", 2);
-                            }
-                          }).catchError((e) {
-                            AppSnackBar().showSnack(context,
-                                "Erro inesperado, Erro ao pegar os dados", 2);
-                          });
+                            "Erro inesperado, Erro ao pegar os dados",
+                            2,
+                          );
                         });
-                      }),
+                      });
+                    },
+                  ),
                 ],
               ),
               Container(
                 padding: const EdgeInsets.only(left: 16, right: 21),
                 child: DropdownButton(
                   borderRadius: BorderRadius.circular(10),
-                  elevation: 5,
                   isExpanded: true,
+                  elevation: 5,
                   hint: const Text(
                     'Selecione um Dispositivo',
                     style: AppTextStyles.defaultStyleB,
@@ -197,19 +210,19 @@ class _PrincipalState extends State<Principal> {
                       child: Text(value["name"]),
                     );
                   }).toList(),
-                  onChanged: ((value) {
+                  onChanged: (value) {
                     for (var item in dropDevices) {
                       if (item["id"].toString() == value.toString()) {
                         print({'Item selecionado => ': item});
                         setState(() {
-                          devices.add(item);
                           hoursControllers.add(TextEditingController());
                           daysControllers.add(TextEditingController());
                           qtdControllers.add(TextEditingController());
+                          devices.add(item);
                         });
                       }
                     }
-                  }),
+                  },
                 ),
               ),
               const SizedBox(height: 10),
@@ -281,45 +294,42 @@ class _PrincipalState extends State<Principal> {
                                       style: AppTextStyles.styleListB,
                                     ),
                                     onTap: () {
-                                      SharedPreferences.getInstance()
-                                          .then((inst) {
-                                        inst.setInt(
-                                            'idEdit',
-                                            int.tryParse(devices[index]['id']
-                                                .toString()));
-                                        inst.setString('nameEdit',
-                                            devices[index]['name'].toString());
-                                        inst.setString('powerEdit',
-                                            devices[index]['power'].toString());
-                                        inst.setInt(
-                                            'feeFlagEdit',
-                                            int.tryParse(devices[index]
-                                                    ['feeFlag']
-                                                .toString()));
-                                      }).then((val) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DeviceArea(),
-                                          ),
-                                        ).then((v) {
-                                          getData(Underwear.listDevices)
-                                              .then((resp) {
-                                            if (resp['status'] == 'success') {
-                                              setState(() {
-                                                dropDevices =
-                                                    resp['data']["content"];
-                                              });
-                                            } else {
-                                              AppSnackBar().showSnack(context,
-                                                  "Erro ao pegar os dados", 2);
-                                            }
-                                          }).catchError((e) {
+                                      var device = DeviceModel(
+                                        power: "${devices[index]['power']}",
+                                        name: "${devices[index]['name']}",
+                                        flag: int.parse(
+                                            "${devices[index]['feeFlag']}"),
+                                        id: int.parse(
+                                            "${devices[index]['id']}"),
+                                      );
+
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              DeviceArea(device: device),
+                                        ),
+                                      ).then((v) {
+                                        getData(Underwear.listDevices)
+                                            .then((resp) {
+                                          if (resp['status'] == 'success') {
+                                            setState(() {
+                                              dropDevices =
+                                                  resp['data']["content"];
+                                            });
+                                          } else {
                                             AppSnackBar().showSnack(
-                                                context,
-                                                "Erro inesperado, Erro ao pegar os dados",
-                                                2);
-                                          });
+                                              context,
+                                              "Erro ao pegar os dados",
+                                              2,
+                                            );
+                                          }
+                                        }).catchError((e) {
+                                          AppSnackBar().showSnack(
+                                            context,
+                                            "Erro inesperado, Erro ao pegar os dados",
+                                            2,
+                                          );
                                         });
                                       });
                                     },
@@ -337,17 +347,16 @@ class _PrincipalState extends State<Principal> {
                                 SizedBox(
                                   width: 25,
                                   child: TextField(
-                                    textAlign: TextAlign.center,
                                     controller: hoursControllers[index],
+                                    keyboardType: TextInputType.number,
                                     style: AppTextStyles.styleListB,
+                                    textAlign: TextAlign.center,
                                     inputFormatters: [
                                       LengthLimitingTextInputFormatter(2),
                                     ],
-                                    keyboardType: TextInputType.number,
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 24) {
-                                        hoursControllers[index].text =
-                                            (24).toString();
+                                        hoursControllers[index].text = '24';
                                       }
 
                                       getTotal();
@@ -357,14 +366,13 @@ class _PrincipalState extends State<Principal> {
                                 SizedBox(
                                   width: 25,
                                   child: TextField(
-                                    textAlign: TextAlign.center,
                                     controller: daysControllers[index],
-                                    style: AppTextStyles.styleListB,
                                     keyboardType: TextInputType.number,
+                                    style: AppTextStyles.styleListB,
+                                    textAlign: TextAlign.center,
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 99) {
-                                        daysControllers[index].text =
-                                            (99).toString();
+                                        daysControllers[index].text = '99';
                                       }
 
                                       getTotal();
@@ -374,14 +382,13 @@ class _PrincipalState extends State<Principal> {
                                 SizedBox(
                                   width: 25,
                                   child: TextField(
-                                    textAlign: TextAlign.center,
+                                    keyboardType: TextInputType.number,
                                     controller: qtdControllers[index],
                                     style: AppTextStyles.styleListB,
-                                    keyboardType: TextInputType.number,
+                                    textAlign: TextAlign.center,
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 999) {
-                                        qtdControllers[index].text =
-                                            (999).toString();
+                                        qtdControllers[index].text = '999';
                                       }
 
                                       getTotal();
@@ -411,8 +418,10 @@ class _PrincipalState extends State<Principal> {
                               Container(
                                 alignment: Alignment.centerRight,
                                 width: 100,
-                                child: Text(totalKw,
-                                    style: AppTextStyles.defaultStyleB),
+                                child: Text(
+                                  totalKw,
+                                  style: AppTextStyles.defaultStyleB,
+                                ),
                               ),
                             ],
                           ),
@@ -429,8 +438,10 @@ class _PrincipalState extends State<Principal> {
                               Container(
                                 alignment: Alignment.centerRight,
                                 width: 100,
-                                child: Text(totalReais,
-                                    style: AppTextStyles.defaultStyleB),
+                                child: Text(
+                                  totalReais,
+                                  style: AppTextStyles.defaultStyleB,
+                                ),
                               ),
                             ],
                           ),

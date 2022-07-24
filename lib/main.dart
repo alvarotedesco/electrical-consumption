@@ -1,10 +1,6 @@
-import 'package:electrical_comsuption/containers.dart';
-import 'package:electrical_comsuption/device_area.dart';
-import 'package:electrical_comsuption/principal.dart';
-import 'package:electrical_comsuption/user_area.dart';
-
-import 'login_page.dart';
 import 'package:flutter/material.dart';
+
+import 'auth/login_page.dart';
 
 void main() => runApp(const MyApp());
 
@@ -15,12 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Electrical Consumption',
       debugShowCheckedModeBanner: false,
+      title: 'Electrical Consumption',
+      home: LoginPage(),
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: Containers(),
     );
   }
 }

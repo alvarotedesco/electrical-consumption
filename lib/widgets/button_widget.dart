@@ -16,12 +16,12 @@ class AppButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
-      height: 50,
       alignment: Alignment.center,
+      height: 50,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.topLeft,
           end: Alignment.bottomRight,
+          begin: Alignment.topLeft,
           stops: [0.35, 1],
           colors: [
             AppColors.primary,
@@ -36,12 +36,15 @@ class AppButtonWidget extends StatelessWidget {
         height: 60,
         child: TextButton(
           onPressed: onPressed,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(
-              texto,
-              style: AppTextStyles.defaultStyleB,
-            ),
-          ]),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                texto,
+                style: AppTextStyles.defaultStyleB,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,14 +1,9 @@
-import 'package:electrical_comsuption/API.dart';
-import 'package:electrical_comsuption/device_area.dart';
-import 'package:electrical_comsuption/principal.dart';
-import 'package:electrical_comsuption/themes/app_colors.dart';
-import 'package:electrical_comsuption/themes/app_text_styles.dart';
-import 'package:electrical_comsuption/user_area.dart';
 import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
+import 'package:electrical_comsuption/principal/principal.dart';
+import 'package:electrical_comsuption/themes/constants.dart';
+import 'package:electrical_comsuption/user/user_area.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:electrical_comsuption/themes/luvas.dart';
-import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Containers extends StatefulWidget {
   const Containers({Key? key}) : super(key: key);
@@ -38,21 +33,30 @@ class _ContainersState extends State<Containers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Voltar'),
         backgroundColor: Colors.transparent,
+        title: const Text('Voltar'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           tooltip: 'Voltar',
-          onPressed: (() {
-            Navigator.pop(context);
-          }),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            onPressed: () {},
             icon: const Icon(Icons.lightbulb_outline),
+            onPressed: () async {
+              if (await canLaunch(Underwear.dicasURL)) {
+                await launch(Underwear.dicasURL);
+              } else {
+                AppSnackBar().showSnack(
+                  context,
+                  "Não foi possivel acessar as Dicas!",
+                  3,
+                );
+              }
+            },
           ),
           IconButton(
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
               Navigator.push(
                 context,
@@ -61,14 +65,13 @@ class _ContainersState extends State<Containers> {
                 ),
               );
             },
-            icon: const Icon(Icons.account_circle),
           )
         ],
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.only(top: 130, left: 20, right: 20),
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(Meias.imges),
@@ -82,11 +85,12 @@ class _ContainersState extends State<Containers> {
                 children: [
                   InkWell(
                     child: Container(
-                      height: 50,
                       width: MediaQuery.of(context).size.width - 40,
+                      height: 50,
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
                       child: Center(
                         child: Text('Casa ${i + 1}'),
                       ),
@@ -95,7 +99,8 @@ class _ContainersState extends State<Containers> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const Principal()),
+                          builder: (context) => const Principal(),
+                        ),
                       );
                     },
                   )
