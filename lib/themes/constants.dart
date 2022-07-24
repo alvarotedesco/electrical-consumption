@@ -5,8 +5,8 @@ class Luvas {
   static const String btSignUp = 'Cadastre-se';
   static const String btDemonstration = 'Demonstração';
   static const String noAccount = 'Não tem uma conta?';
-  static const String consWatts = 'Consumo em Watts:';
-  static const String consHours = 'Horas de uso por dia:';
+  static const String consWatts = 'Consumo em Watts';
+  static const String consHours = 'Horas de uso por dia';
   static const String username = 'Nome';
   static const String cpf = 'CPF';
   static const String btSigningUp = 'Cadastrar';
@@ -15,13 +15,11 @@ class Luvas {
   static const String costRS = 'Custo R\$';
   static const String twentyDays = '20';
   static const String thirtyDays = '30';
-  static String twentyCostRS = '0';
-  static String twentyConskW = '0';
-  static String thirtyConskW = '0';
-  static String thirtyCostRS = '0';
+  static const String yearDays = '365';
   static const String calculate = 'Calcular';
   static const String nameDevice = 'Nome do Dispositivo';
   static const String powerDevice = 'Potência';
+  static const String simulationCalc = 'Simulando cálculo de consumo';
 }
 
 class Meias {

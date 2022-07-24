@@ -3,6 +3,7 @@ import 'package:electrical_comsuption/principal/principal.dart';
 import 'package:flutter/material.dart';
 
 import 'auth/login_page.dart';
+import 'demo/demonstration_page.dart';
 
 void main() => runApp(const MyApp());
 
