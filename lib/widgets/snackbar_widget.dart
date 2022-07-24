@@ -3,7 +3,7 @@ import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppSnackBar {
-  void showSnack(BuildContext context, String text, int duration) {
+  void showSnack(BuildContext context, String text, {int duration = 3}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: Duration(seconds: duration),

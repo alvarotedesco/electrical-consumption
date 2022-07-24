@@ -27,6 +27,47 @@ class _DeviceAreaState extends State<DeviceArea> {
   int feeFlag = 0;
   int id = 0;
 
+  void _save() {
+    if (powerDeviceController.text.trim().isEmpty &&
+        nameDeviceController.text.trim().isEmpty) {
+      AppSnackBar().showSnack(context, "Preencha todos os campos!");
+      return;
+    }
+
+    var device = DeviceModel(
+      power: powerDeviceController.text,
+      name: nameDeviceController.text,
+      flag: feeFlag,
+      id: id,
+    );
+
+    postDevice(Underwear.saveDevice, device).then((value) {
+      if (id == 0) {
+        if (value['status'] == 'success') {
+          AppSnackBar()
+              .showSnack(context, "Dispositivo cadastrado com sucesso!");
+
+          Navigator.of(context).pop();
+        } else {
+          AppSnackBar().showSnack(
+              context, "Não foi possivel cadastrar seu Dispositivo!");
+        }
+      } else {
+        if (value['status'] == 'success') {
+          AppSnackBar().showSnack(context, "Dispositivo alterado com sucesso!");
+
+          Navigator.of(context).pop();
+        } else {
+          AppSnackBar()
+              .showSnack(context, "Não foi possivel alterar o dispositivo!");
+        }
+      }
+    }).catchError((e) {
+      AppSnackBar().showSnack(
+          context, "Erro inesperado, Não foi possivel salvar seu Dispositivo!");
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -46,45 +87,50 @@ class _DeviceAreaState extends State<DeviceArea> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Voltar'),
+        title: Text('Voltar'),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back),
           tooltip: 'Voltar',
         ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        padding: const EdgeInsets.only(top: 130, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 130, left: 20, right: 20),
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(Meias.imges),
             fit: BoxFit.cover,
           ),
         ),
         child: ListView(
-          children: <Widget>[
+          children: [
             InputDecorationWidget(
               textInputType: TextInputType.name,
               controller: nameDeviceController,
               style: AppTextStyles.styleListB,
               label: Luvas.nameDevice,
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             InputDecorationWidget(
               controller: powerDeviceController,
               textInputType: TextInputType.name,
               style: AppTextStyles.styleListB,
               label: Luvas.powerDevice,
             ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                for (int i = 0; i < 4; i++)
+            SizedBox(height: 10),
+            Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                for (int i = 0; i < 5; i++)
                   Container(
-                    constraints: BoxConstraints.tight(Size(110, 75)),
+                    constraints: BoxConstraints.tight(
+                      Size(
+                        110,
+                        75,
+                      ),
+                    ),
                     child: ListTile(
                       title: Image.asset(
                         Meias.flags[i],
@@ -102,90 +148,10 @@ class _DeviceAreaState extends State<DeviceArea> {
                   ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                for (int i = 4; i < 5; i++)
-                  Container(
-                    constraints: BoxConstraints.tight(Size(110, 75)),
-                    child: ListTile(
-                      title: Image.asset(
-                        Meias.flags[i],
-                        alignment: Alignment.centerLeft,
-                      ),
-                      leading: Radio(
-                        activeColor: AppColors.secondary,
-                        groupValue: feeFlag,
-                        value: i,
-                        onChanged: (value) {
-                          setState(() => feeFlag = int.parse(value.toString()));
-                        },
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20),
             AppButtonWidget(
               texto: "Salvar",
-              onPressed: () {
-                if (powerDeviceController.text.isNotEmpty &&
-                    nameDeviceController.text.isNotEmpty) {
-                  var device = DeviceModel(
-                    power: powerDeviceController.text,
-                    name: nameDeviceController.text,
-                    flag: feeFlag,
-                    id: id,
-                  );
-
-                  postDevice(Underwear.saveDevice, device).then((value) {
-                    if (id == 0) {
-                      if (value['status'] == 'success') {
-                        AppSnackBar().showSnack(
-                          context,
-                          "Dispositivo cadastrado com sucesso!",
-                          3,
-                        );
-                        Navigator.of(context).pop();
-                      } else {
-                        AppSnackBar().showSnack(
-                          context,
-                          "Não foi possivel cadastrar seu Dispositivo!",
-                          2,
-                        );
-                      }
-                    } else {
-                      if (value['status'] == 'success') {
-                        AppSnackBar().showSnack(
-                          context,
-                          "Dispositivo alterado com sucesso!",
-                          3,
-                        );
-
-                        Navigator.of(context).pop();
-                      } else {
-                        AppSnackBar().showSnack(
-                          context,
-                          "Não foi possivel alterar o dispositivo!",
-                          3,
-                        );
-                      }
-                    }
-                  }).catchError((e) {
-                    AppSnackBar().showSnack(
-                      context,
-                      "Erro inesperado, Não foi possivel salvar seu Dispositivo!",
-                      2,
-                    );
-                  });
-                } else {
-                  AppSnackBar().showSnack(
-                    context,
-                    "Preencha todos os campos!",
-                    3,
-                  );
-                }
-              },
+              onPressed: _save,
             ),
           ],
         ),

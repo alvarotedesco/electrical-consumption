@@ -19,13 +19,13 @@ class _ContainersState extends State<Containers> {
 
   //   getData(Underwear.listDevices).then((value) {
   //     if (value['status'] == 'success') {
-  //       AppSnackBar().showSnack(context, "Erro ao pegar os dados", 2);
+  //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
   //     } else {
-  //       AppSnackBar().showSnack(context, "Erro ao pegar os dados", 2);
+  //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
   //     }
   //   }).catchError((e) {
   //     AppSnackBar()
-  //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados", 2);
+  //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
   //   });
   // }
 
@@ -34,34 +34,31 @@ class _ContainersState extends State<Containers> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Voltar'),
+        title: Text('Voltar'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back),
           tooltip: 'Voltar',
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.lightbulb_outline),
+            icon: Icon(Icons.lightbulb_outline),
             onPressed: () async {
               if (await canLaunch(Underwear.dicasURL)) {
                 await launch(Underwear.dicasURL);
               } else {
-                AppSnackBar().showSnack(
-                  context,
-                  "Não foi possivel acessar as Dicas!",
-                  3,
-                );
+                AppSnackBar()
+                    .showSnack(context, "Não foi possivel acessar as Dicas!");
               }
             },
           ),
           IconButton(
-            icon: const Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const UserArea(),
+                  builder: (context) => UserArea(),
                 ),
               );
             },
@@ -70,9 +67,9 @@ class _ContainersState extends State<Containers> {
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        padding: const EdgeInsets.only(top: 130, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 130, left: 20, right: 20),
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(Meias.imges),
             fit: BoxFit.cover,
@@ -99,7 +96,8 @@ class _ContainersState extends State<Containers> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Principal(),
+                          builder: (context) =>
+                              Principal(painelId: i.toString()),
                         ),
                       );
                     },

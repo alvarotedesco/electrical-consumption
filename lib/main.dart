@@ -1,3 +1,5 @@
+import 'package:electrical_comsuption/container/containers.dart';
+import 'package:electrical_comsuption/principal/principal.dart';
 import 'package:flutter/material.dart';
 
 import 'auth/login_page.dart';
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Electrical Consumption',
-      home: LoginPage(),
+      home: Containers(),
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),

@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
     var email = emailController.text.trim();
 
     if (email.isEmpty || pass.isEmpty) {
-      AppSnackBar().showSnack(context, "Preencha todos os campos!", 2);
+      AppSnackBar().showSnack(context, "Preencha todos os campos!");
       return;
     }
 
@@ -46,12 +46,12 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       } else {
-        AppSnackBar().showSnack(
-            context, "Erro de Login, tente novamente mais tarde!", 3);
+        AppSnackBar()
+            .showSnack(context, "Erro de Login, tente novamente mais tarde!");
       }
     }).catchError((e) {
       AppSnackBar().showSnack(
-          context, "Erro inesperado, de Login, tente novamente mais tarde!", 3);
+          context, "Erro inesperado, de Login, tente novamente mais tarde!");
       print(e);
     });
   }

@@ -11,7 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Principal extends StatefulWidget {
-  const Principal({Key? key}) : super(key: key);
+  final String painelId;
+
+  const Principal({
+    Key? key,
+    required this.painelId,
+  }) : super(key: key);
 
   @override
   State<Principal> createState() => _PrincipalState();
@@ -27,12 +32,13 @@ class _PrincipalState extends State<Principal> {
   final control = TextEditingController();
   String totalReais = "0.0";
   String totalKw = "0.0";
+  String panelName = '';
   List devices = [];
   List dropDevices = [
     {'id': '1', 'name': "ventilador", "power": 600.0, "feeFlag": 3}
   ];
 
-  void getTotal() {
+  void _getTotal() {
     var ind = devices.length;
     var tots = 0.0;
 
@@ -48,10 +54,39 @@ class _PrincipalState extends State<Principal> {
       tots += hour * day * qtd * pwr / 1000;
     }
 
-    var toR = tots * 0.97;
+    var toR = tots * 1.04;
     setState(() {
       totalReais = toR.toStringAsFixed(2);
       totalKw = tots.toStringAsFixed(2);
+    });
+  }
+
+  void _clickOnDevice(index) {
+    var device = DeviceModel(
+      power: "${devices[index]['power']}",
+      name: "${devices[index]['name']}",
+      flag: int.parse("${devices[index]['feeFlag']}"),
+      id: int.parse("${devices[index]['id']}"),
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DeviceArea(device: device),
+      ),
+    ).then((v) {
+      getData(Underwear.listDevices).then((resp) {
+        if (resp['status'] == 'success') {
+          setState(() {
+            dropDevices = resp['data']["content"];
+          });
+        } else {
+          AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+        }
+      }).catchError((e) {
+        AppSnackBar()
+            .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
+      });
     });
   }
 
@@ -59,18 +94,20 @@ class _PrincipalState extends State<Principal> {
   void initState() {
     super.initState();
 
-    getData(Underwear.listDevices).then((value) {
-      if (value['status'] == 'success') {
-        setState(() {
-          dropDevices = value['data']["content"];
-        });
-      } else {
-        AppSnackBar().showSnack(context, "Erro ao pegar os dados", 2);
-      }
-    }).catchError((e) {
-      AppSnackBar()
-          .showSnack(context, "Erro inesperado, Erro ao pegar os dados", 2);
-    });
+    panelName = 'Casa ${int.parse(widget.painelId) + 1}';
+
+    // getData(Underwear.listDevices).then((value) {
+    //   if (value['status'] == 'success') {
+    //     setState(() {
+    //       dropDevices = value['data']["content"];
+    //     });
+    //   } else {
+    //     AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+    //   }
+    // }).catchError((e) {
+    //   AppSnackBar()
+    //       .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
+    // });
   }
 
   @override
@@ -78,31 +115,31 @@ class _PrincipalState extends State<Principal> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Voltar'),
+        title: Text('Voltar'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back),
           tooltip: 'Voltar',
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.lightbulb_outline),
+            icon: Icon(Icons.lightbulb_outline),
             onPressed: () async {
               if (await canLaunch(Underwear.dicasURL)) {
                 await launch(Underwear.dicasURL);
               } else {
-                AppSnackBar().showSnack(
-                    context, "Não foi possivel acessar as Dicas!", 3);
+                AppSnackBar()
+                    .showSnack(context, "Não foi possivel acessar as Dicas!");
               }
             },
           ),
           IconButton(
-            icon: const Icon(Icons.account_circle),
+            icon: Icon(Icons.account_circle),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const UserArea(),
+                  builder: (context) => UserArea(),
                 ),
               );
             },
@@ -111,9 +148,9 @@ class _PrincipalState extends State<Principal> {
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        padding: const EdgeInsets.only(top: 130, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 130, left: 20, right: 20),
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(Meias.imges),
             fit: BoxFit.cover,
@@ -122,12 +159,12 @@ class _PrincipalState extends State<Principal> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               Row(
                 children: [
                   IconButton(
                     iconSize: 35,
-                    icon: const Icon(Icons.add_circle),
+                    icon: Icon(Icons.add_circle),
                     color: AppColors.white,
                     onPressed: () {
                       Navigator.push(
@@ -142,24 +179,18 @@ class _PrincipalState extends State<Principal> {
                               dropDevices = resp['data']["content"];
                             });
                           } else {
-                            AppSnackBar().showSnack(
-                              context,
-                              "Erro ao pegar os dados",
-                              2,
-                            );
+                            AppSnackBar()
+                                .showSnack(context, "Erro ao pegar os dados");
                           }
                         }).catchError((e) {
-                          AppSnackBar().showSnack(
-                            context,
-                            "Erro inesperado, Erro ao pegar os dados",
-                            2,
-                          );
+                          AppSnackBar().showSnack(context,
+                              "Erro inesperado, Erro ao pegar os dados");
                         });
                       });
                     },
                   ),
                   InkWell(
-                    child: const Text(
+                    child: Text(
                       "Cadastrar novo Dispositivo",
                       style: AppTextStyles.defaultStyleB,
                     ),
@@ -176,18 +207,12 @@ class _PrincipalState extends State<Principal> {
                               dropDevices = resp['data']["content"];
                             });
                           } else {
-                            AppSnackBar().showSnack(
-                              context,
-                              "Erro ao pegar os dados",
-                              2,
-                            );
+                            AppSnackBar()
+                                .showSnack(context, "Erro ao pegar os dados");
                           }
                         }).catchError((e) {
-                          AppSnackBar().showSnack(
-                            context,
-                            "Erro inesperado, Erro ao pegar os dados",
-                            2,
-                          );
+                          AppSnackBar().showSnack(context,
+                              "Erro inesperado, Erro ao pegar os dados");
                         });
                       });
                     },
@@ -195,12 +220,12 @@ class _PrincipalState extends State<Principal> {
                 ],
               ),
               Container(
-                padding: const EdgeInsets.only(left: 16, right: 21),
+                padding: EdgeInsets.only(left: 16, right: 21),
                 child: DropdownButton(
                   borderRadius: BorderRadius.circular(10),
                   isExpanded: true,
                   elevation: 5,
-                  hint: const Text(
+                  hint: Text(
                     'Selecione um Dispositivo',
                     style: AppTextStyles.defaultStyleB,
                   ),
@@ -225,53 +250,71 @@ class _PrincipalState extends State<Principal> {
                   },
                 ),
               ),
-              const SizedBox(height: 10),
-              const Center(
+              SizedBox(height: 10),
+              Center(
                 child: Text(
-                  "meu painel",
+                  panelName,
                   style: AppTextStyles.defaultStyleB,
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               Container(
-                padding: const EdgeInsets.only(top: 8),
+                padding: EdgeInsets.only(top: 8),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: AppColors.black60,
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          width: 180,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            'Nome',
-                            style: AppTextStyles.styleListB,
+                    Padding(
+                      padding: EdgeInsets.only(right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const [
+                          Expanded(
+                            flex: 4,
+                            child: Center(
+                              child: Text(
+                                'Nome',
+                                style: AppTextStyles.styleListB,
+                              ),
+                            ),
                           ),
-                        ),
-                        const Text(
-                          'Pot. (w)',
-                          style: AppTextStyles.styleListB,
-                        ),
-                        const Text(
-                          'Hrs',
-                          style: AppTextStyles.styleListB,
-                        ),
-                        const Text(
-                          'Dias',
-                          style: AppTextStyles.styleListB,
-                        ),
-                        const Text(
-                          'Qtd',
-                          style: AppTextStyles.styleListB,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        )
-                      ],
+                          Expanded(
+                            flex: 2,
+                            child: Center(
+                              child: Text(
+                                'Pot. (w)',
+                                style: AppTextStyles.styleListB,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                'Hrs',
+                                style: AppTextStyles.styleListB,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                'Dias',
+                                style: AppTextStyles.styleListB,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                'Qtd',
+                                style: AppTextStyles.styleListB,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       constraints: BoxConstraints(
@@ -279,64 +322,25 @@ class _PrincipalState extends State<Principal> {
                         maxWidth: MediaQuery.of(context).size.width,
                       ),
                       child: ListView.builder(
-                        padding: const EdgeInsets.all(0),
+                        padding: EdgeInsets.all(0),
                         itemCount: devices.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(
-                                  width: 160,
+                                Expanded(
+                                  flex: 4,
                                   child: InkWell(
+                                    onTap: () => _clickOnDevice(index),
                                     child: Text(
                                       devices[index]["name"],
                                       style: AppTextStyles.styleListB,
                                     ),
-                                    onTap: () {
-                                      var device = DeviceModel(
-                                        power: "${devices[index]['power']}",
-                                        name: "${devices[index]['name']}",
-                                        flag: int.parse(
-                                            "${devices[index]['feeFlag']}"),
-                                        id: int.parse(
-                                            "${devices[index]['id']}"),
-                                      );
-
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DeviceArea(device: device),
-                                        ),
-                                      ).then((v) {
-                                        getData(Underwear.listDevices)
-                                            .then((resp) {
-                                          if (resp['status'] == 'success') {
-                                            setState(() {
-                                              dropDevices =
-                                                  resp['data']["content"];
-                                            });
-                                          } else {
-                                            AppSnackBar().showSnack(
-                                              context,
-                                              "Erro ao pegar os dados",
-                                              2,
-                                            );
-                                          }
-                                        }).catchError((e) {
-                                          AppSnackBar().showSnack(
-                                            context,
-                                            "Erro inesperado, Erro ao pegar os dados",
-                                            2,
-                                          );
-                                        });
-                                      });
-                                    },
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 60,
+                                Expanded(
+                                  flex: 2,
                                   child: Center(
                                     child: Text(
                                       devices[index]["power"].toString(),
@@ -344,8 +348,7 @@ class _PrincipalState extends State<Principal> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 25,
+                                Expanded(
                                   child: TextField(
                                     controller: hoursControllers[index],
                                     keyboardType: TextInputType.number,
@@ -359,39 +362,43 @@ class _PrincipalState extends State<Principal> {
                                         hoursControllers[index].text = '24';
                                       }
 
-                                      getTotal();
+                                      _getTotal();
                                     },
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 25,
+                                Expanded(
                                   child: TextField(
                                     controller: daysControllers[index],
                                     keyboardType: TextInputType.number,
                                     style: AppTextStyles.styleListB,
                                     textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(2),
+                                    ],
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 99) {
                                         daysControllers[index].text = '99';
                                       }
 
-                                      getTotal();
+                                      _getTotal();
                                     },
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 25,
+                                Expanded(
                                   child: TextField(
                                     keyboardType: TextInputType.number,
                                     controller: qtdControllers[index],
                                     style: AppTextStyles.styleListB,
                                     textAlign: TextAlign.center,
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(3),
+                                    ],
                                     onChanged: (tex) async {
                                       if (tex != "" && int.parse(tex) >= 999) {
                                         qtdControllers[index].text = '999';
                                       }
 
-                                      getTotal();
+                                      _getTotal();
                                     },
                                   ),
                                 ),
@@ -402,25 +409,28 @@ class _PrincipalState extends State<Principal> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(bottom: 8),
+                      margin: EdgeInsets.only(bottom: 8),
                       child: Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              const SizedBox(
-                                width: 200,
-                                child: Text(
-                                  "Total (Kw/h)",
-                                  style: AppTextStyles.defaultStyleB,
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    "Total (Kw/h)",
+                                    style: AppTextStyles.defaultStyleB,
+                                  ),
                                 ),
                               ),
-                              Container(
-                                alignment: Alignment.centerRight,
-                                width: 100,
-                                child: Text(
-                                  totalKw,
-                                  style: AppTextStyles.defaultStyleB,
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 20),
+                                  child: Text(
+                                    totalKw,
+                                    style: AppTextStyles.defaultStyleB,
+                                    textAlign: TextAlign.right,
+                                  ),
                                 ),
                               ),
                             ],
@@ -428,19 +438,22 @@ class _PrincipalState extends State<Principal> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              const SizedBox(
-                                width: 200,
-                                child: Text(
-                                  "Total (R\$)",
-                                  style: AppTextStyles.defaultStyleB,
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    "Total (R\$)",
+                                    style: AppTextStyles.defaultStyleB,
+                                  ),
                                 ),
                               ),
-                              Container(
-                                alignment: Alignment.centerRight,
-                                width: 100,
-                                child: Text(
-                                  totalReais,
-                                  style: AppTextStyles.defaultStyleB,
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.only(right: 20),
+                                  child: Text(
+                                    totalReais,
+                                    style: AppTextStyles.defaultStyleB,
+                                    textAlign: TextAlign.right,
+                                  ),
                                 ),
                               ),
                             ],
@@ -451,6 +464,7 @@ class _PrincipalState extends State<Principal> {
                   ],
                 ),
               ),
+              SizedBox(height: 25)
             ],
           ),
         ),

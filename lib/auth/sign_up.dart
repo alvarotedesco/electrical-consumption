@@ -33,12 +33,12 @@ class _SignUpPageState extends State<SignUpPage> {
         userCPFController.text.replaceAll(".", "").replaceAll("-", "").trim();
 
     if (name.isEmpty || cpf.isEmpty || email.isEmpty || pass.isEmpty) {
-      AppSnackBar().showSnack(context, "Preencha todos os campos!", 2);
+      AppSnackBar().showSnack(context, "Preencha todos os campos!");
       return;
     }
 
     if (cpf.length < 11) {
-      AppSnackBar().showSnack(context, "Preencha o CPF corretamente", 2);
+      AppSnackBar().showSnack(context, "Preencha o CPF corretamente");
       return;
     }
 
