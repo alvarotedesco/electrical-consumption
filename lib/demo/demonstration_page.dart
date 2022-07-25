@@ -80,11 +80,12 @@ class _Demonstration extends State<Demonstration> {
           child: ListView(
             children: [
               Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    Luvas.simulationCalc,
-                    style: AppTextStyles.defaultStyleB,
-                  )),
+                padding: EdgeInsets.only(bottom: 20),
+                child: Text(
+                  Luvas.simulationCalc,
+                  style: AppTextStyles.defaultStyleB,
+                ),
+              ),
               Table(
                 defaultColumnWidth: IntrinsicColumnWidth(),
                 border: TableBorder.all(

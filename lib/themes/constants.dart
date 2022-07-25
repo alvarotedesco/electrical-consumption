@@ -17,9 +17,12 @@ class Luvas {
   static const String thirtyDays = '30';
   static const String yearDays = '365';
   static const String calculate = 'Calcular';
-  static const String nameDevice = 'Nome do Dispositivo';
+  static const String nameDevice = 'Nome';
   static const String powerDevice = 'Potência';
   static const String simulationCalc = 'Simulando cálculo de consumo';
+  static const String registerDevice = 'Cadastrando dispositivo';
+  static const String selectFlag = 'Selecionar uma bandeira:';
+  static const String goBack = 'Voltar';
 }
 
 class Meias {

@@ -48,4 +48,11 @@ class AppTextStyles {
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );
+
+  static const TextStyle appBarText = TextStyle(
+    fontFamily: 'Montserrat',
+    color: AppColors.white,
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  );
 }

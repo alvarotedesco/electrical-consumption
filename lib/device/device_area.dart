@@ -4,6 +4,8 @@ import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/constants.dart';
 import 'package:electrical_comsuption/api.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import '../widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import '../models/device.dart';
@@ -28,7 +30,7 @@ class _DeviceAreaState extends State<DeviceArea> {
   int id = 0;
 
   void _save() {
-    if (powerDeviceController.text.trim().isEmpty &&
+    if (powerDeviceController.text.trim().isEmpty ||
         nameDeviceController.text.trim().isEmpty) {
       AppSnackBar().showSnack(context, "Preencha todos os campos!");
       return;
@@ -85,75 +87,107 @@ class _DeviceAreaState extends State<DeviceArea> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text('Voltar'),
+        title: Text(
+          Luvas.goBack,
+          style: AppTextStyles.appBarText,
+        ),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back),
-          tooltip: 'Voltar',
+          tooltip: Luvas.goBack,
         ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        padding: EdgeInsets.only(top: 130, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 70, left: 20, right: 20),
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(Meias.imges),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: ListView(
-          children: [
-            InputDecorationWidget(
-              textInputType: TextInputType.name,
-              controller: nameDeviceController,
-              style: AppTextStyles.styleListB,
-              label: Luvas.nameDevice,
+        child: Center(
+          child: Card(
+            color: AppColors.white60,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
-            SizedBox(height: 10),
-            InputDecorationWidget(
-              controller: powerDeviceController,
-              textInputType: TextInputType.name,
-              style: AppTextStyles.styleListB,
-              label: Luvas.powerDevice,
-            ),
-            SizedBox(height: 10),
-            Wrap(
-              alignment: WrapAlignment.center,
-              children: [
-                for (int i = 0; i < 5; i++)
-                  Container(
-                    constraints: BoxConstraints.tight(
-                      Size(
-                        110,
-                        75,
-                      ),
-                    ),
-                    child: ListTile(
-                      title: Image.asset(
-                        Meias.flags[i],
-                        alignment: Alignment.centerLeft,
-                      ),
-                      leading: Radio(
-                        activeColor: AppColors.secondary,
-                        groupValue: feeFlag,
-                        value: i,
-                        onChanged: (value) {
-                          setState(() => feeFlag = int.parse(value.toString()));
-                        },
-                      ),
-                    ),
+            child: Padding(
+              padding: EdgeInsets.all(30),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    Luvas.registerDevice,
+                    style: AppTextStyles.totalStyle,
                   ),
-              ],
+                  SizedBox(height: 20),
+                  InputDecorationWidget(
+                    textInputType: TextInputType.name,
+                    controller: nameDeviceController,
+                    style: AppTextStyles.totalStyle,
+                    label: Luvas.nameDevice,
+                  ),
+                  SizedBox(height: 10),
+                  InputDecorationWidget(
+                    controller: powerDeviceController,
+                    textInputType: TextInputType.name,
+                    style: AppTextStyles.totalStyle,
+                    label: Luvas.powerDevice,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    Luvas.selectFlag,
+                    style: AppTextStyles.totalStyle,
+                  ),
+                  SizedBox(height: 10),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: [
+                      for (int i = 0; i < 5; i++)
+                        Card(
+                          color: AppColors.primary,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
+                          child: Container(
+                            constraints: BoxConstraints.tight(
+                              Size(
+                                110,
+                                50,
+                              ),
+                            ),
+                            child: ListTile(
+                              title: Image.asset(
+                                Meias.flags[i],
+                                alignment: Alignment.centerLeft,
+                              ),
+                              leading: Radio(
+                                activeColor: AppColors.white,
+                                groupValue: feeFlag,
+                                value: i,
+                                onChanged: (value) {
+                                  setState(() =>
+                                      feeFlag = int.parse(value.toString()));
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  AppButtonWidget(
+                    texto: "Salvar",
+                    onPressed: _save,
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 20),
-            AppButtonWidget(
-              texto: "Salvar",
-              onPressed: _save,
-            ),
-          ],
+          ),
         ),
       ),
     );
