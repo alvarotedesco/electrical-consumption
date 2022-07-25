@@ -9,6 +9,7 @@ class InputDecorationWidget extends StatelessWidget {
   final void Function(String)? onChanged;
   final TextInputType? textInputType;
   final VoidCallback? onPressed;
+  final void Function(String)? onSubmited;
   final bool passwordVisible;
   final TextStyle? style;
   final bool isPassword;
@@ -22,6 +23,7 @@ class InputDecorationWidget extends StatelessWidget {
     this.isPassword = false,
     this.inputFormatters,
     required this.label,
+    this.onSubmited,
     this.onPressed,
     this.onChanged,
     this.style,
@@ -36,6 +38,7 @@ class InputDecorationWidget extends StatelessWidget {
           style: AppTextStyles.defaultStyle,
           inputFormatters: inputFormatters,
           keyboardType: textInputType,
+          onFieldSubmitted: onSubmited,
           controller: controller,
           onChanged: onChanged,
           decoration: InputDecoration(

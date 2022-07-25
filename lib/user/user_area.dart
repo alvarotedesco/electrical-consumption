@@ -20,13 +20,13 @@ class _UserAreaState extends State<UserArea> {
   void initState() {
     super.initState();
 
-    getData(Underwear.getUserDataURL).then((resp) {
-      setState(() {
-        userName = resp['name'];
-        userCPF = resp['cpf'];
-        userMail = resp['username'];
-      });
-    });
+    // getData(Underwear.getUserDataURL).then((resp) {
+    //   setState(() {
+    //     userName = resp['name'];
+    //     userCPF = resp['cpf'];
+    //     userMail = resp['username'];
+    //   });
+    // });
   }
 
   @override
@@ -34,18 +34,18 @@ class _UserAreaState extends State<UserArea> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Voltar'),
+        title: Text('Voltar'),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          tooltip: 'Voltar',
           onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back),
+          tooltip: 'Voltar',
         ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-        padding: const EdgeInsets.fromLTRB(25, 140, 25, 25),
+        padding: EdgeInsets.fromLTRB(25, 140, 25, 25),
         height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(Meias.imges),
             fit: BoxFit.cover,
@@ -54,35 +54,35 @@ class _UserAreaState extends State<UserArea> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Center(
+              Center(
                 child: CircleAvatar(
                   backgroundColor: AppColors.secondary,
                   radius: 100,
                   child: CircleAvatar(
-                    radius: 90,
                     backgroundImage: AssetImage(Meias.teste),
                     backgroundColor: AppColors.primary,
+                    radius: 90,
                     // TODO: Quando nao pegar a imagem / criar função
                   ),
                 ),
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               Text(
                 userName,
                 style: AppTextStyles.userName,
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               Container(
+                padding: EdgeInsets.all(20),
+                width: double.infinity,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: AppColors.black60,
                 ),
-                padding: const EdgeInsets.all(20),
-                width: double.infinity,
                 child: Column(
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 20),
                       alignment: Alignment.centerLeft,
                       width: double.infinity,
                       height: 50,
@@ -90,22 +90,22 @@ class _UserAreaState extends State<UserArea> {
                         userCPF,
                         style: AppTextStyles.defaultStyleB,
                       ),
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: AppColors.transparent,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(80),
+                        ),
                         border: Border.fromBorderSide(
                           BorderSide(
                             color: AppColors.secondary,
                             width: 2,
                           ),
                         ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(80),
-                        ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Container(
-                      padding: const EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 20),
                       alignment: Alignment.centerLeft,
                       width: double.infinity,
                       height: 50,
@@ -113,15 +113,15 @@ class _UserAreaState extends State<UserArea> {
                         userMail,
                         style: AppTextStyles.defaultStyleB,
                       ),
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(80),
+                        ),
                         border: Border.fromBorderSide(
                           BorderSide(
                             color: AppColors.secondary,
                             width: 2,
                           ),
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(80),
                         ),
                       ),
                     ),
