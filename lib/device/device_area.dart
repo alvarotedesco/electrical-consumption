@@ -86,93 +86,104 @@ class _DeviceAreaState extends State<DeviceArea> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.darkBlue,
-      appBar: CustomAppBar(),
-      body: Container(
-        padding: EdgeInsets.only(top: 70, left: 20, right: 20),
-        height: MediaQuery.of(context).size.height,
-        child: Center(
-          child: Card(
-            color: AppColors.white60,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(30),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    Luvas.registerDevice,
-                    style: AppTextStyles.totalStyle,
-                  ),
-                  SizedBox(height: 20),
-                  InputDecorationWidget(
-                    textInputType: TextInputType.name,
-                    controller: nameDeviceController,
-                    style: AppTextStyles.totalStyle,
-                    label: Luvas.nameDevice,
-                  ),
-                  SizedBox(height: 10),
-                  InputDecorationWidget(
-                    controller: powerDeviceController,
-                    textInputType: TextInputType.name,
-                    style: AppTextStyles.totalStyle,
-                    label: Luvas.powerDevice,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    Luvas.selectFlag,
-                    style: AppTextStyles.totalStyle,
-                  ),
-                  SizedBox(height: 10),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      for (int i = 0; i < 5; i++)
-                        Card(
-                          color: AppColors.primary,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                          ),
-                          child: Container(
-                            constraints: BoxConstraints.tight(
-                              Size(
-                                110,
-                                50,
-                              ),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.darkBlue,
+        appBar: CustomAppBar(),
+        body: Container(
+          padding: EdgeInsets.all(20),
+          child: Center(
+            child: Card(
+              color: AppColors.white60,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      Luvas.registerDevice,
+                      style: AppTextStyles.totalStyle,
+                    ),
+                    SizedBox(height: 20),
+                    InputDecorationWidget(
+                      textInputType: TextInputType.name,
+                      controller: nameDeviceController,
+                      style: AppTextStyles.totalStyle,
+                      label: Luvas.nameDevice,
+                    ),
+                    SizedBox(height: 10),
+                    InputDecorationWidget(
+                      controller: powerDeviceController,
+                      textInputType: TextInputType.number,
+                      style: AppTextStyles.totalStyle,
+                      label: Luvas.powerDevice,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      Luvas.selectFlag,
+                      style: AppTextStyles.totalStyle,
+                    ),
+                    SizedBox(height: 10),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        for (int i = 0; i < 5; i++)
+                          Card(
+                            color: AppColors.primary,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
                             ),
-                            child: ListTile(
-                              title: Image.asset(
-                                Meias.flags[i],
-                                alignment: Alignment.centerLeft,
-                              ),
-                              leading: Radio(
-                                activeColor: AppColors.white,
-                                groupValue: feeFlag,
-                                value: i,
-                                onChanged: (value) {
-                                  setState(() =>
-                                      feeFlag = int.parse(value.toString()));
-                                },
-                              ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Radio(
+                                  activeColor: AppColors.white,
+                                  groupValue: feeFlag,
+                                  value: i,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      feeFlag = int.parse('$value');
+                                    });
+                                  },
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      feeFlag = i;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    height: 40,
+                                    child: Image.asset(
+                                      Meias.flags[i],
+                                      alignment: Alignment.centerLeft,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  AppButtonWidget(
-                    texto: "Salvar",
-                    onPressed: _save,
-                  ),
-                ],
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    AppButtonWidget(
+                      texto: "Salvar",
+                      onPressed: _save,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
