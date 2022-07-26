@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Principal extends StatefulWidget {
-  final String painelId;
+  final int painelId;
 
   const Principal({
     Key? key,
@@ -95,7 +95,7 @@ class _PrincipalState extends State<Principal> {
   void initState() {
     super.initState();
 
-    panelName = 'Casa ${int.parse(widget.painelId) + 1}';
+    panelName = 'Casa ${widget.painelId + 1}';
 
     // getData(Underwear.listDevices).then((value) {
     //   if (value['status'] == 'success') {
@@ -116,21 +116,20 @@ class _PrincipalState extends State<Principal> {
     return Scaffold(
       backgroundColor: AppColors.darkBlue,
       appBar: CustomAppBar(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: "Novo Dispositivo",
-        child: Icon(
-          Icons.add,
-          size: 40,
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Center(
+              child: Text(
+                panelName,
+                style: AppTextStyles.defaultStyleB,
+              ),
+            ),
+            SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.only(left: 16, right: 21),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: DropdownButton(
                 borderRadius: BorderRadius.circular(10),
                 isExpanded: true,
@@ -158,13 +157,6 @@ class _PrincipalState extends State<Principal> {
                     }
                   }
                 },
-              ),
-            ),
-            SizedBox(height: 10),
-            Center(
-              child: Text(
-                panelName,
-                style: AppTextStyles.defaultStyleB,
               ),
             ),
             SizedBox(height: 10),
@@ -226,11 +218,9 @@ class _PrincipalState extends State<Principal> {
                       ],
                     ),
                   ),
-                  Container(
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height / 2,
-                      maxWidth: MediaQuery.of(context).size.width,
-                    ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height / 2,
                     child: ListView.builder(
                       padding: EdgeInsets.all(0),
                       itemCount: devices.length,
@@ -374,7 +364,6 @@ class _PrincipalState extends State<Principal> {
                 ],
               ),
             ),
-            SizedBox(height: 25)
           ],
         ),
       ),

@@ -12,7 +12,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   CustomAppBar({
     Key? key,
     this.canBack = true,
-  })  : preferredSize = Size.fromHeight(60.0),
+  })  : preferredSize = Size.fromHeight(50.0),
         super(key: key);
 
   @override

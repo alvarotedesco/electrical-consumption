@@ -41,7 +41,7 @@ class _ContainersState extends State<Containers> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Principal(painelId: i.toString()),
+                        builder: (context) => Principal(painelId: i),
                       ),
                     );
                   },

@@ -43,7 +43,7 @@ class _DevicesState extends State<Devices> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height -
-        (MediaQuery.of(context).size.height * 0.2);
+        (MediaQuery.of(context).size.height * 0.3);
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.darkBlue,
