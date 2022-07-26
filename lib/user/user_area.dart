@@ -61,7 +61,9 @@ class _UserAreaState extends State<UserArea> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.darkBlue,
-      appBar: CustomAppBar(),
+      appBar: CustomAppBar(
+        userArea: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(20),
@@ -100,11 +102,20 @@ class _UserAreaState extends State<UserArea> {
                   ],
                 ),
               ),
-              AppButtonWidget(
-                onPressed: () {},
-                color: AppColors.red,
-                texto: 'Sair',
-              )
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  AppButtonWidget(
+                    style: AppTextStyles.styleListB,
+                    noRounded: true,
+                    leaving: true,
+                    width: 120,
+                    onPressed: () {},
+                    color: AppColors.red,
+                    texto: Luvas.leave,
+                  ),
+                ],
+              ),
             ],
           ),
         ),

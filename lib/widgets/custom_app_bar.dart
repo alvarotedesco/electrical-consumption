@@ -8,10 +8,12 @@ import 'snackbar_widget.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool canBack;
+  final bool userArea;
 
   CustomAppBar({
     Key? key,
     this.canBack = true,
+    this.userArea = false,
   })  : preferredSize = Size.fromHeight(50.0),
         super(key: key);
 
@@ -30,36 +32,51 @@ class _CustomAppBarState extends State<CustomAppBar> {
       leading: widget.canBack
           ? IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.arrow_back),
-              tooltip: 'Voltar',
+              icon: Icon(Icons.arrow_back_ios_new_rounded),
+              tooltip: Luvas.goBack,
               splashRadius: 20,
             )
           : null,
       actions: [
-        IconButton(
-          icon: Icon(Icons.lightbulb_outline),
-          splashRadius: 20,
-          onPressed: () async {
-            if (await canLaunch(Underwear.dicasURL)) {
-              await launch(Underwear.dicasURL);
-            } else {
-              AppSnackBar()
-                  .showSnack(context, "Não foi possivel acessar as Dicas!");
-            }
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.account_circle),
-          splashRadius: 20,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UserArea(),
-              ),
-            );
-          },
-        )
+        if (!widget.userArea) ...[
+          IconButton(
+            icon: Icon(Icons.lightbulb_outline),
+            splashRadius: 20,
+            onPressed: () async {
+              if (await canLaunch(Underwear.dicasURL)) {
+                await launch(Underwear.dicasURL);
+              } else {
+                AppSnackBar()
+                    .showSnack(context, "Não foi possivel acessar as Dicas!");
+              }
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            splashRadius: 20,
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserArea(),
+                ),
+              );
+            },
+          )
+        ] else ...[
+          IconButton(
+            icon: Icon(Icons.lightbulb_outline),
+            splashRadius: 20,
+            onPressed: () async {
+              if (await canLaunch(Underwear.dicasURL)) {
+                await launch(Underwear.dicasURL);
+              } else {
+                AppSnackBar()
+                    .showSnack(context, "Não foi possivel acessar as Dicas!");
+              }
+            },
+          ),
+        ],
       ],
     );
   }

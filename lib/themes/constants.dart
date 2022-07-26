@@ -23,6 +23,7 @@ class Luvas {
   static const String registerDevice = 'Cadastrando dispositivo';
   static const String selectFlag = 'Selecionar uma bandeira:';
   static const String goBack = 'Voltar';
+  static const String leave = 'Sair';
 }
 
 class Meias {
