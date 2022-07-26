@@ -5,8 +5,6 @@ import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:electrical_comsuption/principal/principal.dart';
 import 'package:electrical_comsuption/themes/constants.dart';
-import 'package:electrical_comsuption/user/user_area.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 class Containers extends StatefulWidget {
@@ -21,31 +19,24 @@ class _ContainersState extends State<Containers> {
   bool novo = false;
 
   Widget? _panels() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Center(
-          child: Text(
-            'Paineis',
-            style: AppTextStyles.defaultStyleB,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 25),
+            child: Center(
+              child: Text(
+                'Paineis',
+                style: AppTextStyles.defaultStyleB,
+              ),
+            ),
           ),
-        ),
-        for (var i = 0; i < 5; i++) ...[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            runSpacing: 5,
+            spacing: 10,
             children: [
-              Expanded(
-                child: InkWell(
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.white,
-                    ),
-                    child: Center(
-                      child: Text('Casa ${i + 1}'),
-                    ),
-                  ),
+              for (var i = 0; i < 5; i++) ...[
+                GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -54,68 +45,135 @@ class _ContainersState extends State<Containers> {
                       ),
                     );
                   },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.black,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            'Casa ${i + 1}',
+                            style: AppTextStyles.defaultStyleB,
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Wrap(
+                              children: const [
+                                Text(
+                                  "Cons. total: ",
+                                  style: AppTextStyles.defaultStyleB,
+                                ),
+                                Text(
+                                  "${0.0} Kw/h",
+                                  style: AppTextStyles.defaultStyleB,
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "Total: R\$ ${0.0}",
+                              style: AppTextStyles.defaultStyleB,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
           SizedBox(height: 20)
-        ]
-      ],
+        ],
+      ),
     );
   }
 
   Widget? _newPanel() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 50),
         InputDecorationWidget(
           textInputType: TextInputType.name,
-          controller: panelController,
           label: 'Nome do novo Painel',
-          onSubmited: (val) {
-            setState(() {
-              novo = !novo;
-              panelController.clear();
-            });
-          },
+          controller: panelController,
+          onSubmited: _saveNewPanel,
         ),
       ],
     );
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
+  void _saveNewPanel(String? val) {
+    // TODO: salvar os paineis no banco
+    setState(() {
+      novo = !novo;
+      panelController.clear();
+    });
+  }
 
-  //   getData(Underwear.listDevices).then((value) {
-  //     if (value['status'] == 'success') {
-  //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-  //     } else {
-  //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-  //     }
-  //   }).catchError((e) {
-  //     AppSnackBar()
-  //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+
+    // TODO: pegar os Paineis do banco
+    //   getData(Underwear.listDevices).then((value) {
+    //     if (value['status'] == 'success') {
+    //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+    //     } else {
+    //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+    //     }
+    //   }).catchError((e) {
+    //     AppSnackBar()
+    //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
+    //   });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.darkBlue,
       appBar: CustomAppBar(canBack: false),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Novo',
-        onPressed: () {
-          setState(() {
-            novo = !novo;
-          });
-        },
-        child: Icon(Icons.add, size: 40),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            child: Icon(novo ? Icons.check : Icons.add, size: 40),
+            tooltip: novo ? "Confirmar" : "Novo",
+            onPressed: novo
+                ? () => _saveNewPanel(null)
+                : () {
+                    setState(() {
+                      novo = !novo;
+                    });
+                  },
+          ),
+          if (novo) ...[
+            SizedBox(height: 20),
+            FloatingActionButton(
+              child: Icon(Icons.clear, size: 40),
+              tooltip: 'Cancelar',
+              onPressed: () {
+                setState(() {
+                  novo = !novo;
+                  panelController.clear();
+                });
+              },
+            ),
+          ],
+        ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: novo ? _newPanel() : _panels(),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: novo ? _newPanel() : _panels(),
+        ),
       ),
     );
   }

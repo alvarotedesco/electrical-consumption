@@ -1,10 +1,10 @@
+import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/constants.dart';
 import 'package:electrical_comsuption/api.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import '../widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
@@ -86,30 +86,23 @@ class _DeviceAreaState extends State<DeviceArea> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back),
-          tooltip: Luvas.goBack,
-        ),
-      ),
-      extendBodyBehindAppBar: true,
-      body: Container(
-        padding: EdgeInsets.only(top: 70, left: 20, right: 20),
-        height: MediaQuery.of(context).size.height,
-        child: Stack(
-          children: [
-            Card(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.darkBlue,
+        appBar: CustomAppBar(),
+        body: Container(
+          padding: EdgeInsets.all(20),
+          child: Center(
+            child: Card(
               color: AppColors.white60,
               elevation: 0,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
               ),
               child: Padding(
-                padding: EdgeInsets.all(30),
+                padding: EdgeInsets.all(20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -127,7 +120,7 @@ class _DeviceAreaState extends State<DeviceArea> {
                     SizedBox(height: 10),
                     InputDecorationWidget(
                       controller: powerDeviceController,
-                      textInputType: TextInputType.name,
+                      textInputType: TextInputType.number,
                       style: AppTextStyles.totalStyle,
                       label: Luvas.powerDevice,
                       inputFormatters: [
@@ -151,64 +144,49 @@ class _DeviceAreaState extends State<DeviceArea> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(12)),
                             ),
-                            child: Container(
-                              constraints: BoxConstraints.tight(
-                                Size(
-                                  110,
-                                  50,
-                                ),
-                              ),
-                              child: ListTile(
-                                title: Image.asset(
-                                  Meias.flags[i],
-                                  alignment: Alignment.centerLeft,
-                                ),
-                                leading: Radio(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Radio(
                                   activeColor: AppColors.white,
                                   groupValue: feeFlag,
                                   value: i,
                                   onChanged: (value) {
-                                    setState(() =>
-                                        feeFlag = int.parse(value.toString()));
+                                    setState(() {
+                                      feeFlag = int.parse('$value');
+                                    });
                                   },
                                 ),
-                              ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      feeFlag = i;
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    height: 40,
+                                    child: Image.asset(
+                                      Meias.flags[i],
+                                      alignment: Alignment.centerLeft,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                       ],
                     ),
                     SizedBox(height: 20),
-                    Card(
-                      color: AppColors.primary,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: Container(
-                        constraints: BoxConstraints.tight(
-                          Size(
-                            110,
-                            50,
-                          ),
-                        ),
-                        child: TextButton(
-                          onPressed: _save,
-                          child: Text(
-                            'Salvar',
-                            style: AppTextStyles.btnSave,
-                          ),
-                        ),
-                        // AppButtonWidget(
-                        //   texto: "Salvar",
-                        //   onPressed: _save,
-                        // ),
-                      ),
+                    AppButtonWidget(
+                      texto: "Salvar",
+                      onPressed: _save,
                     ),
                   ],
                 ),
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -25,7 +26,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkBlue,
       leading: widget.canBack
           ? IconButton(
               onPressed: () => Navigator.pop(context),
