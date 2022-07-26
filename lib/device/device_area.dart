@@ -90,10 +90,6 @@ class _DeviceAreaState extends State<DeviceArea> {
       backgroundColor: AppColors.primary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(
-          Luvas.goBack,
-          style: AppTextStyles.appBarText,
-        ),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back),
@@ -104,90 +100,115 @@ class _DeviceAreaState extends State<DeviceArea> {
       body: Container(
         padding: EdgeInsets.only(top: 70, left: 20, right: 20),
         height: MediaQuery.of(context).size.height,
-        child: Center(
-          child: Card(
-            color: AppColors.white60,
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(30),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    Luvas.registerDevice,
-                    style: AppTextStyles.totalStyle,
-                  ),
-                  SizedBox(height: 20),
-                  InputDecorationWidget(
-                    textInputType: TextInputType.name,
-                    controller: nameDeviceController,
-                    style: AppTextStyles.totalStyle,
-                    label: Luvas.nameDevice,
-                  ),
-                  SizedBox(height: 10),
-                  InputDecorationWidget(
-                    controller: powerDeviceController,
-                    textInputType: TextInputType.name,
-                    style: AppTextStyles.totalStyle,
-                    label: Luvas.powerDevice,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    Luvas.selectFlag,
-                    style: AppTextStyles.totalStyle,
-                  ),
-                  SizedBox(height: 10),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      for (int i = 0; i < 5; i++)
-                        Card(
-                          color: AppColors.primary,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
+        child: Stack(
+          children: [
+            Card(
+              color: AppColors.white60,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
+              ),
+              child: Padding(
+                padding: EdgeInsets.all(30),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      Luvas.registerDevice,
+                      style: AppTextStyles.totalStyle,
+                    ),
+                    SizedBox(height: 20),
+                    InputDecorationWidget(
+                      textInputType: TextInputType.name,
+                      controller: nameDeviceController,
+                      style: AppTextStyles.totalStyle,
+                      label: Luvas.nameDevice,
+                    ),
+                    SizedBox(height: 10),
+                    InputDecorationWidget(
+                      controller: powerDeviceController,
+                      textInputType: TextInputType.name,
+                      style: AppTextStyles.totalStyle,
+                      label: Luvas.powerDevice,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      Luvas.selectFlag,
+                      style: AppTextStyles.totalStyle,
+                    ),
+                    SizedBox(height: 10),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      children: [
+                        for (int i = 0; i < 5; i++)
+                          Card(
+                            color: AppColors.primary,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
+                            ),
+                            child: Container(
+                              constraints: BoxConstraints.tight(
+                                Size(
+                                  110,
+                                  50,
+                                ),
+                              ),
+                              child: ListTile(
+                                title: Image.asset(
+                                  Meias.flags[i],
+                                  alignment: Alignment.centerLeft,
+                                ),
+                                leading: Radio(
+                                  activeColor: AppColors.white,
+                                  groupValue: feeFlag,
+                                  value: i,
+                                  onChanged: (value) {
+                                    setState(() =>
+                                        feeFlag = int.parse(value.toString()));
+                                  },
+                                ),
+                              ),
+                            ),
                           ),
-                          child: Container(
-                            constraints: BoxConstraints.tight(
-                              Size(
-                                110,
-                                50,
-                              ),
-                            ),
-                            child: ListTile(
-                              title: Image.asset(
-                                Meias.flags[i],
-                                alignment: Alignment.centerLeft,
-                              ),
-                              leading: Radio(
-                                activeColor: AppColors.white,
-                                groupValue: feeFlag,
-                                value: i,
-                                onChanged: (value) {
-                                  setState(() =>
-                                      feeFlag = int.parse(value.toString()));
-                                },
-                              ),
-                            ),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Card(
+                      color: AppColors.primary,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: Container(
+                        constraints: BoxConstraints.tight(
+                          Size(
+                            110,
+                            50,
                           ),
                         ),
-                    ],
-                  ),
-                  SizedBox(height: 20),
-                  AppButtonWidget(
-                    texto: "Salvar",
-                    onPressed: _save,
-                  ),
-                ],
+                        child: TextButton(
+                          onPressed: _save,
+                          child: Text(
+                            'Salvar',
+                            style: AppTextStyles.btnSave,
+                          ),
+                        ),
+                        // AppButtonWidget(
+                        //   texto: "Salvar",
+                        //   onPressed: _save,
+                        // ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );

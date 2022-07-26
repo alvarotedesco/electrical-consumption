@@ -49,7 +49,7 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle appBarText = TextStyle(
+  static const TextStyle btnSave = TextStyle(
     fontFamily: 'Montserrat',
     color: AppColors.white,
     fontSize: 15,

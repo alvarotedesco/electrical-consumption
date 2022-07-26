@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'auth/login_page.dart';
 import 'demo/demonstration_page.dart';
+import 'device/device_area.dart';
 
 void main() => runApp(const MyApp());
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Electrical Consumption',
-      home: Containers(),
+      home: DeviceArea(),
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
