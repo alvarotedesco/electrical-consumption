@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Electrical Consumption',
-      home: Devices(),
+      home: UserArea(),
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),

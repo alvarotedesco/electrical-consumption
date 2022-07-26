@@ -178,9 +178,16 @@ class _DeviceAreaState extends State<DeviceArea> {
                       ],
                     ),
                     SizedBox(height: 20),
-                    AppButtonWidget(
-                      texto: "Salvar",
-                      onPressed: _save,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        AppButtonWidget(
+                          style: AppTextStyles.btnSave,
+                          width: 80,
+                          texto: "Salvar",
+                          onPressed: _save,
+                        ),
+                      ],
                     ),
                   ],
                 ),
