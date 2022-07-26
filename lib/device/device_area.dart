@@ -5,7 +5,6 @@ import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/constants.dart';
 import 'package:electrical_comsuption/api.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import '../widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
