@@ -8,6 +8,7 @@ class AppButtonWidget extends StatelessWidget {
   final double? width;
   final Color? color;
   final String texto;
+  final TextStyle? style;
 
   const AppButtonWidget({
     Key? key,
@@ -16,6 +17,7 @@ class AppButtonWidget extends StatelessWidget {
     this.alignment,
     this.color,
     this.width,
+    this.style,
   }) : super(key: key);
 
   @override
@@ -49,7 +51,7 @@ class AppButtonWidget extends StatelessWidget {
             onPressed: onPressed,
             child: Text(
               texto,
-              style: AppTextStyles.defaultStyleB,
+              style: style ?? AppTextStyles.defaultStyleB,
             ),
           ),
         ],
