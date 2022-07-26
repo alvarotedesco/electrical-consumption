@@ -1,6 +1,7 @@
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/api.dart';
+import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import '../themes/constants.dart';
 
@@ -32,25 +33,11 @@ class _UserAreaState extends State<UserArea> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text('Voltar'),
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back),
-          tooltip: 'Voltar',
-        ),
-      ),
-      extendBodyBehindAppBar: true,
+      backgroundColor: AppColors.darkBlue,
+      appBar: CustomAppBar(),
       body: Container(
         padding: EdgeInsets.fromLTRB(25, 140, 25, 25),
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(Meias.imges),
-            fit: BoxFit.cover,
-          ),
-        ),
         child: SingleChildScrollView(
           child: Column(
             children: [

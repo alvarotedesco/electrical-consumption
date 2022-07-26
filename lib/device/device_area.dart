@@ -1,3 +1,4 @@
+import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
@@ -87,20 +88,8 @@ class _DeviceAreaState extends State<DeviceArea> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Text(
-          Luvas.goBack,
-          style: AppTextStyles.appBarText,
-        ),
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back),
-          tooltip: Luvas.goBack,
-        ),
-      ),
-      extendBodyBehindAppBar: true,
+      backgroundColor: AppColors.darkBlue,
+      appBar: CustomAppBar(),
       body: Container(
         padding: EdgeInsets.only(top: 70, left: 20, right: 20),
         height: MediaQuery.of(context).size.height,
