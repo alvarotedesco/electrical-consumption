@@ -1,9 +1,9 @@
+import 'package:electrical_comsuption/device/device_controller.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../themes/app_colors.dart';
 import '../themes/app_text_styles.dart';
-import '../themes/constants.dart';
 import '../widgets/snackbar_widget.dart';
 import 'device_area.dart';
 
@@ -15,6 +15,8 @@ class Devices extends StatefulWidget {
 }
 
 class _DevicesState extends State<Devices> {
+  DeviceController controller = DeviceController();
+
   var dropDevices;
 
   void _newDevice() {
@@ -23,21 +25,29 @@ class _DevicesState extends State<Devices> {
       MaterialPageRoute(
         builder: (context) => DeviceArea(),
       ),
-    );
-    // .then((v) {
-    //   getData(Underwear.listDevices).then((resp) {
-    //     if (resp['status'] == 'success') {
-    //       setState(() {
-    //         dropDevices = resp['data']["content"];
-    //       });
-    //     } else {
-    //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-    //     }
-    //   }).catchError((e) {
-    //     AppSnackBar()
-    //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
-    //   });
-    // });
+    ).then((v) {
+      controller.listarDevices().then((resp) {
+        if (resp['status'] == 'success') {
+          setState(() {
+            dropDevices = resp['data']["content"];
+          });
+        } else {
+          AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+        }
+      }).catchError((e) {
+        AppSnackBar()
+            .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller.stateNotifier.addListener(() {
+      setState(() {});
+    });
   }
 
   @override

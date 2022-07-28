@@ -1,14 +1,9 @@
-import 'dart:math';
-
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
-import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
-import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../auth/login_page.dart';
 import '../themes/constants.dart';
 import '../widgets/custom_app_bar.dart';
 

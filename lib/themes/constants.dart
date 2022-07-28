@@ -41,13 +41,19 @@ class Meias {
 
 class Underwear {
   static const String baseURL = 'http://25.72.151.164:8080/';
-  static const String getUserDataURL = 'user/info';
-  static const String listDevices = 'device/list?page=0';
-  static const String createContainerURL = ''; // TODO
-  static const String listContainersURL = ''; // TODO
   static const String loginURL = 'auth/login';
   static const String registryURL = 'auth/registry';
-  static const String saveDevice = 'device/save';
+
+  static const String getUserDataURL = 'user/info';
+
+  static const String createContainerURL = ''; // TODO
+  static const String saveContainerURL = ''; // TODO
+  static const String listContainersURL = ''; // TODO
+
+  static const String createDeviceURL = 'device/save';
+  static const String saveDeviceURL = 'device/save';
+  static const String listDevicesURL = 'device/list?page=0';
+
   static const String dicasURL =
       'https://www.grupocpfl.com.br/energias-sustentaveis/dicas-de-consumo-inteligente';
 }
