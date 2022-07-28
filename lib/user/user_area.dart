@@ -1,6 +1,5 @@
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
-import 'package:electrical_comsuption/api.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -59,13 +58,13 @@ class _UserAreaState extends State<UserArea> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.darkBlue,
-      appBar: CustomAppBar(
-        userArea: true,
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.darkBlue,
+        appBar: CustomAppBar(
+          userArea: true,
+        ),
+        body: SingleChildScrollView(
           padding: EdgeInsets.all(20),
           child: Column(
             children: [

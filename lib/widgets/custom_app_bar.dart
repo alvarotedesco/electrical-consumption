@@ -33,7 +33,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.darkBlue,
+      backgroundColor: AppColors.secondary,
       centerTitle: true,
       title: widget.label != null
           ? Text(
@@ -56,8 +56,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 icon: Icon(Icons.lightbulb_outline),
                 splashRadius: 20,
                 onPressed: () async {
-                  if (await canLaunch(Underwear.dicasURL)) {
-                    await launch(Underwear.dicasURL);
+                  if (await canLaunchUrl(Uri.parse(Underwear.dicasURL))) {
+                    await launchUrl(Uri.parse(Underwear.dicasURL));
                   } else {
                     AppSnackBar().showSnack(
                         context, "Não foi possivel acessar as Dicas!");

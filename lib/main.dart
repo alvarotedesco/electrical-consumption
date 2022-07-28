@@ -1,7 +1,5 @@
 import 'package:electrical_comsuption/auth/login_page.dart';
-import 'package:electrical_comsuption/auth/sign_up.dart';
 import 'package:electrical_comsuption/container/containers.dart';
-import 'package:electrical_comsuption/user/user_area.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());

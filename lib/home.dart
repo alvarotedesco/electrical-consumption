@@ -1,7 +1,6 @@
 import 'package:electrical_comsuption/device/devices.dart';
 import 'package:electrical_comsuption/principal/principal.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
-import 'package:electrical_comsuption/user/user_area.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -37,22 +36,15 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: GestureDetector(
-        onHorizontalDragEnd: (details) {
-          var i = details.velocity.pixelsPerSecond.dx.toInt();
-
-          setState(() {
-            currentIndex = i > 0 ? 0 : 1;
-          });
-        },
         child: Scaffold(
-          backgroundColor: AppColors.darkBlue,
           body: IndexedStack(
             index: currentIndex,
             children: items,
           ),
           bottomNavigationBar: BottomNavigationBar(
-            unselectedItemColor: AppColors.primary,
-            selectedItemColor: AppColors.secondary,
+            unselectedItemColor: AppColors.white,
+            backgroundColor: AppColors.secondary,
+            selectedItemColor: AppColors.primary,
             showUnselectedLabels: false,
             currentIndex: currentIndex,
             onTap: (index) {

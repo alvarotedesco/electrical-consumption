@@ -4,12 +4,10 @@ import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/constants.dart';
-import 'package:electrical_comsuption/api.dart';
 import 'package:flutter/services.dart';
 import '../widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import '../models/device.dart';
-import '../api.dart';
 
 class DeviceArea extends StatefulWidget {
   final DeviceModel? device;
@@ -43,31 +41,31 @@ class _DeviceAreaState extends State<DeviceArea> {
       id: id,
     );
 
-    postDevice(Underwear.saveDevice, device).then((value) {
-      if (id == 0) {
-        if (value['status'] == 'success') {
-          AppSnackBar()
-              .showSnack(context, "Dispositivo cadastrado com sucesso!");
+    // postDevice(Underwear.saveDevice, device).then((value) {
+    //   if (id == 0) {
+    //     if (value['status'] == 'success') {
+    //       AppSnackBar()
+    //           .showSnack(context, "Dispositivo cadastrado com sucesso!");
 
-          Navigator.of(context).pop();
-        } else {
-          AppSnackBar().showSnack(
-              context, "Não foi possivel cadastrar seu Dispositivo!");
-        }
-      } else {
-        if (value['status'] == 'success') {
-          AppSnackBar().showSnack(context, "Dispositivo alterado com sucesso!");
+    //       Navigator.of(context).pop();
+    //     } else {
+    //       AppSnackBar().showSnack(
+    //           context, "Não foi possivel cadastrar seu Dispositivo!");
+    //     }
+    //   } else {
+    //     if (value['status'] == 'success') {
+    //       AppSnackBar().showSnack(context, "Dispositivo alterado com sucesso!");
 
-          Navigator.of(context).pop();
-        } else {
-          AppSnackBar()
-              .showSnack(context, "Não foi possivel alterar o dispositivo!");
-        }
-      }
-    }).catchError((e) {
-      AppSnackBar().showSnack(
-          context, "Erro inesperado, Não foi possivel salvar seu Dispositivo!");
-    });
+    //       Navigator.of(context).pop();
+    //     } else {
+    //       AppSnackBar()
+    //           .showSnack(context, "Não foi possivel alterar o dispositivo!");
+    //     }
+    //   }
+    // }).catchError((e) {
+    //   AppSnackBar().showSnack(
+    //       context, "Erro inesperado, Não foi possivel salvar seu Dispositivo!");
+    // });
   }
 
   @override

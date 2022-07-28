@@ -1,7 +1,6 @@
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../api.dart';
 import '../themes/app_colors.dart';
 import '../themes/app_text_styles.dart';
 import '../themes/constants.dart';
@@ -24,20 +23,21 @@ class _DevicesState extends State<Devices> {
       MaterialPageRoute(
         builder: (context) => DeviceArea(),
       ),
-    ).then((v) {
-      getData(Underwear.listDevices).then((resp) {
-        if (resp['status'] == 'success') {
-          setState(() {
-            dropDevices = resp['data']["content"];
-          });
-        } else {
-          AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-        }
-      }).catchError((e) {
-        AppSnackBar()
-            .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
-      });
-    });
+    );
+    // .then((v) {
+    //   getData(Underwear.listDevices).then((resp) {
+    //     if (resp['status'] == 'success') {
+    //       setState(() {
+    //         dropDevices = resp['data']["content"];
+    //       });
+    //     } else {
+    //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+    //     }
+    //   }).catchError((e) {
+    //     AppSnackBar()
+    //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
+    //   });
+    // });
   }
 
   @override

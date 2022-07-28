@@ -6,7 +6,6 @@ import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/constants.dart';
 import 'package:electrical_comsuption/user/user_area.dart';
 import 'package:electrical_comsuption/models/device.dart';
-import 'package:electrical_comsuption/api.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -75,20 +74,21 @@ class _PrincipalState extends State<Principal> {
       MaterialPageRoute(
         builder: (context) => DeviceArea(device: device),
       ),
-    ).then((v) {
-      getData(Underwear.listDevices).then((resp) {
-        if (resp['status'] == 'success') {
-          setState(() {
-            dropDevices = resp['data']["content"];
-          });
-        } else {
-          AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-        }
-      }).catchError((e) {
-        AppSnackBar()
-            .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
-      });
-    });
+    );
+    // .then((v) {
+    //   getData(Underwear.listDevices).then((resp) {
+    //     if (resp['status'] == 'success') {
+    //       setState(() {
+    //         dropDevices = resp['data']["content"];
+    //       });
+    //     } else {
+    //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+    //     }
+    //   }).catchError((e) {
+    //     AppSnackBar()
+    //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
+    //   });
+    // });
   }
 
   @override
