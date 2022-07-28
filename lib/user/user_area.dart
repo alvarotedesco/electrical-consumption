@@ -1,5 +1,6 @@
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/user/user_controller.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -13,23 +14,11 @@ class UserArea extends StatefulWidget {
 }
 
 class _UserAreaState extends State<UserArea> {
+  UserController controller = UserController();
+
   String userMail = "teste@teste.com.br";
   String userName = "user name gigante";
   String userCPF = "123.456.789-10";
-
-  @override
-  void initState() {
-    super.initState();
-
-    // TODO: fazer o get das informaçoes do Usuario
-    // getData(Underwear.getUserDataURL).then((resp) {
-    //   setState(() {
-    //     userName = resp['name'];
-    //     userCPF = resp['cpf'];
-    //     userMail = resp['username'];
-    //   });
-    // });
-  }
 
   Widget _infoUser(info) {
     return Container(
@@ -37,10 +26,6 @@ class _UserAreaState extends State<UserArea> {
       alignment: Alignment.centerLeft,
       width: double.infinity,
       height: 50,
-      child: Text(
-        info,
-        style: AppTextStyles.defaultStyleB,
-      ),
       decoration: BoxDecoration(
         color: AppColors.transparent,
         borderRadius: BorderRadius.all(
@@ -53,7 +38,29 @@ class _UserAreaState extends State<UserArea> {
           ),
         ),
       ),
+      child: Text(
+        info,
+        style: AppTextStyles.defaultStyleB,
+      ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller.stateNotifier.addListener(() {
+      setState(() {});
+    });
+
+    // TODO: fazer o get das informaçoes do Usuario
+    // controller.getUserInfo().then((resp) {
+    //   setState(() {
+    //     userName = resp['name'];
+    //     userCPF = resp['cpf'];
+    //     userMail = resp['username'];
+    //   });
+    // });
   }
 
   @override
