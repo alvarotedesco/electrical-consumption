@@ -1,3 +1,4 @@
+import 'package:electrical_comsuption/home.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
@@ -20,17 +21,9 @@ class _ContainersState extends State<Containers> {
 
   Widget? _panels() {
     return SingleChildScrollView(
+      padding: EdgeInsets.only(top: 25),
       child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 25),
-            child: Center(
-              child: Text(
-                'Paineis',
-                style: AppTextStyles.defaultStyleB,
-              ),
-            ),
-          ),
           Wrap(
             runSpacing: 5,
             spacing: 10,
@@ -41,7 +34,7 @@ class _ContainersState extends State<Containers> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Principal(painelId: i),
+                        builder: (context) => Home(painelId: i),
                       ),
                     );
                   },
@@ -137,42 +130,47 @@ class _ContainersState extends State<Containers> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.darkBlue,
-      appBar: CustomAppBar(canBack: false),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            child: Icon(novo ? Icons.check : Icons.add, size: 40),
-            tooltip: novo ? "Confirmar" : "Novo",
-            onPressed: novo
-                ? () => _saveNewPanel(null)
-                : () {
-                    setState(() {
-                      novo = !novo;
-                    });
-                  },
-          ),
-          if (novo) ...[
-            SizedBox(height: 20),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.darkBlue,
+        appBar: CustomAppBar(
+          canBack: false,
+          label: 'Paineis',
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
             FloatingActionButton(
-              child: Icon(Icons.clear, size: 40),
-              tooltip: 'Cancelar',
-              onPressed: () {
-                setState(() {
-                  novo = !novo;
-                  panelController.clear();
-                });
-              },
+              child: Icon(novo ? Icons.check : Icons.add, size: 40),
+              tooltip: novo ? "Confirmar" : "Novo",
+              onPressed: novo
+                  ? () => _saveNewPanel(null)
+                  : () {
+                      setState(() {
+                        novo = !novo;
+                      });
+                    },
             ),
+            if (novo) ...[
+              SizedBox(height: 20),
+              FloatingActionButton(
+                child: Icon(Icons.clear, size: 40),
+                tooltip: 'Cancelar',
+                onPressed: () {
+                  setState(() {
+                    novo = !novo;
+                    panelController.clear();
+                  });
+                },
+              ),
+            ],
           ],
-        ],
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: novo ? _newPanel() : _panels(),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: novo ? _newPanel() : _panels(),
+          ),
         ),
       ),
     );

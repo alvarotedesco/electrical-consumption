@@ -8,7 +8,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:electrical_comsuption/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'login_page.dart';
+import '../widgets/custom_app_bar.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -54,69 +54,59 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.transparent,
-        title: Text('Voltar'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          tooltip: 'Voltar',
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.darkBlue,
+        appBar: CustomAppBar(
+          label: 'Cadastrar',
+          noAuth: true,
+        ),
+        body: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InputDecorationWidget(
+                textInputType: TextInputType.text,
+                controller: usernameController,
+                label: Luvas.username,
               ),
-            );
-          },
-        ),
-      ),
-      extendBodyBehindAppBar: true,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(Meias.imges),
-            fit: BoxFit.cover,
+              InputDecorationWidget(
+                textInputType: TextInputType.number,
+                controller: userCPFController,
+                label: Luvas.cpf,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  CpfInputFormatter(),
+                ],
+              ),
+              InputDecorationWidget(
+                textInputType: TextInputType.emailAddress,
+                controller: emailController,
+                label: Luvas.email,
+              ),
+              InputDecorationWidget(
+                textInputType: TextInputType.text,
+                passwordVisible: passwordVisible,
+                controller: passwordController,
+                label: Luvas.password,
+                isPassword: true,
+                onPressed: () {
+                  setState(() => passwordVisible = !passwordVisible);
+                },
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppButtonWidget(
+                      texto: Luvas.btSigningUp,
+                      onPressed: _registry,
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-        ),
-        padding: EdgeInsets.only(top: 60, left: 40, right: 40),
-        child: ListView(
-          children: [
-            SizedBox(height: 20),
-            InputDecorationWidget(
-              textInputType: TextInputType.text,
-              controller: usernameController,
-              label: Luvas.username,
-            ),
-            InputDecorationWidget(
-              textInputType: TextInputType.number,
-              controller: userCPFController,
-              label: Luvas.cpf,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                CpfInputFormatter(),
-              ],
-            ),
-            InputDecorationWidget(
-              textInputType: TextInputType.emailAddress,
-              controller: emailController,
-              label: Luvas.email,
-            ),
-            InputDecorationWidget(
-              textInputType: TextInputType.text,
-              passwordVisible: passwordVisible,
-              controller: passwordController,
-              label: Luvas.password,
-              isPassword: true,
-              onPressed: () {
-                setState(() => passwordVisible = !passwordVisible);
-              },
-            ),
-            AppButtonWidget(
-              texto: Luvas.btSigningUp,
-              onPressed: _registry,
-            ),
-          ],
         ),
       ),
     );

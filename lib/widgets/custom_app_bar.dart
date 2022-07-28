@@ -1,4 +1,5 @@
 import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -7,13 +8,17 @@ import '../user/user_area.dart';
 import 'snackbar_widget.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final bool canBack;
   final bool userArea;
+  final String? label;
+  final bool canBack;
+  final bool noAuth;
 
   CustomAppBar({
     Key? key,
-    this.canBack = true,
     this.userArea = false,
+    this.canBack = true,
+    this.noAuth = false,
+    this.label,
   })  : preferredSize = Size.fromHeight(50.0),
         super(key: key);
 
@@ -29,6 +34,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: AppColors.darkBlue,
+      centerTitle: true,
+      title: widget.label != null
+          ? Text(
+              widget.label.toString(),
+              style: AppTextStyles.defaultStyleB,
+            )
+          : null,
       leading: widget.canBack
           ? IconButton(
               onPressed: () => Navigator.pop(context),
@@ -37,47 +49,48 @@ class _CustomAppBarState extends State<CustomAppBar> {
               splashRadius: 20,
             )
           : null,
-      actions: [
-        if (!widget.userArea) ...[
-          IconButton(
-            icon: Icon(Icons.lightbulb_outline),
-            splashRadius: 20,
-            onPressed: () async {
-              if (await canLaunch(Underwear.dicasURL)) {
-                await launch(Underwear.dicasURL);
-              } else {
-                AppSnackBar()
-                    .showSnack(context, "Não foi possivel acessar as Dicas!");
-              }
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.account_circle),
-            splashRadius: 20,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserArea(),
+      actions: widget.noAuth
+          ? null
+          : [
+              IconButton(
+                icon: Icon(Icons.lightbulb_outline),
+                splashRadius: 20,
+                onPressed: () async {
+                  if (await canLaunch(Underwear.dicasURL)) {
+                    await launch(Underwear.dicasURL);
+                  } else {
+                    AppSnackBar().showSnack(
+                        context, "Não foi possivel acessar as Dicas!");
+                  }
+                },
+              ),
+              if (!widget.userArea) ...[
+                IconButton(
+                  icon: Icon(Icons.account_circle),
+                  splashRadius: 20,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserArea(),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          )
-        ] else ...[
-          IconButton(
-            icon: Icon(Icons.lightbulb_outline),
-            splashRadius: 20,
-            onPressed: () async {
-              if (await canLaunch(Underwear.dicasURL)) {
-                await launch(Underwear.dicasURL);
-              } else {
-                AppSnackBar()
-                    .showSnack(context, "Não foi possivel acessar as Dicas!");
-              }
-            },
-          ),
-        ],
-      ],
+              ] else
+                IconButton(
+                  icon: Icon(Icons.logout_rounded),
+                  splashRadius: 20,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserArea(),
+                      ),
+                    );
+                  },
+                ),
+            ],
     );
   }
 }

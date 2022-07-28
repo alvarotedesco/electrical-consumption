@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 class InputDecorationWidget extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
+  final void Function(String)? onSubmited;
   final void Function(String)? onChanged;
   final TextInputType? textInputType;
   final VoidCallback? onPressed;
-  final void Function(String)? onSubmited;
   final bool passwordVisible;
   final TextStyle? style;
   final bool isPassword;
@@ -37,15 +37,15 @@ class InputDecorationWidget extends StatelessWidget {
           obscureText: isPassword ? !passwordVisible : false,
           style: AppTextStyles.defaultStyle,
           inputFormatters: inputFormatters,
-          keyboardType: textInputType,
           onFieldSubmitted: onSubmited,
+          keyboardType: textInputType,
           controller: controller,
           onChanged: onChanged,
           decoration: InputDecoration(
-            contentPadding:
-                EdgeInsets.only(left: 20, right: isPassword ? 0 : 20),
             labelStyle: style ?? AppTextStyles.defaultStyleB,
             labelText: label,
+            contentPadding:
+                EdgeInsets.only(left: 20, right: isPassword ? 0 : 20),
             suffixIcon: isPassword
                 ? Container(
                     padding: const EdgeInsets.only(right: 10),

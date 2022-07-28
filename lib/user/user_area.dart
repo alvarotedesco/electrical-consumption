@@ -102,20 +102,6 @@ class _UserAreaState extends State<UserArea> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  AppButtonWidget(
-                    style: AppTextStyles.styleListB,
-                    noRounded: true,
-                    leaving: true,
-                    width: 120,
-                    onPressed: () {},
-                    color: AppColors.red,
-                    texto: Luvas.leave,
-                  ),
-                ],
-              ),
             ],
           ),
         ),

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/services.dart';
 
 import '../auth/login_page.dart';
 import '../themes/constants.dart';
+import '../widgets/custom_app_bar.dart';
 
 class Demonstration extends StatefulWidget {
   const Demonstration({Key? key}) : super(key: key);
@@ -27,65 +30,62 @@ class _Demonstration extends State<Demonstration> {
   double yearConskW = 0;
   double yearCostRS = 0;
 
+  double kWhCost = 1.04;
+
   void _calcDemo() {
-    setState(() {
-      twentyConskW = int.parse(Luvas.twentyDays) *
-          double.parse(consHoursController.text) *
-          double.parse(consWattsController.text) /
-          1000;
-      thirtyConskW = int.parse(Luvas.thirtyDays) *
-          double.parse(consHoursController.text) *
-          double.parse(consWattsController.text) /
-          1000;
-      yearConskW = int.parse(Luvas.yearDays) *
-          double.parse(consHoursController.text) *
-          double.parse(consWattsController.text) /
+    if (consHoursController.text.isNotEmpty &&
+        consWattsController.text.isNotEmpty) {
+      var kWh = int.parse(consWattsController.text) *
+          int.parse(consHoursController.text) /
           1000;
 
-      twentyCostRS = 1.04 * twentyConskW;
-      thirtyCostRS = 1.04 * thirtyConskW;
-      yearCostRS = 1.04 * yearConskW;
-    });
+      setState(() {
+        twentyConskW = int.parse(Luvas.twentyDays) * kWh;
+        thirtyConskW = int.parse(Luvas.thirtyDays) * kWh;
+        yearConskW = int.parse(Luvas.yearDays) * kWh;
+        twentyCostRS = kWhCost * twentyConskW;
+        thirtyCostRS = kWhCost * thirtyConskW;
+        yearCostRS = kWhCost * yearConskW;
+      });
+    }
+  }
+
+  TableRow _rowTable({required um, required dois, required tres}) {
+    var lis = [um, dois, tres];
+
+    return TableRow(
+      children: [
+        for (var i in lis)
+          Row(
+            children: [
+              Expanded(
+                child: Center(
+                  heightFactor: 2,
+                  child: Text(
+                    i,
+                    style: AppTextStyles.defaultStyleB,
+                  ),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(Meias.imges),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Voltar'),
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            tooltip: 'Voltar',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginPage(),
-                ),
-              );
-            },
-          ),
+        appBar: CustomAppBar(
+          label: Luvas.simulationCalc,
+          noAuth: true,
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.darkBlue,
         body: Container(
-          padding: EdgeInsets.only(top: 30, left: 40, right: 40),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: ListView(
             children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Text(
-                  Luvas.simulationCalc,
-                  style: AppTextStyles.defaultStyleB,
-                ),
-              ),
               Table(
                 defaultColumnWidth: IntrinsicColumnWidth(),
                 border: TableBorder.all(
@@ -96,159 +96,57 @@ class _Demonstration extends State<Demonstration> {
                   ),
                 ),
                 children: [
-                  TableRow(
-                    children: const [
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            Luvas.days,
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            Luvas.conskW,
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            Luvas.costRS,
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                    ],
+                  _rowTable(
+                    um: Luvas.days,
+                    dois: Luvas.conskW,
+                    tres: Luvas.costRS,
                   ),
-                  TableRow(
-                    children: [
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            Luvas.twentyDays,
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            twentyConskW.toString().replaceAll('.', ','),
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            twentyCostRS
-                                .toStringAsFixed(2)
-                                .replaceAll('.', ','),
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                    ],
+                  _rowTable(
+                    um: Luvas.twentyDays,
+                    dois: twentyConskW.toString().replaceAll('.', ','),
+                    tres: twentyCostRS.toStringAsFixed(2).replaceAll('.', ','),
                   ),
-                  TableRow(
-                    children: [
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            Luvas.thirtyDays,
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            thirtyConskW.toString().replaceAll('.', ','),
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            thirtyCostRS
-                                .toStringAsFixed(2)
-                                .replaceAll('.', ','),
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                    ],
+                  _rowTable(
+                    um: Luvas.thirtyDays,
+                    dois: thirtyConskW.toString().replaceAll('.', ','),
+                    tres: thirtyCostRS.toStringAsFixed(2).replaceAll('.', ','),
                   ),
-                  TableRow(
-                    children: [
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            Luvas.yearDays,
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            yearConskW.toString().replaceAll('.', ','),
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Center(
-                          heightFactor: 2,
-                          child: Text(
-                            yearCostRS.toStringAsFixed(2).replaceAll('.', ','),
-                            style: AppTextStyles.defaultStyleB,
-                          ),
-                        ),
-                      ),
-                    ],
+                  _rowTable(
+                    um: Luvas.yearDays,
+                    dois: yearConskW.toString().replaceAll('.', ','),
+                    tres: yearCostRS.toStringAsFixed(2).replaceAll('.', ','),
                   ),
                 ],
               ),
               SizedBox(height: 50),
               InputDecorationWidget(
+                textInputType: TextInputType.number,
+                controller: consWattsController,
+                label: Luvas.consWatts,
                 onChanged: (val) {
+                  if (int.parse(val) > 99999999) {
+                    consWattsController.text = '99999999';
+                  }
                   _calcDemo();
                 },
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                controller: consWattsController,
-                label: Luvas.consWatts,
-                textInputType: TextInputType.number,
               ),
               SizedBox(height: 15),
               InputDecorationWidget(
+                textInputType: TextInputType.number,
+                controller: consHoursController,
+                label: Luvas.consHours,
                 onChanged: (val) {
+                  if (int.parse(val) > 24) {
+                    consHoursController.text = '24';
+                  }
                   _calcDemo();
                 },
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
-                controller: consHoursController,
-                label: Luvas.consHours,
-                textInputType: TextInputType.number,
               ),
             ],
           ),

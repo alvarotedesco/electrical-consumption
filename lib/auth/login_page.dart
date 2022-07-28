@@ -58,20 +58,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(Meias.imges),
-          fit: BoxFit.cover,
-        ),
-      ),
+    return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.transparent,
+        backgroundColor: AppColors.darkBlue,
         body: Container(
-          padding: EdgeInsets.only(top: 60, left: 40, right: 40),
-          child: ListView(
-            children: <Widget>[
-              SizedBox(height: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               InputDecorationWidget(
                 textInputType: TextInputType.emailAddress,
                 controller: emailController,
@@ -87,9 +81,15 @@ class _LoginPageState extends State<LoginPage> {
                   setState(() => passwordVisible = !passwordVisible);
                 },
               ),
-              AppButtonWidget(
-                texto: Luvas.btSignIn,
-                onPressed: _login,
+              Row(
+                children: [
+                  Expanded(
+                    child: AppButtonWidget(
+                      texto: Luvas.btSignIn,
+                      onPressed: _login,
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 80),
               Text(
@@ -97,27 +97,39 @@ class _LoginPageState extends State<LoginPage> {
                 style: AppTextStyles.defaultStyleB,
                 textAlign: TextAlign.center,
               ),
-              AppButtonWidget(
-                texto: Luvas.btSignUp,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignUpPage(),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppButtonWidget(
+                      texto: Luvas.btSignUp,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpPage(),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
-              AppButtonWidget(
-                texto: Luvas.btDemonstration,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Demonstration(),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppButtonWidget(
+                      texto: Luvas.btDemonstration,
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Demonstration(),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ],
           ),
