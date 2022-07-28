@@ -16,11 +16,10 @@ class UserController {
       await SharedPreferences.getInstance();
 
   Future<Map<String, dynamic>> getUserInfo() async {
-    var prefs = await _pref();
-    var token = (prefs.getString("tokenjwt") ?? "");
+    var token = ((await _pref()).getString("tokenjwt") ?? "");
 
     var response = await http.get(
-      Uri.parse('${Underwear.baseURL}'),
+      Uri.parse('${Underwear.baseURL}${Underwear.getUserDataURL}'),
       headers: {
         "Accept": "application/json",
         "Authorization": "Bearer $token",

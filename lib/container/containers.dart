@@ -1,12 +1,13 @@
+import 'package:electrical_comsuption/container/containers_controller.dart';
 import 'package:electrical_comsuption/home.dart';
+import 'package:electrical_comsuption/models/Containers.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
-import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
-import 'package:electrical_comsuption/principal/principal.dart';
-import 'package:electrical_comsuption/themes/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/snackbar_widget.dart';
 
 class Containers extends StatefulWidget {
   const Containers({Key? key}) : super(key: key);
@@ -16,6 +17,8 @@ class Containers extends StatefulWidget {
 }
 
 class _ContainersState extends State<Containers> {
+  ContainersController controller = ContainersController();
+
   TextEditingController panelController = TextEditingController();
   bool novo = false;
 
@@ -29,6 +32,7 @@ class _ContainersState extends State<Containers> {
             spacing: 10,
             children: [
               for (var i = 0; i < 5; i++) ...[
+                // for (var i = 0; i < controller.listContainers.length; i++) ...[
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -103,8 +107,14 @@ class _ContainersState extends State<Containers> {
     );
   }
 
-  void _saveNewPanel(String? val) {
+  void _saveNewPanel(String? name) {
     // TODO: salvar os paineis no banco
+
+    ContainersModel container = ContainersModel(
+      name: name.toString(),
+    );
+
+    controller.createContainer(container);
     setState(() {
       novo = !novo;
       panelController.clear();
@@ -115,17 +125,21 @@ class _ContainersState extends State<Containers> {
   void initState() {
     super.initState();
 
+    controller.stateNotifier.addListener(() {
+      setState(() {});
+    });
+
     // TODO: pegar os Paineis do banco
-    //   getData(Underwear.listDevices).then((value) {
-    //     if (value['status'] == 'success') {
-    //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-    //     } else {
-    //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-    //     }
-    //   }).catchError((e) {
-    //     AppSnackBar()
-    //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
-    //   });
+    controller.listarContainers().then((value) {
+      if (value['status'] == 'success') {
+        AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+      } else {
+        AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+      }
+    }).catchError((e) {
+      AppSnackBar()
+          .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
+    });
   }
 
   @override
@@ -141,7 +155,6 @@ class _ContainersState extends State<Containers> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
-              child: Icon(novo ? Icons.check : Icons.add, size: 40),
               tooltip: novo ? "Confirmar" : "Novo",
               onPressed: novo
                   ? () => _saveNewPanel(null)
@@ -150,11 +163,14 @@ class _ContainersState extends State<Containers> {
                         novo = !novo;
                       });
                     },
+              child: Icon(
+                novo ? Icons.check : Icons.add,
+                size: 40,
+              ),
             ),
             if (novo) ...[
               SizedBox(height: 20),
               FloatingActionButton(
-                child: Icon(Icons.clear, size: 40),
                 tooltip: 'Cancelar',
                 onPressed: () {
                   setState(() {
@@ -162,15 +178,17 @@ class _ContainersState extends State<Containers> {
                     panelController.clear();
                   });
                 },
+                child: Icon(
+                  Icons.clear,
+                  size: 40,
+                ),
               ),
             ],
           ],
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: novo ? _newPanel() : _panels(),
-          ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: novo ? _newPanel() : _panels(),
         ),
       ),
     );

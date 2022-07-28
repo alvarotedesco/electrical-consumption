@@ -43,6 +43,8 @@ class Underwear {
   static const String baseURL = 'http://25.72.151.164:8080/';
   static const String getUserDataURL = 'user/info';
   static const String listDevices = 'device/list?page=0';
+  static const String createContainerURL = ''; // TODO
+  static const String listContainersURL = ''; // TODO
   static const String loginURL = 'auth/login';
   static const String registryURL = 'auth/registry';
   static const String saveDevice = 'device/save';
