@@ -1,5 +1,4 @@
 import 'package:electrical_comsuption/auth/auth_state.dart';
-import 'package:electrical_comsuption/container/containers.dart';
 import 'package:electrical_comsuption/models/user.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
@@ -8,13 +7,11 @@ import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../demo/demonstration_page.dart';
 import '../themes/constants.dart';
 import 'auth_controller.dart';
-import 'sign_up.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();

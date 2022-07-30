@@ -1,4 +1,3 @@
-import 'package:electrical_comsuption/device/device_area.dart';
 import 'package:electrical_comsuption/models/device.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
@@ -38,11 +37,11 @@ class _PrincipalState extends State<Principal> {
 
   List<DeviceModel> devices = [];
   List<DeviceModel> dropDevices = [
-    DeviceModel(power: 600.0, name: "ventilador", flag: 3, id: 1),
-    DeviceModel(power: 9.0, name: "Lampada LED", flag: 2, id: 2),
-    DeviceModel(power: 100.0, name: "Carregador Notebook", flag: 1, id: 3),
-    DeviceModel(power: 200.0, name: "Outro Item", flag: 4, id: 4),
-    DeviceModel(power: 1500.0, name: "Microondas", flag: 1, id: 5),
+    DeviceModel(power: 600.0, name: "ventilador", id: 1),
+    DeviceModel(power: 9.0, name: "Lampada LED", id: 2),
+    DeviceModel(power: 100.0, name: "Carregador Notebook", id: 3),
+    DeviceModel(power: 200.0, name: "Outro Item", id: 4),
+    DeviceModel(power: 1500.0, name: "Microondas", id: 5),
   ];
 
   void _getTotal() {

@@ -1,34 +1,34 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class DeviceModel {
+  final String? description;
   final double power;
   final String name;
-  final int flag;
-  final int id;
+  final int? id;
 
   DeviceModel({
     required this.power,
     required this.name,
-    required this.flag,
-    required this.id,
+    this.description,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'description': description,
       'power': power,
       'name': name,
-      'flag': flag,
       'id': id,
     };
   }
 
   factory DeviceModel.fromMap(Map<String, dynamic> map) {
     return DeviceModel(
+      description:
+          map['description'] != null ? map['description'] as String : null,
+      id: map['id'] != null ? map['id'] as int : null,
       power: map['power'] as double,
       name: map['name'] as String,
-      flag: map['flag'] as int,
-      id: map['id'] as int,
     );
   }
 

@@ -29,7 +29,7 @@ class _DeviceAreaState extends State<DeviceArea> {
   final nameDeviceController = TextEditingController();
 
   int feeFlag = 0;
-  int id = 0;
+  int? id = 0;
 
   void _save() {
     if (powerDeviceController.text.trim().isEmpty ||
@@ -41,7 +41,6 @@ class _DeviceAreaState extends State<DeviceArea> {
     DeviceModel device = DeviceModel(
       power: double.parse(powerDeviceController.text),
       name: nameDeviceController.text,
-      flag: feeFlag,
       id: id,
     );
 
@@ -86,7 +85,6 @@ class _DeviceAreaState extends State<DeviceArea> {
       setState(() {
         powerDeviceController.text = widget.device!.power.toString();
         nameDeviceController.text = widget.device!.name;
-        feeFlag = widget.device!.flag;
         id = widget.device!.id;
       });
     }

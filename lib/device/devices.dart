@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../themes/app_colors.dart';
 import '../themes/app_text_styles.dart';
 import '../widgets/snackbar_widget.dart';
-import 'device_area.dart';
 
 class Devices extends StatefulWidget {
   const Devices({Key? key}) : super(key: key);

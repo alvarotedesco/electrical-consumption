@@ -1,26 +1,22 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class ContainersModel {
-  final int? deviceNumber;
-  final int? totalCost;
-  final String? power;
   final String name;
+  final int days;
+  final int flag;
   final int? id;
 
   ContainersModel({
+    required this.days,
+    required this.flag,
     required this.name,
-    this.deviceNumber,
-    this.totalCost,
-    this.power,
     this.id,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'deviceNumber': deviceNumber,
-      'totalCost': totalCost,
-      'power': power,
+      'days': days,
+      'flag': flag,
       'name': name,
       'id': id,
     };
@@ -28,12 +24,10 @@ class ContainersModel {
 
   factory ContainersModel.fromMap(Map<String, dynamic> map) {
     return ContainersModel(
-      deviceNumber:
-          map['deviceNumber'] != null ? map['deviceNumber'] as int : null,
-      totalCost: map['totalCost'] != null ? map['totalCost'] as int : null,
-      power: map['power'] != null ? map['power'] as String : null,
-      name: map['name'] as String,
       id: map['id'] != null ? map['id'] as int : null,
+      name: map['name'] as String,
+      days: map['days'] as int,
+      flag: map['flag'] as int,
     );
   }
 
