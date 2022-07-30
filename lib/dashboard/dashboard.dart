@@ -11,26 +11,56 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  static final DateTime now = DateTime.now();
+  // static final DateTime now = DateTime.now();
   // final String monthData = DateFormat("'Mês: ' MMMM").format(now);
+  static double kWhPrice = 1.04;
 
   final data = [
-    _Devices('Churrasqueira elétrica', 2500, 2, 2, 2),
-    _Devices('Chuveiro Elétrico', 5000, 30, 0.33, 2),
-    _Devices('Geladeira', 500, 30, 24, 2),
-    _Devices('Lâmpada LED', 9, 30, 10, 9),
-    _Devices('Computador', 450, 30, 8, 3),
-    _Devices('Liquidificador', 200, 10, 0.66, 1),
-    _Devices('Televisor', 90, 30, 2, 3),
-    _Devices('Máquina de Lavar Louça', 1500, 30, 2, 1),
-    _Devices('Máquina de Lavar Roupa', 1000, 15, 2, 1),
-    _Devices('Condicionador de Ar', 1400, 30, 6, 2),
+    _Devices(
+        name: 'Churrasqueira elétrica',
+        power: 2500,
+        days: 2,
+        hours: 2,
+        quantity: 2),
+    _Devices(
+        name: 'Chuveiro Elétrico',
+        power: 5000,
+        days: 30,
+        hours: 0.33,
+        quantity: 2),
+    _Devices(name: 'Geladeira', power: 500, days: 30, hours: 24, quantity: 2),
+    _Devices(name: 'Lâmpada LED', power: 9, days: 30, hours: 10, quantity: 9),
+    _Devices(name: 'Computador', power: 450, days: 30, hours: 8, quantity: 3),
+    _Devices(
+        name: 'Liquidificador', power: 200, days: 10, hours: 0.66, quantity: 1),
+    _Devices(name: 'Televisor', power: 90, days: 30, hours: 2, quantity: 3),
+    _Devices(
+        name: 'Máquina de Lavar Louça',
+        power: 1500,
+        days: 30,
+        hours: 2,
+        quantity: 1),
+    _Devices(
+        name: 'Máquina de Lavar Roupa',
+        power: 1000,
+        days: 15,
+        hours: 2,
+        quantity: 1),
+    _Devices(
+        name: 'Condicionador de Ar',
+        power: 1400,
+        days: 30,
+        hours: 6,
+        quantity: 2),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SfCartesianChart(
+        primaryXAxis: CategoryAxis(
+          title: AxisTitle(text: 'Teste'),
+        ),
         // Chart title
         title: ChartTitle(text: 'Consumo'),
         // Enable legend
@@ -45,15 +75,14 @@ class _DashboardState extends State<Dashboard> {
             dataSource: data,
             xValueMapper: (_Devices device, _) => device.name,
             yValueMapper: (_Devices device, _) =>
-                (device.power * device.days * device.quantity * device.hours) /
-                1000,
+                ((device.power * device.days * device.hours * device.quantity) /
+                    1000) *
+                kWhPrice,
             color: AppColors.green,
             // Enable data label
             dataLabelSettings: DataLabelSettings(isVisible: true),
-            xAxisName: 'Meses',
-            yAxisName: 'Potência',
+            legendItemText: 'Consumo',
             name: '',
-            animationDuration: 3,
           ),
         ],
       ),
@@ -68,5 +97,10 @@ class _Devices {
   final double hours;
   final int quantity;
 
-  _Devices(this.name, this.power, this.days, this.hours, this.quantity);
+  _Devices(
+      {required this.name,
+      required this.power,
+      required this.days,
+      required this.hours,
+      required this.quantity});
 }
