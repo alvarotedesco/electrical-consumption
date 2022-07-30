@@ -138,52 +138,6 @@ class _DeviceAreaState extends State<DeviceArea> {
                       Luvas.selectFlag,
                       style: AppTextStyles.totalStyle,
                     ),
-                    SizedBox(height: 10),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        for (int i = 0; i < 5; i++)
-                          // for (int i = 0; i < controller.listDevices.length; i++)
-                          Card(
-                            color: AppColors.primary,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Radio(
-                                  activeColor: AppColors.white,
-                                  groupValue: feeFlag,
-                                  value: i,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      feeFlag = int.parse('$value');
-                                    });
-                                  },
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      feeFlag = i;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(4),
-                                    height: 40,
-                                    child: Image.asset(
-                                      Meias.flags[i],
-                                      alignment: Alignment.centerLeft,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
                     SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,

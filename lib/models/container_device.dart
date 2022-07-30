@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:electrical_comsuption/models/containers.dart';
+import 'package:electrical_comsuption/models/container.dart';
 import 'package:electrical_comsuption/models/device.dart';
 
 class ContainerDeviceModel {
-  final ContainersModel container;
+  final ContainerModel container;
   final double consumptionTime;
   final DeviceModel device;
   final int containerId;
@@ -39,7 +39,7 @@ class ContainerDeviceModel {
       deviceId: map['device_id'] as int,
       quantity: map['quantity'] as int,
       container:
-          ContainersModel.fromMap(map['container'] as Map<String, dynamic>),
+          ContainerModel.fromMap(map['container'] as Map<String, dynamic>),
     );
   }
 

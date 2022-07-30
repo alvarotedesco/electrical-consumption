@@ -6,8 +6,11 @@ import 'themes/constants.dart';
 class HttpUtil {
   final _session = SessionController();
 
-  Future<http.Response> post(
-      {String? url, Map<String, String>? headers, data}) async {
+  Future<http.Response> post({
+    String? url,
+    Map<String, String>? headers,
+    data,
+  }) async {
     if (_session.token == null) {
       // TODO: enviar para tela de Login
     }

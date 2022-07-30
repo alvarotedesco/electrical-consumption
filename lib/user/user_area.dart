@@ -5,20 +5,18 @@ import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../themes/constants.dart';
+import 'user_state.dart';
 
 class UserArea extends StatefulWidget {
-  const UserArea({Key? key}) : super(key: key);
+  const UserArea({super.key});
 
   @override
   State<UserArea> createState() => _UserAreaState();
 }
 
 class _UserAreaState extends State<UserArea> {
-  UserController controller = UserController();
-
-  String userMail = "teste@teste.com.br";
-  String userName = "user name gigante";
-  String userCPF = "123.456.789-10";
+  final controller = UserController();
+  String error = '';
 
   Widget _infoUser(info) {
     return Container(
@@ -45,6 +43,16 @@ class _UserAreaState extends State<UserArea> {
     );
   }
 
+  Widget _errorWidget() {
+    return controller.state == UserState.error
+        ? Center(child: Text(error))
+        : Center(
+            child: CircularProgressIndicator(
+              backgroundColor: AppColors.secondary,
+            ),
+          );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -54,7 +62,7 @@ class _UserAreaState extends State<UserArea> {
     });
 
     // TODO: fazer o get das informaçoes do Usuario
-    // controller.getUserInfo();
+    controller.getUserInfo().then((value) => error = value['data'].toString());
   }
 
   @override
@@ -65,45 +73,48 @@ class _UserAreaState extends State<UserArea> {
         appBar: CustomAppBar(
           userArea: true,
         ),
-        body: SingleChildScrollView(
+        body: Container(
           padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Center(
-                child: CircleAvatar(
-                  backgroundColor: AppColors.secondary,
-                  radius: 95,
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage(Meias.teste),
-                    backgroundColor: AppColors.primary,
-                    radius: 90,
-                    // TODO: Quando nao pegar a imagem / criar função
-                  ),
-                ),
-              ),
-              SizedBox(height: 40),
-              Text(
-                userName,
-                style: AppTextStyles.userName,
-              ),
-              SizedBox(height: 40),
-              Container(
-                padding: EdgeInsets.all(20),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: AppColors.black60,
-                ),
-                child: Column(
+          child: controller.state != UserState.success
+              ? _errorWidget()
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _infoUser(userCPF),
-                    SizedBox(height: 20),
-                    _infoUser(userMail),
+                    Center(
+                      child: CircleAvatar(
+                        backgroundColor: AppColors.secondary,
+                        radius: 95,
+                        child: CircleAvatar(
+                          backgroundImage: AssetImage(Meias.teste),
+                          backgroundColor: AppColors.primary,
+                          radius: 90,
+                          // TODO: Quando nao pegar a imagem / criar função
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 40),
+                    Text(
+                      controller.userName,
+                      style: AppTextStyles.userName,
+                    ),
+                    SizedBox(height: 40),
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.black60,
+                      ),
+                      child: Column(
+                        children: [
+                          _infoUser(controller.userCpf),
+                          SizedBox(height: 20),
+                          _infoUser(controller.userMail),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );

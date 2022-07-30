@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-class ContainersModel {
+class ContainerModel {
   final String name;
   final int days;
   final int flag;
   final int? id;
 
-  ContainersModel({
+  ContainerModel({
     required this.days,
     required this.flag,
     required this.name,
@@ -22,8 +22,8 @@ class ContainersModel {
     };
   }
 
-  factory ContainersModel.fromMap(Map<String, dynamic> map) {
-    return ContainersModel(
+  factory ContainerModel.fromMap(Map<String, dynamic> map) {
+    return ContainerModel(
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] as String,
       days: map['days'] as int,
@@ -33,6 +33,6 @@ class ContainersModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ContainersModel.fromJson(String source) =>
-      ContainersModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ContainerModel.fromJson(String source) =>
+      ContainerModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

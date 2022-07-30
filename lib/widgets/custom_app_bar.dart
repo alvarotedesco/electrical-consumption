@@ -13,13 +13,12 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool noAuth;
 
   CustomAppBar({
-    Key? key,
     this.userArea = false,
     this.canBack = true,
     this.noAuth = false,
     this.label,
-  })  : preferredSize = Size.fromHeight(50.0),
-        super(key: key);
+    super.key,
+  }) : preferredSize = Size.fromHeight(50.0);
 
   @override
   final Size preferredSize;
@@ -32,7 +31,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.secondary,
+      backgroundColor: AppColors.primary,
       centerTitle: true,
       title: widget.label != null
           ? Text(

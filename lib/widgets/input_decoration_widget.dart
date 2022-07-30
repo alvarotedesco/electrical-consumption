@@ -16,7 +16,6 @@ class InputDecorationWidget extends StatelessWidget {
   final String? label;
 
   const InputDecorationWidget({
-    super.key,
     this.passwordVisible = false,
     required this.textInputType,
     required this.controller,
@@ -27,6 +26,7 @@ class InputDecorationWidget extends StatelessWidget {
     this.onPressed,
     this.onChanged,
     this.style,
+    super.key,
   });
 
   @override

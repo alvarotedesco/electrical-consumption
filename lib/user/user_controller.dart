@@ -11,6 +11,14 @@ class UserController {
   UserState get state => stateNotifier.value;
   set state(UserState state) => stateNotifier.value = state;
 
+  String _userName = '';
+  String _userCpf = '';
+  String _userMail = '';
+
+  String get userName => _userName;
+  String get userCpf => _userCpf;
+  String get userMail => _userMail;
+
   Future<Map<String, dynamic>> getUserInfo() async {
     state = UserState.loading;
     var response = await HttpUtil().get(
@@ -19,6 +27,9 @@ class UserController {
 
     if (response.statusCode >= 200 || response.statusCode < 300) {
       var resposta = jsonDecode(response.body);
+      _userName = resposta["name"];
+      _userCpf = resposta["cpf"];
+      _userMail = resposta["username"];
 
       state = UserState.success;
       return {"status": "success", "data": resposta};

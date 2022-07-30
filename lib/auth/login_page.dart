@@ -39,23 +39,18 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     controller.login(user).then((value) {
-      if (value['status'] == 'success') {
-        Navigator.pushNamed(
-          context,
-          '/painel',
-        );
-      } else {
+      if (value['status'] == 'error') {
         AppSnackBar().showSnack(
           context,
           "Erro de Login, tente novamente mais tarde!",
         );
+        return;
       }
-    }).catchError((e) {
-      AppSnackBar().showSnack(
+
+      Navigator.pushNamed(
         context,
-        "Erro inesperado, de Login, tente novamente mais tarde!",
+        '/painel',
       );
-      print(e);
     });
   }
 
