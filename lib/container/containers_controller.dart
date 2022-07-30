@@ -4,63 +4,53 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import '../http_util.dart';
 import '../models/Containers.dart';
 import '../themes/constants.dart';
 import 'containers_state.dart';
 
 class ContainersController {
   final stateNotifier = ValueNotifier<ContainersState>(ContainersState.success);
-  ContainersState get state => stateNotifier.value;
   set state(ContainersState state) => stateNotifier.value = state;
+  ContainersState get state => stateNotifier.value;
 
   List<ContainersModel> _listContainers = [];
   List<ContainersModel> get listContainers => _listContainers;
 
-  Future<SharedPreferences> _pref() async =>
-      await SharedPreferences.getInstance();
-
   Future<Map<String, dynamic>> createContainer(
       ContainersModel container) async {
-    var token = ((await _pref()).getString("tokenjwt") ?? "");
-    if (token != '') {
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      };
+    state = ContainersState.loading;
+    var response = await HttpUtil().post(
+      url: Underwear.createContainerURL,
+      data: container.toJson(),
+    );
 
-      var response = await http.post(
-          Uri.parse('${Underwear.baseURL}${Underwear.createContainerURL}'),
-          headers: headers,
-          body: container.toJson());
-
-      if (response.statusCode == 200) {
-        Map<String, dynamic> resposta = jsonDecode(response.body);
-        return {"status": "success", "data": resposta};
-      } else {
-        return {"status": "error", "data": response.statusCode};
-      }
+    if (response.statusCode == 200) {
+      Map<String, dynamic> resposta = jsonDecode(response.body);
+      state = ContainersState.success;
+      return {"status": "success", "data": resposta};
     } else {
-      return {
-        "status": "error",
-        "data": "Token Expirado, faça o Login novamente!!"
-      };
+      state = ContainersState.error;
+      return {"status": "error", "data": response.statusCode};
     }
   }
 
   Future<Map<String, dynamic>> listarContainers() async {
-    Map<String, String> headers = {"Content-Type": "application/json"};
-
-    var response = await http.get(
-        Uri.parse('${Underwear.baseURL}${Underwear.listContainersURL}'),
-        headers: headers);
+    state = ContainersState.loading;
+    var response = await HttpUtil().get(
+      url: Underwear.listContainersURL,
+    );
 
     if (response.statusCode == 200) {
       List<Map<String, dynamic>> resposta = jsonDecode(response.body);
+
       _listContainers =
           resposta.map((e) => ContainersModel.fromMap(e)).toList();
 
+      state = ContainersState.success;
       return {"status": "success", "data": resposta};
     } else {
+      state = ContainersState.error;
       return {"status": "error", "data": response.toString()};
     }
   }

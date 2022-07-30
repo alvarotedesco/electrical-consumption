@@ -43,11 +43,9 @@ class _LoginPageState extends State<LoginPage> {
 
     controller.login(user).then((value) {
       if (value['status'] == 'success') {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
-            builder: (context) => Containers(),
-          ),
+          '/painel',
         );
       } else {
         AppSnackBar().showSnack(
@@ -124,11 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                           child: AppButtonWidget(
                             texto: Luvas.btSignUp,
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushNamed(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => SignUpPage(),
-                                ),
+                                '/registry',
                               );
                             },
                           ),
@@ -141,11 +137,9 @@ class _LoginPageState extends State<LoginPage> {
                           child: AppButtonWidget(
                             texto: Luvas.btDemonstration,
                             onPressed: () {
-                              Navigator.push(
+                              Navigator.pushNamed(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => Demonstration(),
-                                ),
+                                '/demo',
                               );
                             },
                           ),

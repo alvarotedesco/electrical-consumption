@@ -35,11 +35,10 @@ class _ContainersState extends State<Containers> {
                 // for (var i = 0; i < controller.listContainers.length; i++) ...[
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => Home(painelId: i),
-                      ),
+                      '/home',
+                      arguments: i,
                     );
                   },
                   child: Container(

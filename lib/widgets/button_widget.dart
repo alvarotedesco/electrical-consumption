@@ -1,6 +1,6 @@
+import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:flutter/widgets.dart';
 
 class AppButtonWidget extends StatelessWidget {
@@ -12,14 +12,14 @@ class AppButtonWidget extends StatelessWidget {
   final String texto;
 
   const AppButtonWidget({
-    Key? key,
     required this.onPressed,
     required this.texto,
     this.alignment,
     this.color,
     this.width,
     this.style,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

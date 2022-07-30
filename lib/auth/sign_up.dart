@@ -1,15 +1,15 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:electrical_comsuption/auth/auth_controller.dart';
 import 'package:electrical_comsuption/auth/auth_state.dart';
-import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
-import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
-import 'package:electrical_comsuption/widgets/button_widget.dart';
+import 'package:electrical_comsuption/models/user.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/constants.dart';
-import 'package:electrical_comsuption/models/user.dart';
-import 'package:brasil_fields/brasil_fields.dart';
+import 'package:electrical_comsuption/widgets/button_widget.dart';
+import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
+import 'package:electrical_comsuption/widgets/snackbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../container/containers.dart';
+
 import '../widgets/custom_app_bar.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -54,12 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     controller.registry(user).then((value) {
       if (value['status'] == 'success') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Containers(),
-          ),
-        );
+        Navigator.pushNamed(context, '/painel');
       } else {
         AppSnackBar().showSnack(
           context,

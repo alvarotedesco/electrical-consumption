@@ -6,19 +6,24 @@ import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../widgets/snackbar_widget.dart';
+import 'principal_controller.dart';
+
 class Principal extends StatefulWidget {
   final int painelId;
 
   const Principal({
-    Key? key,
     required this.painelId,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<Principal> createState() => _PrincipalState();
 }
 
 class _PrincipalState extends State<Principal> {
+  final PrincipalController controller = PrincipalController();
+
   final List<TextEditingController> hoursControllers = [];
   final List<TextEditingController> daysControllers = [];
   final List<TextEditingController> qtdControllers = [];
@@ -26,85 +31,67 @@ class _PrincipalState extends State<Principal> {
   final nomeEqController = TextEditingController();
   final pwrEqController = TextEditingController();
   final control = TextEditingController();
+
   String totalReais = "0.0";
   String totalKw = "0.0";
   String panelName = '';
-  List devices = [];
-  List dropDevices = [
-    {'id': '1', 'name': "ventilador", "power": 600.0, "feeFlag": 3}
+
+  List<DeviceModel> devices = [];
+  List<DeviceModel> dropDevices = [
+    DeviceModel(power: 600.0, name: "ventilador", flag: 3, id: 1),
+    DeviceModel(power: 9.0, name: "Lampada LED", flag: 2, id: 2),
+    DeviceModel(power: 100.0, name: "Carregador Notebook", flag: 1, id: 3),
+    DeviceModel(power: 200.0, name: "Outro Item", flag: 4, id: 4),
+    DeviceModel(power: 1500.0, name: "Microondas", flag: 1, id: 5),
   ];
 
   void _getTotal() {
-    var ind = devices.length;
-    var tots = 0.0;
-
-    for (var i = 0; i < ind; i++) {
-      var hour = int.parse(
-          hoursControllers[i].text != "" ? hoursControllers[i].text : '0');
-      var day = int.parse(
-          daysControllers[i].text != "" ? daysControllers[i].text : '0');
-      var qtd = int.parse(
-          qtdControllers[i].text != "" ? qtdControllers[i].text : '0');
-      var pwr = devices[i]['power'];
+    double tots = 0.0;
+    for (var i = 0; i < devices.length; i++) {
+      int hour = int.parse(hoursControllers[i].text);
+      int day = int.parse(daysControllers[i].text);
+      int qtd = int.parse(qtdControllers[i].text);
+      double pwr = devices[i].power;
 
       tots += hour * day * qtd * pwr / 1000;
     }
 
-    var toR = tots * 1.04;
+    double toR = tots * 1.04;
     setState(() {
       totalReais = toR.toStringAsFixed(2);
       totalKw = tots.toStringAsFixed(2);
     });
   }
 
-  void _clickOnDevice(index) {
-    var device = DeviceModel(
-      power: "${devices[index]['power']}",
-      name: "${devices[index]['name']}",
-      flag: int.parse("${devices[index]['feeFlag']}"),
-      id: int.parse("${devices[index]['id']}"),
-    );
-
-    Navigator.push(
+  void _clickOnDevice(int index) {
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => DeviceArea(device: device),
-      ),
-    );
-    // .then((v) {
-    //   getData(Underwear.listDevices).then((resp) {
-    //     if (resp['status'] == 'success') {
-    //       setState(() {
-    //         dropDevices = resp['data']["content"];
-    //       });
-    //     } else {
-    //       AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-    //     }
-    //   }).catchError((e) {
-    //     AppSnackBar()
-    //         .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
-    //   });
-    // });
+      '/editar-dispositivo',
+      arguments: devices[index],
+    ).then((value) {
+      controller.getContainerDevice(widget.painelId).catchError((e) {
+        AppSnackBar().showSnack(
+          context,
+          "Erro inesperado, Erro ao pegar os dados",
+        );
+      });
+    });
   }
 
   @override
   void initState() {
     super.initState();
 
-    panelName = 'Casa ${widget.painelId + 1}';
+    controller.stateNotifier.addListener(() {
+      setState(() {});
+    });
 
-    // getData(Underwear.listDevices).then((value) {
-    //   if (value['status'] == 'success') {
-    //     setState(() {
-    //       dropDevices = value['data']["content"];
-    //     });
-    //   } else {
-    //     AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-    //   }
-    // }).catchError((e) {
-    //   AppSnackBar()
-    //       .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
-    // });
+    controller.getContainerDevice(widget.painelId).catchError((e) {
+      AppSnackBar().showSnack(
+        context,
+        "Erro inesperado, Erro ao pegar os dados",
+      );
+    });
   }
 
   @override
@@ -134,24 +121,20 @@ class _PrincipalState extends State<Principal> {
                   'Selecione um Dispositivo',
                   style: AppTextStyles.defaultStyleB,
                 ),
-                items: dropDevices.map<DropdownMenuItem<String>>((value) {
-                  return DropdownMenuItem<String>(
-                    value: value["id"].toString(),
-                    child: Text(value["name"]),
+                items: dropDevices.map<DropdownMenuItem<DeviceModel>>((value) {
+                  return DropdownMenuItem<DeviceModel>(
+                    value: value,
+                    child: Text(value.name),
                   );
                 }).toList(),
                 onChanged: (value) {
-                  for (var item in dropDevices) {
-                    if (item["id"].toString() == value.toString()) {
-                      print({'Item selecionado => ': item});
-                      setState(() {
-                        hoursControllers.add(TextEditingController());
-                        daysControllers.add(TextEditingController());
-                        qtdControllers.add(TextEditingController());
-                        devices.add(item);
-                      });
-                    }
-                  }
+                  print({'Item selecionado => ': value});
+                  setState(() {
+                    hoursControllers.add(TextEditingController());
+                    daysControllers.add(TextEditingController());
+                    qtdControllers.add(TextEditingController());
+                    devices.add(value as DeviceModel);
+                  });
                 },
               ),
             ),
@@ -230,7 +213,7 @@ class _PrincipalState extends State<Principal> {
                                 child: InkWell(
                                   onTap: () => _clickOnDevice(index),
                                   child: Text(
-                                    devices[index]["name"],
+                                    devices[index].name,
                                     style: AppTextStyles.styleListB,
                                   ),
                                 ),
@@ -239,7 +222,7 @@ class _PrincipalState extends State<Principal> {
                                 flex: 2,
                                 child: Center(
                                   child: Text(
-                                    devices[index]["power"].toString(),
+                                    devices[index].power.toString(),
                                     style: AppTextStyles.styleListB,
                                   ),
                                 ),
@@ -272,11 +255,12 @@ class _PrincipalState extends State<Principal> {
                                     LengthLimitingTextInputFormatter(2),
                                   ],
                                   onChanged: (tex) async {
-                                    if (tex != "" && int.parse(tex) >= 99) {
-                                      daysControllers[index].text = '99';
+                                    if (tex != "") {
+                                      if (int.parse(tex) >= 99) {
+                                        daysControllers[index].text = '99';
+                                      }
+                                      _getTotal();
                                     }
-
-                                    _getTotal();
                                   },
                                 ),
                               ),
@@ -290,11 +274,12 @@ class _PrincipalState extends State<Principal> {
                                     LengthLimitingTextInputFormatter(3),
                                   ],
                                   onChanged: (tex) async {
-                                    if (tex != "" && int.parse(tex) >= 999) {
-                                      qtdControllers[index].text = '999';
+                                    if (tex != "") {
+                                      if (int.parse(tex) >= 999) {
+                                        qtdControllers[index].text = '999';
+                                      }
+                                      _getTotal();
                                     }
-
-                                    _getTotal();
                                   },
                                 ),
                               ),

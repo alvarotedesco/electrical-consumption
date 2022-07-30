@@ -1,5 +1,11 @@
 import 'package:electrical_comsuption/auth/login_page.dart';
+import 'package:electrical_comsuption/auth/sign_up.dart';
 import 'package:electrical_comsuption/container/containers.dart';
+import 'package:electrical_comsuption/demo/demonstration_page.dart';
+import 'package:electrical_comsuption/device/device_area.dart';
+import 'package:electrical_comsuption/home.dart';
+import 'package:electrical_comsuption/models/device.dart';
+import 'package:electrical_comsuption/user/user_area.dart';
 import 'package:electrical_comsuption/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +24,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
+      routes: {
+        '/login': (_) => LoginPage(),
+        '/registry': (_) => SignUpPage(),
+        '/painel': (_) => Containers(),
+        '/home': (context) =>
+            Home(painelId: ModalRoute.of(context)!.settings.arguments as int),
+        '/demo': (_) => Demonstration(),
+        '/user': (_) => UserArea(),
+        '/editar-dispositivo': (context) => DeviceArea(
+            device: ModalRoute.of(context)!.settings.arguments as DeviceModel),
+        '/novo-dispositivo': (_) => DeviceArea(),
+      },
     );
   }
 }
