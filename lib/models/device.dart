@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class DeviceModel {
-  final String power;
+  final double power;
   final String name;
   final int flag;
   final int id;
@@ -25,7 +25,7 @@ class DeviceModel {
 
   factory DeviceModel.fromMap(Map<String, dynamic> map) {
     return DeviceModel(
-      power: map['power'] as String,
+      power: map['power'] as double,
       name: map['name'] as String,
       flag: map['flag'] as int,
       id: map['id'] as int,

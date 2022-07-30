@@ -14,9 +14,9 @@ class DeviceArea extends StatefulWidget {
   final DeviceModel? device;
 
   const DeviceArea({
-    Key? key,
     this.device,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<DeviceArea> createState() => _DeviceAreaState();
@@ -27,6 +27,7 @@ class _DeviceAreaState extends State<DeviceArea> {
 
   final powerDeviceController = TextEditingController();
   final nameDeviceController = TextEditingController();
+
   int feeFlag = 0;
   int id = 0;
 
@@ -38,7 +39,7 @@ class _DeviceAreaState extends State<DeviceArea> {
     }
 
     DeviceModel device = DeviceModel(
-      power: powerDeviceController.text,
+      power: double.parse(powerDeviceController.text),
       name: nameDeviceController.text,
       flag: feeFlag,
       id: id,
@@ -83,7 +84,7 @@ class _DeviceAreaState extends State<DeviceArea> {
 
     if (widget.device != null) {
       setState(() {
-        powerDeviceController.text = widget.device!.power;
+        powerDeviceController.text = widget.device!.power.toString();
         nameDeviceController.text = widget.device!.name;
         feeFlag = widget.device!.flag;
         id = widget.device!.id;

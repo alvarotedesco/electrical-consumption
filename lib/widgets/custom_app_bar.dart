@@ -69,11 +69,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   icon: Icon(Icons.account_circle),
                   splashRadius: 20,
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => UserArea(),
-                      ),
+                      '/user',
                     );
                   },
                 ),
@@ -82,11 +80,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   icon: Icon(Icons.logout_rounded),
                   splashRadius: 20,
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => UserArea(),
-                      ),
+                      '/login',
                     );
                   },
                 ),

@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:electrical_comsuption/auth/auth_state.dart';
+import 'package:electrical_comsuption/session_controller.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../http_util.dart';
 import '../models/user.dart';
 import '../themes/constants.dart';
 
@@ -13,24 +13,20 @@ class AuthController {
   set state(AuthState state) => stateNotifier.value = state;
   AuthState get state => stateNotifier.value;
 
-  Future<SharedPreferences> _pref() async =>
-      await SharedPreferences.getInstance();
+  var session = SessionController();
 
   Future<Map<String, dynamic>> login(UserModel user) async {
-    var prefs = await _pref();
-    Map<String, String> headers = {"Content-Type": "application/json"};
-
     state = AuthState.loading;
-    var response = await http.post(
-      Uri.parse('${Underwear.baseURL}${Underwear.loginURL}'),
-      headers: headers,
-      body: user.toJson(),
+    var response = await HttpUtil().post(
+      url: Underwear.loginURL,
+      headers: {"Content-Type": "application/json"},
+      data: user.toJson(),
     );
 
     if (response.statusCode == 200) {
       Map<String, dynamic> resposta = jsonDecode(response.body);
 
-      prefs.setString("tokenjwt", resposta["token"]);
+      session.token = resposta["token"];
       state = AuthState.success;
       return {"status": "success", "data": resposta};
     } else {
@@ -40,19 +36,17 @@ class AuthController {
   }
 
   Future<Map<String, dynamic>> registry(UserModel user) async {
-    var prefs = await _pref();
-    Map<String, String> headers = {"Content-Type": "application/json"};
-
     state = AuthState.loading;
-    var response = await http.post(
-      Uri.parse('${Underwear.baseURL}${Underwear.registryURL}'),
-      headers: headers,
-      body: user.toJson(),
+    var response = await HttpUtil().post(
+      url: Underwear.registryURL,
+      headers: {"Content-Type": "application/json"},
+      data: user.toJson(),
     );
 
     if (response.statusCode == 200) {
       Map<String, dynamic> resposta = jsonDecode(response.body);
-      prefs.setString("tokenjwt", resposta["token"]);
+
+      session.token = resposta["token"];
       state = AuthState.success;
       return {"status": "success", "data": resposta};
     } else {

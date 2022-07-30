@@ -54,13 +54,7 @@ class _UserAreaState extends State<UserArea> {
     });
 
     // TODO: fazer o get das informaçoes do Usuario
-    // controller.getUserInfo().then((resp) {
-    //   setState(() {
-    //     userName = resp['name'];
-    //     userCPF = resp['cpf'];
-    //     userMail = resp['username'];
-    //   });
-    // });
+    // controller.getUserInfo();
   }
 
   @override

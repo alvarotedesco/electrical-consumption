@@ -1,65 +1,29 @@
 import 'dart:convert';
 
-import 'package:electrical_comsuption/user/user_state.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
+import '../http_util.dart';
 import '../themes/constants.dart';
+import 'principal_state.dart';
 
-class PricipalController {
-  // final stateNotifier = ValueNotifier<UserState>(UserState.empty);
-  // UserState get state => stateNotifier.value;
-  // set state(UserState state) => stateNotifier.value = state;
+class PrincipalController {
+  final stateNotifier = ValueNotifier<PrincipalState>(PrincipalState.empty);
+  set state(PrincipalState state) => stateNotifier.value = state;
+  PrincipalState get state => stateNotifier.value;
 
-  Future<SharedPreferences> _pref() async =>
-      await SharedPreferences.getInstance();
-
-  Future<Map<String, dynamic>> postData(String url, data) async {
-    var prefs = await SharedPreferences.getInstance();
-    var token = (prefs.getString("tokenjwt") ?? "");
-    if (token != '') {
-      data = json.encode(data);
-
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      };
-
-      var response = await http.post(Uri.parse('${Underwear.baseURL}$url'),
-          headers: headers, body: data);
-
-      if (response.statusCode == 200) {
-        Map<String, dynamic> resposta = jsonDecode(response.body);
-
-        return {"status": "success", "data": resposta};
-      } else {
-        return {"status": "error", "data": response.statusCode};
-      }
-    } else {
-      return {
-        "status": "error",
-        "data": "Token Expirado, faça o Login novamente!!"
-      };
-    }
-  }
-
-  Future<Map<String, dynamic>> postDevice(String url, data) async {
-    var prefs = await SharedPreferences.getInstance();
-    var token = (prefs.getString("tokenjwt") ?? "");
-    data = json.encode(data);
-
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer $token",
-    };
-
-    var response = await http.post(Uri.parse('${Underwear.baseURL}$url'),
-        headers: headers, body: data);
+  Future<Map<String, dynamic>> getContainerDevice(int containerId) async {
+    state = PrincipalState.loading;
+    var response = await HttpUtil().get(
+      url: '${Underwear.getContainerDevicesURL}/$containerId',
+    );
 
     if (response.statusCode == 200) {
-      return {"status": "success", "Message": "deu certo"};
+      Map<String, dynamic> resposta = jsonDecode(response.body);
+
+      state = PrincipalState.success;
+      return {"status": "success", "data": resposta};
     } else {
+      state = PrincipalState.error;
       return {"status": "error", "data": response.statusCode};
     }
   }

@@ -20,11 +20,9 @@ class _DevicesState extends State<Devices> {
   var dropDevices;
 
   void _newDevice() {
-    Navigator.push(
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => DeviceArea(),
-      ),
+      '/novo-dispositivo',
     ).then((v) {
       controller.listarDevices().then((resp) {
         if (resp['status'] == 'success') {

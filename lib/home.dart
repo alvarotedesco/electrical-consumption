@@ -7,9 +7,9 @@ class Home extends StatefulWidget {
   final int painelId;
 
   const Home({
-    Key? key,
     required this.painelId,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<Home> createState() => _HomeState();
