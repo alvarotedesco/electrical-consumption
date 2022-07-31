@@ -30,6 +30,18 @@ class _ContainerAreaState extends State<ContainerArea> {
 
   late FlagModel feeFlag;
 
+  Color _selectColor(int color) {
+    return color == 1
+        ? AppColors.green
+        : color == 2
+            ? AppColors.yellow
+            : color == 3
+                ? AppColors.red
+                : color == 4
+                    ? AppColors.darkRed
+                    : AppColors.grey;
+  }
+
   Future<void> _saveNewPanel(String? name) async {
     // TODO: salvar os paineis no banco
 
@@ -75,23 +87,9 @@ class _ContainerAreaState extends State<ContainerArea> {
           heroTagCancel: 'caCancel',
           onConfirmButton: () {
             if (widget.container != null) {
-              // _editPanel(nameController.text);
-
-              var container = ContainerModel(
-                name: nameController.text,
-                flag: feeFlag,
-                id: widget.container!.id,
-              );
-
-              controller.saveContainer(container);
+              _editPanel(nameController.text);
             } else {
-              // _saveNewPanel(nameController.text);
-              var container = ContainerModel(
-                name: nameController.text,
-                flag: feeFlag,
-              );
-
-              controller.createContainer(container);
+              _saveNewPanel(nameController.text);
             }
             Navigator.of(context).pop();
           },
@@ -125,7 +123,7 @@ class _ContainerAreaState extends State<ContainerArea> {
                   iconSize: 25,
                   elevation: 5,
                   dropdownColor: AppColors.primary,
-                  style: AppTextStyles.defaultStyleB,
+                  style: AppTextStyles.h1WhiteBold,
                   value: feeFlag,
                   items: controller.dropFlags.map<DropdownMenuItem<FlagModel>>(
                     (value) {
@@ -133,7 +131,7 @@ class _ContainerAreaState extends State<ContainerArea> {
                         value: value,
                         child: Row(
                           children: [
-                            value.icon as Icon,
+                            Icon(Icons.flag, color: _selectColor(value.icon)),
                             SizedBox(width: 20),
                             Text(value.name),
                           ],

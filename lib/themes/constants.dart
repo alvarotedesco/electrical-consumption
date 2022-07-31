@@ -56,6 +56,7 @@ class Underwear {
   static const String createDeviceURL = 'device/save';
   static const String saveDeviceURL = 'device/save';
   static const String listDevicesURL = 'device/list?page=0';
+  static const String deleteDeviceURL = ''; // TODO
 
   static const String dicasURL =
       'https://www.grupocpfl.com.br/energias-sustentaveis/dicas-de-consumo-inteligente';

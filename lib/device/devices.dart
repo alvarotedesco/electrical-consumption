@@ -1,5 +1,6 @@
 import 'package:electrical_comsuption/device/device_controller.dart';
-import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
+import 'package:electrical_comsuption/models/device.dart';
+import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../themes/app_colors.dart';
@@ -16,25 +17,21 @@ class Devices extends StatefulWidget {
 class _DevicesState extends State<Devices> {
   DeviceController controller = DeviceController();
 
-  var dropDevices;
+  DeviceModel? _selectedDevice;
 
   void _newDevice() {
     Navigator.pushNamed(
       context,
       '/novo-dispositivo',
-    ).then((v) {
-      controller.listarDevices().then((resp) {
-        if (resp['status'] == 'success') {
-          setState(() {
-            dropDevices = resp['data']["content"];
-          });
-        } else {
-          AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-        }
-      }).catchError((e) {
-        AppSnackBar()
-            .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
-      });
+    );
+  }
+
+  void _init() {
+    controller.listarDevices().then((resp) {
+      if (resp['status'] != 'success') {
+        AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+        return;
+      }
     });
   }
 
@@ -45,6 +42,8 @@ class _DevicesState extends State<Devices> {
     controller.stateNotifier.addListener(() {
       setState(() {});
     });
+
+    _init();
   }
 
   @override
@@ -54,24 +53,22 @@ class _DevicesState extends State<Devices> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.darkBlue,
-        appBar: CustomAppBar(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _newDevice,
-          child: Icon(
-            Icons.add,
-            size: 40,
-          ),
+        floatingActionButton: FloatingCustomButtonWidget(
+          onNewButton: _newDevice,
+          onEditButton: () {
+            Navigator.of(context)
+                .pushNamed('/editar-dispositivo', arguments: _selectedDevice);
+          },
+          onDeleteButton: () async {
+            await controller.deleteDevice(_selectedDevice!.id as int);
+            _init();
+          },
+          selected: _selectedDevice != null,
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(20),
           child: Column(
             children: [
-              Center(
-                child: Text(
-                  'Meus Dispositivos',
-                  style: AppTextStyles.defaultStyleB,
-                ),
-              ),
               SizedBox(
                 height: height,
                 child: Card(
@@ -80,11 +77,38 @@ class _DevicesState extends State<Devices> {
                   ),
                   child: ListView.separated(
                     separatorBuilder: (_, __) => Divider(),
-                    itemCount: 15,
+                    itemCount: controller.listDevices.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text('Lista ${index + 1}'),
-                        subtitle: Text('40 (W)'),
+                        selected:
+                            _selectedDevice == controller.listDevices[index],
+                        selectedTileColor:
+                            _selectedDevice == controller.listDevices[index]
+                                ? AppColors.secondary
+                                : null,
+                        onLongPress: () {
+                          setState(() {
+                            _selectedDevice = controller.listDevices[index];
+                          });
+                        },
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/editar-dispositivo',
+                              arguments: controller.listDevices[index]);
+                        },
+                        title: Text(
+                          controller.listDevices[index].name,
+                          style:
+                              _selectedDevice == controller.listDevices[index]
+                                  ? AppTextStyles.h1WhiteBold
+                                  : AppTextStyles.h3BlackBold,
+                        ),
+                        subtitle: Text(
+                          '${controller.listDevices[index].power} W',
+                          style:
+                              _selectedDevice == controller.listDevices[index]
+                                  ? AppTextStyles.h2WhiteBold
+                                  : AppTextStyles.h4black,
+                        ),
                       );
                     },
                   ),

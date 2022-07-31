@@ -10,7 +10,7 @@ class AppSnackBar {
         backgroundColor: AppColors.white,
         content: Text(
           text,
-          style: AppTextStyles.snackBar,
+          style: AppTextStyles.h1RedBold,
         ),
       ),
     );

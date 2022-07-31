@@ -1,14 +1,15 @@
 import 'package:electrical_comsuption/device/device_controller.dart';
-import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
-import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
-import 'package:electrical_comsuption/themes/app_text_styles.dart';
-import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/themes/constants.dart';
-import 'package:flutter/services.dart';
-import '../widgets/snackbar_widget.dart';
+import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
+import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
+import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import '../models/device.dart';
+import '../widgets/snackbar_widget.dart';
 
 class DeviceArea extends StatefulWidget {
   final DeviceModel? device;
@@ -51,13 +52,11 @@ class _DeviceAreaState extends State<DeviceArea> {
               .showSnack(context, "Dispositivo cadastrado com sucesso!");
 
           Navigator.of(context).pop();
-        } else {
-          AppSnackBar().showSnack(
-              context, "Não foi possivel cadastrar seu Dispositivo!");
         }
-      }).catchError((e) {
-        AppSnackBar().showSnack(context,
-            "Erro inesperado, Não foi possivel salvar seu Dispositivo!");
+
+        AppSnackBar()
+            .showSnack(context, "Não foi possivel cadastrar seu Dispositivo!");
+        return;
       });
     } else {
       controller.saveDevice(device).then((value) {
@@ -65,10 +64,11 @@ class _DeviceAreaState extends State<DeviceArea> {
           AppSnackBar().showSnack(context, "Dispositivo alterado com sucesso!");
 
           Navigator.of(context).pop();
-        } else {
-          AppSnackBar()
-              .showSnack(context, "Não foi possivel alterar o dispositivo!");
         }
+
+        AppSnackBar()
+            .showSnack(context, "Não foi possivel alterar o dispositivo!");
+        return;
       });
     }
   }
@@ -95,64 +95,38 @@ class _DeviceAreaState extends State<DeviceArea> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.darkBlue,
-        appBar: CustomAppBar(),
+        appBar: CustomAppBar(
+          label:
+              widget.device != null ? 'Editar Dispositivo' : 'Novo Dispositivo',
+        ),
+        floatingActionButton: FloatingCustomButtonWidget(
+          cancel: true,
+          selected: false,
+          onConfirmButton: _save,
+          onCancelButton: () => Navigator.of(context).pop(),
+        ),
         body: Container(
           padding: EdgeInsets.all(20),
           child: Center(
-            child: Card(
-              color: AppColors.white60,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InputDecorationWidget(
+                  textInputType: TextInputType.name,
+                  controller: nameDeviceController,
+                  style: AppTextStyles.h1WhiteBold,
+                  label: Luvas.nameDevice,
                 ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      Luvas.registerDevice,
-                      style: AppTextStyles.totalStyle,
-                    ),
-                    SizedBox(height: 20),
-                    InputDecorationWidget(
-                      textInputType: TextInputType.name,
-                      controller: nameDeviceController,
-                      style: AppTextStyles.totalStyle,
-                      label: Luvas.nameDevice,
-                    ),
-                    SizedBox(height: 10),
-                    InputDecorationWidget(
-                      controller: powerDeviceController,
-                      textInputType: TextInputType.number,
-                      style: AppTextStyles.totalStyle,
-                      label: Luvas.powerDevice,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      Luvas.selectFlag,
-                      style: AppTextStyles.totalStyle,
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        AppButtonWidget(
-                          style: AppTextStyles.btnSave,
-                          width: 80,
-                          texto: "Salvar",
-                          onPressed: _save,
-                        ),
-                      ],
-                    ),
+                InputDecorationWidget(
+                  controller: powerDeviceController,
+                  textInputType: TextInputType.number,
+                  style: AppTextStyles.h1WhiteBold,
+                  label: Luvas.powerDevice,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
                   ],
                 ),
-              ),
+              ],
             ),
           ),
         ),

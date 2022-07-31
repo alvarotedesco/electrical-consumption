@@ -12,63 +12,113 @@ class DeviceController {
   set state(DeviceState state) => stateNotifier.value = state;
   DeviceState get state => stateNotifier.value;
 
-  List<DeviceModel> _listDevices = [];
+  List<DeviceModel> _listDevices = [
+    DeviceModel(power: 400, name: "nome de dispositivo"),
+    DeviceModel(power: 500, name: "disposito500"),
+    DeviceModel(power: 600, name: "disposito600"),
+    DeviceModel(power: 700, name: "cavalo"),
+    DeviceModel(power: 800, name: "camelo"),
+    DeviceModel(power: 900, name: "melancia"),
+    DeviceModel(power: 10000, name: "outra fruta aleatoria"),
+    DeviceModel(power: 100, name: "penultimo dispositivo"),
+    DeviceModel(power: 9, name: "lampada led"),
+  ];
   List<DeviceModel> get listDevices => _listDevices;
 
   Future<Map<String, dynamic>> createDevice(DeviceModel device) async {
-    state = DeviceState.loading;
-    var response = await HttpUtil().post(
-      url: Underwear.createDeviceURL,
-      data: device.toJson(),
-    );
+    try {
+      state = DeviceState.loading;
+      var response = await HttpUtil().post(
+        url: Underwear.createDeviceURL,
+        data: device.toJson(),
+      );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resposta = jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Map<String, dynamic> resposta = jsonDecode(response.body);
 
-      state = DeviceState.success;
-      return {"status": "success", "data": resposta};
-    } else {
+        state = DeviceState.success;
+        return {"status": "success", "data": resposta};
+      }
+
       state = DeviceState.error;
       return {"status": "error", "data": response.statusCode};
+    } on Exception {
+      state = DeviceState.error;
+      return {"status": "error"};
     }
   }
 
   Future<Map<String, dynamic>> saveDevice(DeviceModel device) async {
-    var response = await HttpUtil().post(
-      url: Underwear.saveDeviceURL,
-      data: device.toJson(),
-    );
+    try {
+      state = DeviceState.loading;
+      var response = await HttpUtil().post(
+        url: Underwear.saveDeviceURL,
+        data: device.toJson(),
+      );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resposta = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> resposta = jsonDecode(response.body);
 
-      return {"status": "success", "data": resposta};
-    } else {
+        state = DeviceState.success;
+        return {"status": "success", "data": resposta};
+      }
+
+      state = DeviceState.error;
       return {"status": "error", "data": response.statusCode};
+    } on Exception {
+      state = DeviceState.error;
+      return {"status": "error"};
     }
   }
 
   Future<Map<String, dynamic>> listarDevices() async {
-    state = DeviceState.loading;
+    try {
+      state = DeviceState.loading;
+      var response = await HttpUtil().get(
+        url: Underwear.listDevicesURL,
+      );
 
-    var response = await HttpUtil().get(
-      url: Underwear.listDevicesURL,
-    );
+      if (response.statusCode == 200) {
+        List<Map<String, dynamic>> resposta = jsonDecode(response.body);
+        if (resposta.isEmpty) {
+          state = DeviceState.empty;
+          return {"status": "empty"};
+        }
 
-    if (response.statusCode == 200) {
-      List<Map<String, dynamic>> resposta = jsonDecode(response.body);
-      if (resposta.isEmpty) {
-        state = DeviceState.empty;
-        return {"status": "empty"};
+        _listDevices = resposta.map((e) => DeviceModel.fromMap(e)).toList();
+
+        state = DeviceState.success;
+        return {"status": "success", "data": resposta};
       }
 
-      _listDevices = resposta.map((e) => DeviceModel.fromMap(e)).toList();
-
-      state = DeviceState.success;
-      return {"status": "success", "data": resposta};
-    } else {
       state = DeviceState.error;
       return {"status": "error", "data": response.toString()};
+    } on Exception {
+      state = DeviceState.error;
+      return {"status": "error"};
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteDevice(int id) async {
+    try {
+      state = DeviceState.loading;
+      var response = await HttpUtil().delete(
+        url: Underwear.deleteDeviceURL,
+        data: id,
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> resposta = jsonDecode(response.body);
+
+        state = DeviceState.success;
+        return {"status": "success", "data": resposta};
+      }
+
+      state = DeviceState.error;
+      return {"status": "error", "data": response.statusCode};
+    } on Exception {
+      state = DeviceState.error;
+      return {"status": "error"};
     }
   }
 }

@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: 80),
                     Text(
                       Luvas.noAccount,
-                      style: AppTextStyles.defaultStyleB,
+                      style: AppTextStyles.h1WhiteBold,
                       textAlign: TextAlign.center,
                     ),
                     Row(

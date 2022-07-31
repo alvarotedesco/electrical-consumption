@@ -48,7 +48,7 @@ class AppButtonWidget extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           texto,
-          style: style ?? AppTextStyles.defaultStyleB,
+          style: style ?? AppTextStyles.h1WhiteBold,
         ),
       ),
     );

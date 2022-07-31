@@ -58,7 +58,7 @@ class _Demonstration extends State<Demonstration> {
                   heightFactor: 2,
                   child: Text(
                     i,
-                    style: AppTextStyles.defaultStyleB,
+                    style: AppTextStyles.h1WhiteBold,
                   ),
                 ),
               ),

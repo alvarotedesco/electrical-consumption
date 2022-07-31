@@ -2,6 +2,7 @@ import 'package:electrical_comsuption/dashboard/dashboard.dart';
 import 'package:electrical_comsuption/device/devices.dart';
 import 'package:electrical_comsuption/principal/principal.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -39,14 +40,21 @@ class _HomeState extends State<Home> {
     return SafeArea(
       child: GestureDetector(
         child: Scaffold(
+          appBar: CustomAppBar(
+            label: currentIndex == 0
+                ? 'Nome do Painel'
+                : currentIndex == 1
+                    ? 'Meus Dispositivos'
+                    : 'Estatisticas',
+          ),
           body: IndexedStack(
             index: currentIndex,
             children: items,
           ),
           bottomNavigationBar: BottomNavigationBar(
-            unselectedItemColor: AppColors.white,
-            backgroundColor: AppColors.secondary,
-            selectedItemColor: AppColors.primary,
+            unselectedItemColor: AppColors.secondary,
+            backgroundColor: AppColors.primary,
+            selectedItemColor: AppColors.white,
             showUnselectedLabels: false,
             currentIndex: currentIndex,
             onTap: (index) {

@@ -36,7 +36,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       title: widget.label != null
           ? Text(
               widget.label.toString(),
-              style: AppTextStyles.defaultStyleB,
+              style: AppTextStyles.h1WhiteBold,
             )
           : null,
       leading: widget.canBack

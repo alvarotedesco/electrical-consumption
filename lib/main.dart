@@ -35,7 +35,6 @@ class MyApp extends StatelessWidget {
             Home(painelId: ModalRoute.of(context)!.settings.arguments as int),
         '/demo': (_) => Demonstration(),
         '/user': (_) => UserArea(),
-        '/dashboard': (_) => Dashboard(),
         '/editar-dispositivo': (context) => DeviceArea(
               device: ModalRoute.of(context)!.settings.arguments as DeviceModel,
             ),

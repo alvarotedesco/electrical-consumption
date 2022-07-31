@@ -79,7 +79,7 @@ class _ContainersState extends State<Containers> {
                       Center(
                         child: Text(
                           controller.listContainers[i].name,
-                          style: AppTextStyles.defaultStyleB,
+                          style: AppTextStyles.h1WhiteBold,
                         ),
                       ),
                       if (_containerSelected == controller.listContainers[i])
@@ -96,17 +96,17 @@ class _ContainersState extends State<Containers> {
                             children: const [
                               Text(
                                 "Cons. total: ",
-                                style: AppTextStyles.defaultStyleB,
+                                style: AppTextStyles.h1WhiteBold,
                               ),
                               Text(
                                 "${0.0} Kw/h",
-                                style: AppTextStyles.defaultStyleB,
+                                style: AppTextStyles.h1WhiteBold,
                               ),
                             ],
                           ),
                           Text(
                             "Total: R\$ ${0.0}",
-                            style: AppTextStyles.defaultStyleB,
+                            style: AppTextStyles.h1WhiteBold,
                           ),
                         ],
                       ),
@@ -132,7 +132,7 @@ class _ContainersState extends State<Containers> {
             ? Center(
                 child: Text(
                   "Não há Paineis para Listar",
-                  style: AppTextStyles.defaultStyleB,
+                  style: AppTextStyles.h1WhiteBold,
                 ),
               )
             : Center(
@@ -142,7 +142,7 @@ class _ContainersState extends State<Containers> {
                   children: [
                     Text(
                       "Erro ao pegar os dados",
-                      style: AppTextStyles.defaultStyleB,
+                      style: AppTextStyles.h1WhiteBold,
                     ),
                     AppButtonWidget(
                       onPressed: () => _init(),

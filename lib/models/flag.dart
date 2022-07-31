@@ -1,10 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 class FlagModel {
-  Icon icon;
+  int icon;
   String name;
   double plus;
   int id;
@@ -13,20 +10,21 @@ class FlagModel {
     required this.name,
     required this.plus,
     required this.id,
-    this.icon = const Icon(Icons.flag),
+    required this.icon,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
       'plus': plus,
-      'icon': icon,
+      'icon': jsonEncode(icon),
       'id': id,
     };
   }
 
   factory FlagModel.fromMap(Map<String, dynamic> map) {
     return FlagModel(
+      icon: map['icon'] as int,
       name: map['name'] as String,
       plus: map['plus'] as double,
       id: map['id'] as int,
@@ -37,19 +35,4 @@ class FlagModel {
 
   factory FlagModel.fromJson(String source) =>
       FlagModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  bool operator ==(covariant FlagModel other) {
-    if (identical(this, other)) return true;
-
-    return other.name == name &&
-        other.plus == plus &&
-        other.icon == icon &&
-        other.id == id;
-  }
-
-  @override
-  int get hashCode {
-    return name.hashCode ^ plus.hashCode ^ icon.hashCode ^ id.hashCode;
-  }
 }

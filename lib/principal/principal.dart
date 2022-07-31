@@ -35,14 +35,17 @@ class _PrincipalState extends State<Principal> {
   String totalKw = "0.0";
   String panelName = '';
 
-  List<DeviceModel> devices = [];
-  List<DeviceModel> dropDevices = [
-    DeviceModel(power: 600.0, name: "ventilador", id: 1),
-    DeviceModel(power: 9.0, name: "Lampada LED", id: 2),
-    DeviceModel(power: 100.0, name: "Carregador Notebook", id: 3),
-    DeviceModel(power: 200.0, name: "Outro Item", id: 4),
-    DeviceModel(power: 1500.0, name: "Microondas", id: 5),
+  List<String> texts = [
+    'Nome',
+    'Pot. (w)',
+    'Hrs',
+    'Dias',
+    'Qtd',
   ];
+
+  List<DeviceModel> devices = [];
+
+  DeviceModel? _selectedDevice;
 
   void _getTotal() {
     double tots = 0.0;
@@ -97,7 +100,6 @@ class _PrincipalState extends State<Principal> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.darkBlue,
-      appBar: CustomAppBar(),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
@@ -106,7 +108,7 @@ class _PrincipalState extends State<Principal> {
             Center(
               child: Text(
                 panelName,
-                style: AppTextStyles.defaultStyleB,
+                style: AppTextStyles.h1WhiteBold,
               ),
             ),
             SizedBox(height: 10),
@@ -118,9 +120,10 @@ class _PrincipalState extends State<Principal> {
                 elevation: 5,
                 hint: Text(
                   'Selecione um Dispositivo',
-                  style: AppTextStyles.defaultStyleB,
+                  style: AppTextStyles.h1WhiteBold,
                 ),
-                items: dropDevices.map<DropdownMenuItem<DeviceModel>>((value) {
+                items: controller.dropDevices
+                    .map<DropdownMenuItem<DeviceModel>>((value) {
                   return DropdownMenuItem<DeviceModel>(
                     value: value,
                     child: Text(value.name),
@@ -150,60 +153,42 @@ class _PrincipalState extends State<Principal> {
                     padding: EdgeInsets.only(right: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: const [
-                        Expanded(
-                          flex: 4,
-                          child: Center(
-                            child: Text(
-                              'Nome',
-                              style: AppTextStyles.styleListB,
+                      children: [
+                        for (var index = 0; index < 5; index++) ...[
+                          Expanded(
+                            flex: index == 0
+                                ? 4
+                                : index == 1
+                                    ? 2
+                                    : 1,
+                            child: Center(
+                              child: Text(
+                                texts[index],
+                                style: AppTextStyles.h3WhiteBold,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Center(
-                            child: Text(
-                              'Pot. (w)',
-                              style: AppTextStyles.styleListB,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              'Hrs',
-                              style: AppTextStyles.styleListB,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              'Dias',
-                              style: AppTextStyles.styleListB,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              'Qtd',
-                              style: AppTextStyles.styleListB,
-                            ),
-                          ),
-                        ),
+                        ]
                       ],
                     ),
                   ),
                   SizedBox(
                     width: double.infinity,
-                    height: MediaQuery.of(context).size.height / 2,
+                    height: MediaQuery.of(context).size.height -
+                        kBottomNavigationBarHeight -
+                        kToolbarHeight -
+                        183,
                     child: ListView.builder(
                       padding: EdgeInsets.all(0),
                       itemCount: devices.length,
                       itemBuilder: (context, index) {
                         return ListTile(
+                          onLongPress: () {
+                            setState(() {
+                              _selectedDevice = devices[index];
+                            });
+                          },
+                          onTap: () => _clickOnDevice(index),
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -213,7 +198,7 @@ class _PrincipalState extends State<Principal> {
                                   onTap: () => _clickOnDevice(index),
                                   child: Text(
                                     devices[index].name,
-                                    style: AppTextStyles.styleListB,
+                                    style: AppTextStyles.h3WhiteBold,
                                   ),
                                 ),
                               ),
@@ -222,7 +207,7 @@ class _PrincipalState extends State<Principal> {
                                 child: Center(
                                   child: Text(
                                     devices[index].power.toString(),
-                                    style: AppTextStyles.styleListB,
+                                    style: AppTextStyles.h3WhiteBold,
                                   ),
                                 ),
                               ),
@@ -230,12 +215,12 @@ class _PrincipalState extends State<Principal> {
                                 child: TextField(
                                   controller: hoursControllers[index],
                                   keyboardType: TextInputType.number,
-                                  style: AppTextStyles.styleListB,
+                                  style: AppTextStyles.h3WhiteBold,
                                   textAlign: TextAlign.center,
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(2),
                                   ],
-                                  onChanged: (tex) async {
+                                  onChanged: (tex) {
                                     if (tex != "" && int.parse(tex) >= 24) {
                                       hoursControllers[index].text = '24';
                                     }
@@ -248,12 +233,12 @@ class _PrincipalState extends State<Principal> {
                                 child: TextField(
                                   controller: daysControllers[index],
                                   keyboardType: TextInputType.number,
-                                  style: AppTextStyles.styleListB,
+                                  style: AppTextStyles.h3WhiteBold,
                                   textAlign: TextAlign.center,
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(2),
                                   ],
-                                  onChanged: (tex) async {
+                                  onChanged: (tex) {
                                     if (tex != "") {
                                       if (int.parse(tex) >= 99) {
                                         daysControllers[index].text = '99';
@@ -267,12 +252,12 @@ class _PrincipalState extends State<Principal> {
                                 child: TextField(
                                   keyboardType: TextInputType.number,
                                   controller: qtdControllers[index],
-                                  style: AppTextStyles.styleListB,
+                                  style: AppTextStyles.h3WhiteBold,
                                   textAlign: TextAlign.center,
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(3),
                                   ],
-                                  onChanged: (tex) async {
+                                  onChanged: (tex) {
                                     if (tex != "") {
                                       if (int.parse(tex) >= 999) {
                                         qtdControllers[index].text = '999';
@@ -296,10 +281,11 @@ class _PrincipalState extends State<Principal> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Expanded(
-                              child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 20),
                                 child: Text(
-                                  "Total (Kw/h)",
-                                  style: AppTextStyles.defaultStyleB,
+                                  "Total: ",
+                                  style: AppTextStyles.h1WhiteBold,
                                 ),
                               ),
                             ),
@@ -307,8 +293,8 @@ class _PrincipalState extends State<Principal> {
                               child: Padding(
                                 padding: EdgeInsets.only(right: 20),
                                 child: Text(
-                                  totalKw,
-                                  style: AppTextStyles.defaultStyleB,
+                                  '$totalKw kWh',
+                                  style: AppTextStyles.h1WhiteBold,
                                   textAlign: TextAlign.right,
                                 ),
                               ),
@@ -319,10 +305,11 @@ class _PrincipalState extends State<Principal> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Expanded(
-                              child: Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 20),
                                 child: Text(
-                                  "Total (R\$)",
-                                  style: AppTextStyles.defaultStyleB,
+                                  "Total: ",
+                                  style: AppTextStyles.h1WhiteBold,
                                 ),
                               ),
                             ),
@@ -330,8 +317,8 @@ class _PrincipalState extends State<Principal> {
                               child: Padding(
                                 padding: EdgeInsets.only(right: 20),
                                 child: Text(
-                                  totalReais,
-                                  style: AppTextStyles.defaultStyleB,
+                                  'R\$ $totalReais',
+                                  style: AppTextStyles.h1WhiteBold,
                                   textAlign: TextAlign.right,
                                 ),
                               ),

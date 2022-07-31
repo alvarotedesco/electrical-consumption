@@ -38,7 +38,7 @@ class _UserAreaState extends State<UserArea> {
       ),
       child: Text(
         info,
-        style: AppTextStyles.defaultStyleB,
+        style: AppTextStyles.h1WhiteBold,
       ),
     );
   }
@@ -46,11 +46,13 @@ class _UserAreaState extends State<UserArea> {
   Widget _errorWidget() {
     return controller.state == UserState.error
         ? Center(child: Text(error))
-        : Center(
-            child: CircularProgressIndicator(
-              backgroundColor: AppColors.secondary,
-            ),
-          );
+        : controller.state == UserState.loading
+            ? Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: AppColors.secondary,
+                ),
+              )
+            : Center(child: Text('falha'));
   }
 
   @override
@@ -94,8 +96,8 @@ class _UserAreaState extends State<UserArea> {
                     ),
                     SizedBox(height: 40),
                     Text(
-                      controller.userName,
-                      style: AppTextStyles.userName,
+                      controller.user!.name as String,
+                      style: AppTextStyles.whiteBold28,
                     ),
                     SizedBox(height: 40),
                     Container(
@@ -107,9 +109,10 @@ class _UserAreaState extends State<UserArea> {
                       ),
                       child: Column(
                         children: [
-                          _infoUser(controller.userCpf),
+                          _infoUser(controller.user!.cpf),
                           SizedBox(height: 20),
-                          _infoUser(controller.userMail),
+                          _infoUser(controller.user!.username),
+                          // username == email
                         ],
                       ),
                     ),

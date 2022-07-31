@@ -30,10 +30,10 @@ class AuthController {
         session.token = resposta["token"];
         state = AuthState.success;
         return {"status": "success", "data": resposta};
-      } else {
-        state = AuthState.error;
-        return {"status": "error", "data": response.toString()};
       }
+
+      state = AuthState.error;
+      return {"status": "error", "data": response.toString()};
     } on Exception {
       state = AuthState.error;
       return {"status": "error"};
@@ -42,7 +42,7 @@ class AuthController {
 
   Future<Map<String, dynamic>> registry(UserModel user) async {
     try {
-    state = AuthState.loading;
+      state = AuthState.loading;
       var response = await HttpUtil().post(
         url: Underwear.registryURL,
         headers: {"Content-Type": "application/json"},
@@ -55,10 +55,10 @@ class AuthController {
         session.token = resposta["token"];
         state = AuthState.success;
         return {"status": "success", "data": resposta};
-      } else {
-        state = AuthState.error;
-        return {"status": "error", "data": response.toString()};
       }
+
+      state = AuthState.error;
+      return {"status": "error", "data": response.toString()};
     } on Exception {
       state = AuthState.error;
       return {"status": "error"};

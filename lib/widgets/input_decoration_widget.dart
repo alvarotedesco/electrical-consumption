@@ -35,14 +35,14 @@ class InputDecorationWidget extends StatelessWidget {
       children: [
         TextFormField(
           obscureText: isPassword ? !passwordVisible : false,
-          style: AppTextStyles.defaultStyle,
+          style: AppTextStyles.h1White,
           inputFormatters: inputFormatters,
           onFieldSubmitted: onSubmited,
           keyboardType: textInputType,
           controller: controller,
           onChanged: onChanged,
           decoration: InputDecoration(
-            labelStyle: style ?? AppTextStyles.defaultStyleB,
+            labelStyle: style ?? AppTextStyles.h1WhiteBold,
             labelText: label,
             contentPadding:
                 EdgeInsets.only(left: 20, right: isPassword ? 0 : 20),

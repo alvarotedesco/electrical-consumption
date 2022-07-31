@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:electrical_comsuption/models/container.dart';
@@ -5,14 +6,16 @@ import 'package:electrical_comsuption/models/device.dart';
 
 class ContainerDeviceModel {
   final ContainerModel container;
-  final double consumptionTime;
   final DeviceModel device;
   final int containerId;
   final int deviceId;
+  final double consTimeHours;
+  final int consTimeDays;
   final int quantity;
 
   ContainerDeviceModel({
-    required this.consumptionTime,
+    required this.consTimeHours,
+    required this.consTimeDays,
     required this.containerId,
     required this.container,
     required this.deviceId,
@@ -22,24 +25,26 @@ class ContainerDeviceModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'consumptionTime': consumptionTime,
       'container': container.toMap(),
-      'containerId': containerId,
       'device': device.toMap(),
+      'containerId': containerId,
       'deviceId': deviceId,
+      'consTimeHour': consTimeHours,
+      'consTimeDays': consTimeDays,
       'quantity': quantity,
     };
   }
 
   factory ContainerDeviceModel.fromMap(Map<String, dynamic> map) {
     return ContainerDeviceModel(
-      device: DeviceModel.fromMap(map['device'] as Map<String, dynamic>),
-      consumptionTime: map['consumption_time'] as double,
-      containerId: map['container_id'] as int,
-      deviceId: map['device_id'] as int,
-      quantity: map['quantity'] as int,
       container:
           ContainerModel.fromMap(map['container'] as Map<String, dynamic>),
+      device: DeviceModel.fromMap(map['device'] as Map<String, dynamic>),
+      containerId: map['containerId'] as int,
+      deviceId: map['deviceId'] as int,
+      consTimeHours: map['consTimeHour'] as double,
+      consTimeDays: map['consTimeDays'] as int,
+      quantity: map['quantity'] as int,
     );
   }
 
