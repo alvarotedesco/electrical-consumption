@@ -19,8 +19,8 @@ class Luvas {
   static const String calculate = 'Calcular';
   static const String nameDevice = 'Nome';
   static const String powerDevice = 'Potência';
-  static const String simulationCalc = 'Simulando cálculo de consumo';
-  static const String registerDevice = 'Cadastrando dispositivo';
+  static const String simulationCalc = 'Simular consumo';
+  static const String registerDevice = 'Cadastrar dispositivo';
   static const String selectFlag = 'Selecionar uma bandeira:';
   static const String goBack = 'Voltar';
   static const String leave = 'Sair';
