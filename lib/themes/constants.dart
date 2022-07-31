@@ -50,6 +50,7 @@ class Underwear {
 
   static const String createContainerURL = ''; // TODO
   static const String saveContainerURL = ''; // TODO
+  static const String deleteContainerURL = ''; // TODO
   static const String listContainersURL = ''; // TODO
 
   static const String createDeviceURL = 'device/save';

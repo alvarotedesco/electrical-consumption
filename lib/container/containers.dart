@@ -5,7 +5,6 @@ import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/floating_button_widget.dart';
@@ -167,6 +166,14 @@ class _ContainersState extends State<Containers> {
     });
   }
 
+  void clear() {
+    setState(() {
+      edit = false;
+      onLong = false;
+      _containerSelected = null;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -190,11 +197,22 @@ class _ContainersState extends State<Containers> {
         ),
         floatingActionButton: FloatingCustomButtonWidget(
           selected: _containerSelected != null,
-          onNewButton: () {
-            Navigator.pushNamed(context, '/novo-painel');
+          onNewButton: () async {
+            await Navigator.pushNamed(context, '/novo-painel');
+            clear();
           },
-          onEditButton: () {},
-          onDeleteButton: () {},
+          onEditButton: () async {
+            await Navigator.pushNamed(
+              context,
+              '/editar-painel',
+              arguments: _containerSelected,
+            );
+            clear();
+          },
+          onDeleteButton: () {
+            controller.deleteContainer(_containerSelected!.id as int);
+            clear();
+          },
         ),
         body: controller.state != ContainerState.success
             ? _errorWidget()

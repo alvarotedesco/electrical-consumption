@@ -1,13 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:electrical_comsuption/models/flag.dart';
+
 class ContainerModel {
+  final FlagModel flag;
   final String name;
-  final int days;
-  final int flag;
   final int? id;
 
   ContainerModel({
-    required this.days,
     required this.flag,
     required this.name,
     this.id,
@@ -15,8 +16,7 @@ class ContainerModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'days': days,
-      'flag': flag,
+      'flag': flag.toMap(),
       'name': name,
       'id': id,
     };
@@ -24,10 +24,9 @@ class ContainerModel {
 
   factory ContainerModel.fromMap(Map<String, dynamic> map) {
     return ContainerModel(
-      id: map['id'] != null ? map['id'] as int : null,
+      flag: FlagModel.fromMap(map['flag'] as Map<String, dynamic>),
       name: map['name'] as String,
-      days: map['days'] as int,
-      flag: map['flag'] as int,
+      id: map['id'] != null ? map['id'] as int : null,
     );
   }
 

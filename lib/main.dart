@@ -7,6 +7,7 @@ import 'package:electrical_comsuption/device/device_area.dart';
 import 'package:electrical_comsuption/home.dart';
 import 'package:electrical_comsuption/models/container.dart';
 import 'package:electrical_comsuption/models/device.dart';
+import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/user/user_area.dart';
 import 'package:electrical_comsuption/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Electrical Consumption',
       initialRoute: '/login',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: AppColors.primarySwatch,
       ),
       routes: {
         '/login': (_) => LoginPage(),

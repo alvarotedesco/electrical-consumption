@@ -7,6 +7,12 @@ class FloatingCustomButtonWidget extends StatefulWidget {
   VoidCallback? onEditButton;
   VoidCallback? onNewButton;
 
+  String? heroTagEdit;
+  String? heroTagConfirm;
+  String? heroTagDelete;
+  String? heroTagCancel;
+  String? heroTagNew;
+
   final bool cancel;
   final bool selected;
 
@@ -18,6 +24,11 @@ class FloatingCustomButtonWidget extends StatefulWidget {
     this.onDeleteButton,
     this.onEditButton,
     this.onNewButton,
+    this.heroTagConfirm,
+    this.heroTagCancel,
+    this.heroTagDelete,
+    this.heroTagEdit,
+    this.heroTagNew,
     super.key,
   });
 
@@ -44,6 +55,7 @@ class _FloatingCustomButtonWidgetState
         if (!widget.cancel) ...[
           if (widget.selected) ...[
             FloatingActionButton(
+              heroTag: widget.heroTagEdit,
               tooltip: "Editar",
               onPressed: widget.onEditButton,
               child: Icon(
@@ -53,6 +65,7 @@ class _FloatingCustomButtonWidgetState
             ),
             SizedBox(height: 20),
             FloatingActionButton(
+              heroTag: widget.heroTagDelete,
               tooltip: "Excluir",
               onPressed: widget.onDeleteButton,
               child: Icon(
@@ -62,6 +75,7 @@ class _FloatingCustomButtonWidgetState
             ),
           ] else
             FloatingActionButton(
+              heroTag: widget.heroTagNew,
               tooltip: "Novo",
               onPressed: widget.onNewButton,
               child: Icon(
@@ -71,6 +85,7 @@ class _FloatingCustomButtonWidgetState
             ),
         ] else ...[
           FloatingActionButton(
+            heroTag: widget.heroTagConfirm,
             tooltip: 'Confirmar',
             onPressed: widget.onConfirmButton,
             child: Icon(
@@ -80,6 +95,7 @@ class _FloatingCustomButtonWidgetState
           ),
           SizedBox(height: 20),
           FloatingActionButton(
+            heroTag: widget.heroTagCancel,
             tooltip: 'Cancelar',
             onPressed: widget.onCancelButton,
             child: Icon(
