@@ -40,6 +40,7 @@ class Meias {
 }
 
 class Underwear {
+  static const String electricalConsumption = 'Consumo Elétrico';
   static const String baseURL = 'http://25.72.151.164:8080/';
   static const String loginURL = 'auth/login';
   static const String registryURL = 'auth/registry';
