@@ -1,3 +1,4 @@
+import 'package:electrical_comsuption/dashboard/dashboard.dart';
 import 'package:electrical_comsuption/device/devices.dart';
 import 'package:electrical_comsuption/principal/principal.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
@@ -29,6 +30,7 @@ class _HomeState extends State<Home> {
     items = [
       Principal(painelId: painelid ?? 0),
       Devices(),
+      Dashboard(),
     ];
   }
 
@@ -60,6 +62,10 @@ class _HomeState extends State<Home> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.tablet_mac_rounded),
                 label: 'Dispositivos',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.data_usage_sharp),
+                label: 'Dashboard',
               ),
             ],
           ),
