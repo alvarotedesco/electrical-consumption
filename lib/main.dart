@@ -8,6 +8,7 @@ import 'package:electrical_comsuption/home.dart';
 import 'package:electrical_comsuption/models/container.dart';
 import 'package:electrical_comsuption/models/device.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
+import 'package:electrical_comsuption/themes/constants.dart';
 import 'package:electrical_comsuption/user/user_area.dart';
 import 'package:electrical_comsuption/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Electrical Consumption',
+      title: Underwear.electricalConsumption,
       initialRoute: '/login',
       theme: ThemeData(
         primarySwatch: AppColors.primarySwatch,
