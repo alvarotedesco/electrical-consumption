@@ -29,7 +29,7 @@ class _DeviceAreaState extends State<DeviceArea> {
   final nameDeviceController = TextEditingController();
 
   int feeFlag = 0;
-  int id = 0;
+  int? id = 0;
 
   void _save() {
     if (powerDeviceController.text.trim().isEmpty ||
@@ -41,7 +41,6 @@ class _DeviceAreaState extends State<DeviceArea> {
     DeviceModel device = DeviceModel(
       power: double.parse(powerDeviceController.text),
       name: nameDeviceController.text,
-      flag: feeFlag,
       id: id,
     );
 
@@ -86,7 +85,6 @@ class _DeviceAreaState extends State<DeviceArea> {
       setState(() {
         powerDeviceController.text = widget.device!.power.toString();
         nameDeviceController.text = widget.device!.name;
-        feeFlag = widget.device!.flag;
         id = widget.device!.id;
       });
     }
@@ -139,52 +137,6 @@ class _DeviceAreaState extends State<DeviceArea> {
                     Text(
                       Luvas.selectFlag,
                       style: AppTextStyles.totalStyle,
-                    ),
-                    SizedBox(height: 10),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        for (int i = 0; i < 5; i++)
-                          // for (int i = 0; i < controller.listDevices.length; i++)
-                          Card(
-                            color: AppColors.primary,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Radio(
-                                  activeColor: AppColors.white,
-                                  groupValue: feeFlag,
-                                  value: i,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      feeFlag = int.parse('$value');
-                                    });
-                                  },
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      feeFlag = i;
-                                    });
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.all(4),
-                                    height: 40,
-                                    child: Image.asset(
-                                      Meias.flags[i],
-                                      alignment: Alignment.centerLeft,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                      ],
                     ),
                     SizedBox(height: 20),
                     Row(

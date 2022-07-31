@@ -16,42 +16,52 @@ class AuthController {
   var session = SessionController();
 
   Future<Map<String, dynamic>> login(UserModel user) async {
-    state = AuthState.loading;
-    var response = await HttpUtil().post(
-      url: Underwear.loginURL,
-      headers: {"Content-Type": "application/json"},
-      data: user.toJson(),
-    );
+    try {
+      state = AuthState.loading;
+      var response = await HttpUtil().post(
+        url: Underwear.loginURL,
+        headers: {"Content-Type": "application/json"},
+        data: user.toJson(),
+      );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resposta = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> resposta = jsonDecode(response.body);
 
-      session.token = resposta["token"];
-      state = AuthState.success;
-      return {"status": "success", "data": resposta};
-    } else {
+        session.token = resposta["token"];
+        state = AuthState.success;
+        return {"status": "success", "data": resposta};
+      } else {
+        state = AuthState.error;
+        return {"status": "error", "data": response.toString()};
+      }
+    } on Exception {
       state = AuthState.error;
-      return {"status": "error", "data": response.toString()};
+      return {"status": "error"};
     }
   }
 
   Future<Map<String, dynamic>> registry(UserModel user) async {
+    try {
     state = AuthState.loading;
-    var response = await HttpUtil().post(
-      url: Underwear.registryURL,
-      headers: {"Content-Type": "application/json"},
-      data: user.toJson(),
-    );
+      var response = await HttpUtil().post(
+        url: Underwear.registryURL,
+        headers: {"Content-Type": "application/json"},
+        data: user.toJson(),
+      );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resposta = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> resposta = jsonDecode(response.body);
 
-      session.token = resposta["token"];
-      state = AuthState.success;
-      return {"status": "success", "data": resposta};
-    } else {
+        session.token = resposta["token"];
+        state = AuthState.success;
+        return {"status": "success", "data": resposta};
+      } else {
+        state = AuthState.error;
+        return {"status": "error", "data": response.toString()};
+      }
+    } on Exception {
       state = AuthState.error;
-      return {"status": "error", "data": response.toString()};
+      return {"status": "error"};
     }
   }
 }

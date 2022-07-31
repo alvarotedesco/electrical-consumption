@@ -16,7 +16,6 @@ class InputDecorationWidget extends StatelessWidget {
   final String? label;
 
   const InputDecorationWidget({
-    super.key,
     this.passwordVisible = false,
     required this.textInputType,
     required this.controller,
@@ -27,6 +26,7 @@ class InputDecorationWidget extends StatelessWidget {
     this.onPressed,
     this.onChanged,
     this.style,
+    super.key,
   });
 
   @override
@@ -46,6 +46,14 @@ class InputDecorationWidget extends StatelessWidget {
             labelText: label,
             contentPadding:
                 EdgeInsets.only(left: 20, right: isPassword ? 0 : 20),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 3, color: AppColors.primary),
+              borderRadius: BorderRadius.circular(80),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: 5, color: AppColors.primary),
+              borderRadius: BorderRadius.circular(80),
+            ),
             suffixIcon: isPassword
                 ? Container(
                     padding: const EdgeInsets.only(right: 10),
@@ -60,18 +68,6 @@ class InputDecorationWidget extends StatelessWidget {
                     ),
                   )
                 : null,
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(width: 3, color: AppColors.primary),
-              borderRadius: BorderRadius.all(
-                Radius.circular(80),
-              ),
-            ),
-            focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(width: 5, color: AppColors.primary),
-              borderRadius: BorderRadius.all(
-                Radius.circular(80),
-              ),
-            ),
           ),
         ),
         SizedBox(height: 8),
