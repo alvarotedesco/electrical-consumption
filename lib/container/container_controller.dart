@@ -124,6 +124,7 @@ class ContainerController {
         url: Underwear.containersURL,
       );
 
+      _listContainers.clear();
       if (response.statusCode == 200) {
         List resposta = jsonDecode(response.body);
 

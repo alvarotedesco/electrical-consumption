@@ -196,6 +196,7 @@ class _ContainersState extends State<Containers> {
           onNewButton: () async {
             await Navigator.pushNamed(context, '/novo-painel');
             clear();
+            _init();
           },
           onEditButton: () async {
             await Navigator.pushNamed(
@@ -204,10 +205,12 @@ class _ContainersState extends State<Containers> {
               arguments: _containerSelected,
             );
             clear();
+            _init();
           },
           onDeleteButton: () {
             controller.deleteContainer(_containerSelected!.id as int);
             clear();
+            _init();
           },
         ),
         body: controller.state != ContainerState.success
