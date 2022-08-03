@@ -14,11 +14,15 @@ class FloatingCustomButtonWidget extends StatefulWidget {
   String? heroTagNew;
 
   final bool cancel;
+  final bool delete;
   final bool selected;
+  final bool canCreate;
 
   FloatingCustomButtonWidget({
     required this.selected,
+    this.canCreate = true,
     this.cancel = false,
+    this.delete = true,
     this.onConfirmButton,
     this.onCancelButton,
     this.onDeleteButton,
@@ -54,26 +58,37 @@ class _FloatingCustomButtonWidgetState
       children: [
         if (!widget.cancel) ...[
           if (widget.selected) ...[
-            FloatingActionButton(
-              heroTag: widget.heroTagEdit,
-              tooltip: "Editar",
-              onPressed: widget.onEditButton,
-              child: Icon(
-                Icons.edit,
-                size: 40,
+            if (widget.delete) ...[
+              FloatingActionButton(
+                heroTag: widget.heroTagEdit,
+                tooltip: "Editar",
+                onPressed: widget.onEditButton,
+                child: Icon(
+                  Icons.edit,
+                  size: 40,
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            FloatingActionButton(
-              heroTag: widget.heroTagDelete,
-              tooltip: "Excluir",
-              onPressed: widget.onDeleteButton,
-              child: Icon(
-                Icons.delete_forever,
-                size: 40,
+              SizedBox(height: 20),
+              FloatingActionButton(
+                heroTag: widget.heroTagDelete,
+                tooltip: "Excluir",
+                onPressed: widget.onDeleteButton,
+                child: Icon(
+                  Icons.delete_forever,
+                  size: 40,
+                ),
               ),
-            ),
-          ] else
+            ] else
+              FloatingActionButton(
+                heroTag: widget.heroTagEdit,
+                tooltip: "Editar",
+                onPressed: widget.onEditButton,
+                child: Icon(
+                  Icons.edit,
+                  size: 40,
+                ),
+              ),
+          ] else if (widget.canCreate)
             FloatingActionButton(
               heroTag: widget.heroTagNew,
               tooltip: "Novo",
