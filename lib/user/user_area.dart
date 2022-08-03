@@ -1,7 +1,9 @@
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/user/user_controller.dart';
+import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
+import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../themes/constants.dart';
@@ -16,6 +18,8 @@ class UserArea extends StatefulWidget {
 
 class _UserAreaState extends State<UserArea> {
   final controller = UserController();
+  final TextEditingController controllerInputName = TextEditingController();
+  final TextEditingController controllerInputEmail = TextEditingController();
   String error = '';
 
   Widget _infoUser(info) {
@@ -110,6 +114,21 @@ class _UserAreaState extends State<UserArea> {
                           _infoUser(controller.user!.cpf),
                           SizedBox(height: 20),
                           _infoUser(controller.user!.email),
+                          InputDecorationWidget(
+                              textInputType: TextInputType.name,
+                              controller: controllerInputName,
+                              label: 'teste'),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AppButtonWidget(
+                                onPressed: () => {},
+                                texto: 'Excluir conta',
+                                color: AppColors.darkOrange,
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
