@@ -15,9 +15,11 @@ class FloatingCustomButtonWidget extends StatefulWidget {
 
   final bool cancel;
   final bool selected;
+  final bool newButton;
 
   FloatingCustomButtonWidget({
     required this.selected,
+    this.newButton = true,
     this.cancel = false,
     this.onConfirmButton,
     this.onCancelButton,
@@ -73,7 +75,8 @@ class _FloatingCustomButtonWidgetState
                 size: 40,
               ),
             ),
-          ] else
+          ],
+          if (widget.newButton)
             FloatingActionButton(
               heroTag: widget.heroTagNew,
               tooltip: "Novo",

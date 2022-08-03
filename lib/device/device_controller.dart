@@ -79,7 +79,7 @@ class DeviceController {
       );
 
       if (response.statusCode == 200) {
-        List<Map<String, dynamic>> resposta = jsonDecode(response.body);
+        List<dynamic> resposta = jsonDecode(response.body);
         if (resposta.isEmpty) {
           state = DeviceState.empty;
           return {"status": "empty"};

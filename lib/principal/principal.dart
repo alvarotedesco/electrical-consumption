@@ -1,7 +1,9 @@
 import 'package:electrical_comsuption/models/device.dart';
+import 'package:electrical_comsuption/principal/principal_state.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
+import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,10 +11,10 @@ import '../widgets/snackbar_widget.dart';
 import 'principal_controller.dart';
 
 class Principal extends StatefulWidget {
-  final int painelId;
+  final int containerId;
 
   const Principal({
-    required this.painelId,
+    required this.containerId,
     super.key,
   });
 
@@ -23,9 +25,6 @@ class Principal extends StatefulWidget {
 class _PrincipalState extends State<Principal> {
   final PrincipalController controller = PrincipalController();
 
-  final List<TextEditingController> hoursControllers = [];
-  final List<TextEditingController> daysControllers = [];
-  final List<TextEditingController> qtdControllers = [];
   final productController = TextEditingController();
   final nomeEqController = TextEditingController();
   final pwrEqController = TextEditingController();
@@ -43,17 +42,15 @@ class _PrincipalState extends State<Principal> {
     'Qtd',
   ];
 
-  List<DeviceModel> devices = [];
-
   DeviceModel? _selectedDevice;
 
   void _getTotal() {
     double tots = 0.0;
-    for (var i = 0; i < devices.length; i++) {
-      int hour = int.parse(hoursControllers[i].text);
-      int day = int.parse(daysControllers[i].text);
-      int qtd = int.parse(qtdControllers[i].text);
-      double pwr = devices[i].power;
+    for (var i = 0; i < controller.containerDevices.length; i++) {
+      int hour = int.parse(controller.hoursControllers[i].text);
+      int day = int.parse(controller.daysControllers[i].text);
+      int qtd = int.parse(controller.qtdControllers[i].text);
+      double pwr = controller.containerDevices[i].power;
 
       tots += hour * day * qtd * pwr / 1000;
     }
@@ -69,15 +66,29 @@ class _PrincipalState extends State<Principal> {
     Navigator.pushNamed(
       context,
       '/editar-dispositivo',
-      arguments: devices[index],
+      arguments: controller.containerDevices[index],
     ).then((value) {
-      controller.getContainerDevice(widget.painelId).catchError((e) {
+      controller.getContainerDevice(widget.containerId).catchError((e) {
         AppSnackBar().showSnack(
           context,
           "Erro inesperado, Erro ao pegar os dados",
         );
       });
     });
+  }
+
+  void _onDelete() {
+    controller.removeContainerDevice(widget.containerId, _selectedDevice!.id!);
+  }
+
+  Widget? _errorWidget() {
+    return controller.state == PrincipalState.loading
+        ? Center(
+            child: CircularProgressIndicator(
+              color: AppColors.secondary,
+            ),
+          )
+        : null;
   }
 
   @override
@@ -88,242 +99,267 @@ class _PrincipalState extends State<Principal> {
       setState(() {});
     });
 
-    controller.getContainerDevice(widget.painelId).catchError((e) {
+    controller.getContainerDevice(widget.containerId).catchError((e) {
       AppSnackBar().showSnack(
         context,
         "Erro inesperado, Erro ao pegar os dados",
       );
     });
+    controller.getDevices().then((value) => _getTotal());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.darkBlue,
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Center(
-              child: Text(
-                panelName,
-                style: AppTextStyles.h1WhiteBold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: DropdownButton(
-                borderRadius: BorderRadius.circular(10),
-                isExpanded: true,
-                elevation: 5,
-                hint: Text(
-                  'Selecione um Dispositivo',
-                  style: AppTextStyles.h1WhiteBold,
-                ),
-                items: controller.dropDevices
-                    .map<DropdownMenuItem<DeviceModel>>((value) {
-                  return DropdownMenuItem<DeviceModel>(
-                    value: value,
-                    child: Text(value.name),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  print({'Item selecionado => ': value});
-                  setState(() {
-                    hoursControllers.add(TextEditingController());
-                    daysControllers.add(TextEditingController());
-                    qtdControllers.add(TextEditingController());
-                    devices.add(value as DeviceModel);
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: 10),
-            Container(
-              padding: EdgeInsets.only(top: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.black60,
-              ),
+      floatingActionButton: FloatingCustomButtonWidget(
+        selected: _selectedDevice != null,
+        onDeleteButton: _onDelete,
+        newButton: false,
+      ),
+      body: controller.state != PrincipalState.success
+          ? _errorWidget()
+          : Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        for (var index = 0; index < 5; index++) ...[
-                          Expanded(
-                            flex: index == 0
-                                ? 4
-                                : index == 1
-                                    ? 2
-                                    : 1,
-                            child: Center(
-                              child: Text(
-                                texts[index],
-                                style: AppTextStyles.h3WhiteBold,
-                              ),
-                            ),
-                          ),
-                        ]
-                      ],
+                  Center(
+                    child: Text(
+                      panelName,
+                      style: AppTextStyles.h1WhiteBold,
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height -
-                        kBottomNavigationBarHeight -
-                        kToolbarHeight -
-                        183,
-                    child: ListView.builder(
-                      padding: EdgeInsets.all(0),
-                      itemCount: devices.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          onLongPress: () {
-                            setState(() {
-                              _selectedDevice = devices[index];
-                            });
-                          },
-                          onTap: () => _clickOnDevice(index),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                flex: 4,
-                                child: InkWell(
-                                  onTap: () => _clickOnDevice(index),
-                                  child: Text(
-                                    devices[index].name,
-                                    style: AppTextStyles.h3WhiteBold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Center(
-                                  child: Text(
-                                    devices[index].power.toString(),
-                                    style: AppTextStyles.h3WhiteBold,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: TextField(
-                                  controller: hoursControllers[index],
-                                  keyboardType: TextInputType.number,
-                                  style: AppTextStyles.h3WhiteBold,
-                                  textAlign: TextAlign.center,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(2),
-                                  ],
-                                  onChanged: (tex) {
-                                    if (tex != "" && int.parse(tex) >= 24) {
-                                      hoursControllers[index].text = '24';
-                                    }
-
-                                    _getTotal();
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                child: TextField(
-                                  controller: daysControllers[index],
-                                  keyboardType: TextInputType.number,
-                                  style: AppTextStyles.h3WhiteBold,
-                                  textAlign: TextAlign.center,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(2),
-                                  ],
-                                  onChanged: (tex) {
-                                    if (tex != "") {
-                                      if (int.parse(tex) >= 99) {
-                                        daysControllers[index].text = '99';
-                                      }
-                                      _getTotal();
-                                    }
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                child: TextField(
-                                  keyboardType: TextInputType.number,
-                                  controller: qtdControllers[index],
-                                  style: AppTextStyles.h3WhiteBold,
-                                  textAlign: TextAlign.center,
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(3),
-                                  ],
-                                  onChanged: (tex) {
-                                    if (tex != "") {
-                                      if (int.parse(tex) >= 999) {
-                                        qtdControllers[index].text = '999';
-                                      }
-                                      _getTotal();
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: DropdownButton(
+                      borderRadius: BorderRadius.circular(10),
+                      isExpanded: true,
+                      elevation: 5,
+                      hint: Text(
+                        'Selecione um Dispositivo',
+                        style: AppTextStyles.h1WhiteBold,
+                      ),
+                      items: controller.dropDevices
+                          .map<DropdownMenuItem<DeviceModel>>((value) {
+                        return DropdownMenuItem<DeviceModel>(
+                          value: value,
+                          child: Text(value.name),
                         );
+                      }).toList(),
+                      onChanged: (value) {
+                        print({'Item selecionado => ': value});
+                        setState(() {
+                          controller.addDevice(device: value as DeviceModel);
+                        });
                       },
                     ),
                   ),
+                  SizedBox(height: 10),
                   Container(
-                    margin: EdgeInsets.only(bottom: 8),
+                    padding: EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.black60,
+                    ),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Text(
-                                  "Total: ",
-                                  style: AppTextStyles.h1WhiteBold,
+                        Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              for (var index = 0; index < 5; index++) ...[
+                                Expanded(
+                                  flex: index == 0
+                                      ? 4
+                                      : index == 1
+                                          ? 2
+                                          : 1,
+                                  child: Center(
+                                    child: Text(
+                                      texts[index],
+                                      style: AppTextStyles.h3WhiteBold,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 20),
-                                child: Text(
-                                  '$totalKw kWh',
-                                  style: AppTextStyles.h1WhiteBold,
-                                  textAlign: TextAlign.right,
-                                ),
-                              ),
-                            ),
-                          ],
+                              ]
+                            ],
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 20),
-                                child: Text(
-                                  "Total: ",
-                                  style: AppTextStyles.h1WhiteBold,
+                        SizedBox(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height -
+                              kBottomNavigationBarHeight -
+                              kToolbarHeight -
+                              183,
+                          child: ListView.builder(
+                            padding: EdgeInsets.all(0),
+                            itemCount: controller.containerDevices.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onLongPress: () {
+                                  setState(() {
+                                    if (_selectedDevice == null) {
+                                      _selectedDevice =
+                                          controller.containerDevices[index];
+                                    } else {
+                                      _selectedDevice = null;
+                                    }
+                                  });
+                                },
+                                onTap: () => _clickOnDevice(index),
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 4,
+                                      child: InkWell(
+                                        child: Text(
+                                          controller
+                                              .containerDevices[index].name,
+                                          style: AppTextStyles.h3WhiteBold,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Center(
+                                        child: Text(
+                                          controller
+                                              .containerDevices[index].power
+                                              .toString(),
+                                          style: AppTextStyles.h3WhiteBold,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: TextField(
+                                        controller:
+                                            controller.hoursControllers[index],
+                                        keyboardType: TextInputType.number,
+                                        style: AppTextStyles.h3WhiteBold,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(2),
+                                        ],
+                                        onChanged: (tex) {
+                                          if (tex != "" &&
+                                              int.parse(tex) >= 24) {
+                                            controller.hoursControllers[index]
+                                                .text = '24';
+                                          }
+
+                                          _getTotal();
+                                        },
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: TextField(
+                                        controller:
+                                            controller.daysControllers[index],
+                                        keyboardType: TextInputType.number,
+                                        style: AppTextStyles.h3WhiteBold,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(2),
+                                        ],
+                                        onChanged: (tex) {
+                                          if (tex != "") {
+                                            if (int.parse(tex) >= 99) {
+                                              controller.daysControllers[index]
+                                                  .text = '99';
+                                            }
+                                            _getTotal();
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: TextField(
+                                        keyboardType: TextInputType.number,
+                                        controller:
+                                            controller.qtdControllers[index],
+                                        style: AppTextStyles.h3WhiteBold,
+                                        textAlign: TextAlign.center,
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(3),
+                                        ],
+                                        onChanged: (tex) {
+                                          if (tex != "") {
+                                            if (int.parse(tex) >= 999) {
+                                              controller.qtdControllers[index]
+                                                  .text = '999';
+                                            }
+                                            _getTotal();
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                              );
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        "Total: ",
+                                        style: AppTextStyles.h1WhiteBold,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 20),
+                                      child: Text(
+                                        '$totalKw kWh',
+                                        style: AppTextStyles.h1WhiteBold,
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: EdgeInsets.only(right: 20),
-                                child: Text(
-                                  'R\$ $totalReais',
-                                  style: AppTextStyles.h1WhiteBold,
-                                  textAlign: TextAlign.right,
-                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        "Total: ",
+                                        style: AppTextStyles.h1WhiteBold,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 20),
+                                      child: Text(
+                                        'R\$ $totalReais',
+                                        style: AppTextStyles.h1WhiteBold,
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -331,9 +367,6 @@ class _PrincipalState extends State<Principal> {
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

@@ -41,9 +41,9 @@ class Meias {
 
 class Underwear {
   // static const String baseURL = 'http://25.72.151.164:8080/';
-  static const String baseURL =
-      'https://electrical-consumption.herokuapp.com/api/';
-  // static const String baseURL = 'http://127.0.0.1:8000/api/';
+  // static const String baseURL =
+  //     'https://electrical-consumption.herokuapp.com/api/';
+  static const String baseURL = 'http://127.0.0.1:8000/api/';
 
   static const String loginURL = 'login';
   static const String registerURL = 'register';
@@ -53,29 +53,14 @@ class Underwear {
   static const String updateUserURL = 'update-user';
   static const String deleteUserURL = 'delete-user';
 
-  static const String flagsURL = 'flags';
-
-  static const String containersURL = 'containers';
-
-  // static const String listContainersURL = 'container';
-  // static const String getContainerURL = 'container'; // /{id}
-  // static const String createContainerURL = 'container';
-  // static const String saveContainerURL = 'container'; // /{id}
-  // static const String deleteContainerURL = 'container'; // /{id}
+  static const String flagsURL = 'flags'; // apiResource
+  static const String containersURL = 'containers'; // apiResource
+  static const String devicesURL = 'devices'; // apiResource
 
   static const String deleteContainerDeviceURL = 'delete-container-device';
   // /{container_id}/{device_id}
 
   // static const String listDevicesURL = 'device/list?page=0';
-
-  static const String devicesURL = 'devices';
-
-  // static const String listDevicesURL = 'device';
-  // static const String getDeviceURL = 'device'; // /{id}
-  // static const String createDeviceURL = 'device';
-  // static const String saveDeviceURL = 'device'; // /{id}
-  // static const String deleteDeviceURL = 'device'; // /{id}
-
   static const String dicasURL =
       'https://www.grupocpfl.com.br/energias-sustentaveis/dicas-de-consumo-inteligente';
 }
