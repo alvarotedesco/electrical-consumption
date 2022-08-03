@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../http_util.dart';
 import '../models/flag.dart';
-import '../themes/app_colors.dart';
 import '../themes/constants.dart';
 import 'container_state.dart';
 
@@ -14,81 +13,53 @@ class ContainerController {
   set state(ContainerState state) => stateNotifier.value = state;
   ContainerState get state => stateNotifier.value;
 
-  List<ContainerModel> _listContainers = [
-    ContainerModel(
-      flag: FlagModel(
-        id: 1,
-        name: 'Bandeira Verde',
-        plus: 0,
-        icon: 1,
-      ),
-      name: 'Apartamento',
-    ),
-    ContainerModel(
-      flag: FlagModel(
-        id: 2,
-        name: 'Bandeira Amarela',
-        plus: 0.01874,
-        icon: 2,
-      ),
-      name: 'Mansão',
-    ),
-    ContainerModel(
-      flag: FlagModel(
-        id: 3,
-        name: 'Bandeira Vermelha P.1',
-        plus: 0.03971,
-        icon: 3,
-      ),
-      name: 'Casa',
-    ),
-  ];
-
-  List<FlagModel> dropFlags = [
-    FlagModel(
-      id: 1,
-      name: 'Bandeira Verde',
-      plus: 0,
-      icon: 1,
-    ),
-    FlagModel(
-      id: 2,
-      name: 'Bandeira Amarela',
-      plus: 0.01874,
-      icon: 2,
-    ),
-    FlagModel(
-      id: 3,
-      name: 'Bandeira Vermelha P.1',
-      plus: 0.03971,
-      icon: 3,
-    ),
-    FlagModel(
-      id: 4,
-      name: 'Bandeira Vermelha P.2',
-      plus: 0.09492,
-      icon: 4,
-    ),
-    FlagModel(
-      id: 5,
-      name: 'Bandeira Escassez Hídrica',
-      plus: 0.1420,
-      icon: 5,
-    ),
-  ];
+  List<ContainerModel> _listContainers = [];
+  List<FlagModel> _dropFlags = [];
 
   List<ContainerModel> get listContainers => _listContainers;
+  List<FlagModel> get dropFlags => _dropFlags;
+
+  Future<Map<String, dynamic>> getFlags() async {
+    try {
+      state = ContainerState.loading;
+
+      var response = await HttpUtil().get(
+        url: Underwear.flagsURL,
+      );
+
+      if (response.statusCode == 200) {
+        List resposta = jsonDecode(response.body);
+
+        if (resposta.isEmpty) {
+          state = ContainerState.empty;
+          return {"status": "empty"};
+        }
+
+        _dropFlags = resposta.map((e) => FlagModel.fromMap(e)).toList();
+
+        state = ContainerState.success;
+        return {"status": "success", "data": resposta};
+      }
+
+      state = ContainerState.error;
+      return {"status": "error", "data": 'response'.toString()};
+    } on Exception {
+      state = ContainerState.error;
+      return {"status": "error"};
+    }
+  }
 
   Future<Map<String, dynamic>> createContainer(ContainerModel container) async {
     try {
       state = ContainerState.loading;
       var response = await HttpUtil().post(
-        url: Underwear.createContainerURL,
+        url: Underwear.containersURL,
         data: container.toJson(),
       );
 
       if (response.statusCode == 200) {
         Map<String, dynamic> resposta = jsonDecode(response.body);
+
         state = ContainerState.success;
         return {"status": "success", "data": resposta};
       }
@@ -105,7 +76,7 @@ class ContainerController {
     try {
       state = ContainerState.loading;
       var response = await HttpUtil().delete(
-        url: Underwear.createContainerURL,
+        url: Underwear.containersURL,
         data: id,
       );
 
@@ -126,8 +97,8 @@ class ContainerController {
   Future<Map<String, dynamic>> saveContainer(ContainerModel container) async {
     try {
       state = ContainerState.loading;
-      var response = await HttpUtil().post(
-        url: Underwear.saveContainerURL,
+      var response = await HttpUtil().put(
+        url: Underwear.containersURL,
         data: container.toJson(),
       );
 
@@ -150,11 +121,11 @@ class ContainerController {
       state = ContainerState.loading;
 
       var response = await HttpUtil().get(
-        url: Underwear.listContainersURL,
+        url: Underwear.containersURL,
       );
 
       if (response.statusCode == 200) {
-        List<Map<String, dynamic>> resposta = jsonDecode(response.body);
+        List resposta = jsonDecode(response.body);
 
         if (resposta.isEmpty) {
           state = ContainerState.empty;
@@ -172,8 +143,6 @@ class ContainerController {
       return {"status": "error", "data": 'response'.toString()};
     } on Exception {
       state = ContainerState.error;
-
-      state = ContainerState.success;
       return {"status": "error"};
     }
   }

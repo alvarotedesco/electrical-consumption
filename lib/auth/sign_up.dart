@@ -46,13 +46,13 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     UserModel user = UserModel(
-      username: email,
       password: pass,
+      email: email,
       name: name,
       cpf: cpf,
     );
 
-    controller.registry(user).then((value) {
+    controller.register(user).then((value) {
       if (value['status'] == 'success') {
         Navigator.pushNamed(context, '/painel');
       } else {

@@ -26,9 +26,7 @@ class _UserAreaState extends State<UserArea> {
       height: 50,
       decoration: BoxDecoration(
         color: AppColors.transparent,
-        borderRadius: BorderRadius.all(
-          Radius.circular(80),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(80)),
         border: Border.fromBorderSide(
           BorderSide(
             color: AppColors.secondary,
@@ -111,8 +109,7 @@ class _UserAreaState extends State<UserArea> {
                         children: [
                           _infoUser(controller.user!.cpf),
                           SizedBox(height: 20),
-                          _infoUser(controller.user!.username),
-                          // username == email
+                          _infoUser(controller.user!.email),
                         ],
                       ),
                     ),

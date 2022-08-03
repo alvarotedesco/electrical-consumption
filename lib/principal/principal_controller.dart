@@ -26,11 +26,18 @@ class PrincipalController {
     try {
       state = PrincipalState.loading;
       var response = await HttpUtil().get(
-        url: '${Underwear.getContainerDevicesURL}/$containerId',
+        url: '${Underwear.containersURL}/$containerId',
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> resposta = jsonDecode(response.body);
+        List<Map<String, dynamic>> resposta = jsonDecode(response.body);
+
+        if (resposta.isEmpty) {
+          state = PrincipalState.empty;
+          return {"status": "empty", "data": resposta};
+        }
+
+        _dropDevices = resposta.map((e) => DeviceModel.fromMap(e)).toList();
 
         state = PrincipalState.success;
         return {"status": "success", "data": resposta};

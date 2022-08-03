@@ -40,11 +40,11 @@ class AuthController {
     }
   }
 
-  Future<Map<String, dynamic>> registry(UserModel user) async {
+  Future<Map<String, dynamic>> register(UserModel user) async {
     try {
       state = AuthState.loading;
       var response = await HttpUtil().post(
-        url: Underwear.registryURL,
+        url: Underwear.registerURL,
         headers: {"Content-Type": "application/json"},
         data: user.toJson(),
       );

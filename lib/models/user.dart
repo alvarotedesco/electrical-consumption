@@ -3,12 +3,12 @@ import 'dart:convert';
 class UserModel {
   final String? avatarUrl;
   final String? password;
-  final String username; // email
+  final String email; // email
   final String? name;
   final String? cpf;
 
   UserModel({
-    required this.username,
+    required this.email,
     this.avatarUrl,
     this.password,
     this.name,
@@ -19,7 +19,7 @@ class UserModel {
     return <String, dynamic>{
       'avatarUrl': avatarUrl,
       'password': password,
-      'username': username,
+      'email': email,
       'name': name,
       'cpf': cpf,
     };
@@ -31,7 +31,7 @@ class UserModel {
       password: map['password'] != null ? map['password'] as String : null,
       name: map['name'] != null ? map['name'] as String : null,
       cpf: map['cpf'] != null ? map['cpf'] as String : null,
-      username: map['username'] as String,
+      email: map['email'] as String,
     );
   }
 

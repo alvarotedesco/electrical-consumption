@@ -17,7 +17,7 @@ class FlagModel {
     return <String, dynamic>{
       'name': name,
       'plus': plus,
-      'icon': jsonEncode(icon),
+      'icon': icon,
       'id': id,
     };
   }

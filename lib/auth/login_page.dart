@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     var user = UserModel(
-      username: email,
+      email: email,
       password: pass,
     );
 

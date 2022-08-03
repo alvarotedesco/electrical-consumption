@@ -9,7 +9,9 @@ import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../models/container.dart';
+import '../widgets/button_widget.dart';
 import '../widgets/input_decoration_widget.dart';
+import 'container_state.dart';
 
 class ContainerArea extends StatefulWidget {
   final ContainerModel? container;
@@ -28,7 +30,12 @@ class _ContainerAreaState extends State<ContainerArea> {
 
   final nameController = TextEditingController();
 
-  late FlagModel feeFlag;
+  FlagModel feeFlag = FlagModel(
+    name: 'Bandeira Verde',
+    plus: 0,
+    id: 1,
+    icon: 1,
+  );
 
   Color _selectColor(int color) {
     return color == 1
@@ -47,6 +54,7 @@ class _ContainerAreaState extends State<ContainerArea> {
 
     var container = ContainerModel(
       name: name as String,
+      flagId: feeFlag.id,
       flag: feeFlag,
     );
 
@@ -55,19 +63,35 @@ class _ContainerAreaState extends State<ContainerArea> {
 
   Future<void> _editPanel(String? name) async {
     var container = ContainerModel(
-      name: name as String,
-      flag: feeFlag,
       id: widget.container!.id,
+      name: name as String,
+      flagId: feeFlag.id,
+      flag: feeFlag,
     );
 
     await controller.saveContainer(container);
+  }
+
+  Widget? _errorWidget() {
+    return controller.state == ContainerState.loading
+        ? Center(
+            child: CircularProgressIndicator(
+              color: AppColors.secondary,
+            ),
+          )
+        : null;
   }
 
   @override
   void initState() {
     super.initState();
 
-    feeFlag = controller.dropFlags[0];
+    controller.stateNotifier.addListener(() {
+      setState(() {});
+    });
+
+    controller.getFlags().then((value) => feeFlag = controller.dropFlags.first);
+
     if (widget.container != null) {
       nameController.text = widget.container!.name;
     }
@@ -95,60 +119,64 @@ class _ContainerAreaState extends State<ContainerArea> {
           },
           onCancelButton: () => Navigator.of(context).pop(),
         ),
-        body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InputDecorationWidget(
-                textInputType: TextInputType.name,
-                label: 'Nome do Painel',
-                controller: nameController,
-              ),
-              SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 3,
-                    color: AppColors.primary,
-                  ),
-                  borderRadius: BorderRadius.circular(80),
-                ),
-                child: DropdownButton(
-                  borderRadius: BorderRadius.circular(10),
-                  isExpanded: true,
-                  underline: SizedBox(height: 0),
-                  iconSize: 25,
-                  elevation: 5,
-                  dropdownColor: AppColors.primary,
-                  style: AppTextStyles.h1WhiteBold,
-                  value: feeFlag,
-                  items: controller.dropFlags.map<DropdownMenuItem<FlagModel>>(
-                    (value) {
-                      return DropdownMenuItem<FlagModel>(
-                        value: value,
-                        child: Row(
-                          children: [
-                            Icon(Icons.flag, color: _selectColor(value.icon)),
-                            SizedBox(width: 20),
-                            Text(value.name),
-                          ],
+        body: controller.state != ContainerState.success
+            ? _errorWidget()
+            : Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InputDecorationWidget(
+                      textInputType: TextInputType.name,
+                      label: 'Nome do Painel',
+                      controller: nameController,
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 3,
+                          color: AppColors.primary,
                         ),
-                      );
-                    },
-                  ).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      feeFlag = value as FlagModel;
-                    });
-                  },
+                        borderRadius: BorderRadius.circular(80),
+                      ),
+                      child: DropdownButton(
+                        borderRadius: BorderRadius.circular(10),
+                        isExpanded: true,
+                        underline: SizedBox(height: 0),
+                        iconSize: 25,
+                        elevation: 5,
+                        dropdownColor: AppColors.primary,
+                        style: AppTextStyles.h1WhiteBold,
+                        value: feeFlag,
+                        items: controller.dropFlags
+                            .map<DropdownMenuItem<FlagModel>>(
+                          (value) {
+                            return DropdownMenuItem<FlagModel>(
+                              value: value,
+                              child: Row(
+                                children: [
+                                  Icon(Icons.flag,
+                                      color: _selectColor(value.icon)),
+                                  SizedBox(width: 20),
+                                  Text(value.name),
+                                ],
+                              ),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            feeFlag = value as FlagModel;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }

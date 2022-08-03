@@ -13,7 +13,7 @@ class UserController {
   set state(UserState state) => stateNotifier.value = state;
 
   UserModel? _user = UserModel(
-    username: 'EmailTeste@outlook.com',
+    email: 'EmailTeste@outlook.com',
     cpf: '40556045807',
     name: 'Um Nome Qualquer Deteste',
   );
@@ -24,22 +24,20 @@ class UserController {
     try {
       state = UserState.loading;
       var response = await HttpUtil().get(
-        url: Underwear.getUserDataURL,
+        url: Underwear.getUserURL,
       );
 
       if (response.statusCode == 200) {
-        var resposta = jsonDecode(response.body);
-        _user = UserModel.fromJson(resposta);
+        _user = UserModel.fromJson(response.body);
 
         state = UserState.success;
-        return {"status": "success", "data": resposta};
+        return {"status": "success", "data": response.body};
       }
 
       state = UserState.error;
       return {"status": "error", "data": response};
     } on Exception {
       state = UserState.error;
-      state = UserState.success; // TODO tirar isso
       return {"status": "error"};
     }
   }

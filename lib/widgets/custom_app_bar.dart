@@ -46,7 +46,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               tooltip: Luvas.goBack,
               splashRadius: 20,
             )
-          : null,
+          : SizedBox(),
       actions: widget.noAuth
           ? null
           : [

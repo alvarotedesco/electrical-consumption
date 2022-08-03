@@ -59,7 +59,7 @@ class _ContainersState extends State<Containers> {
                   Navigator.pushNamed(
                     context,
                     '/home',
-                    arguments: i,
+                    arguments: controller.listContainers[i].id,
                   );
                 },
                 child: Container(
@@ -155,14 +155,10 @@ class _ContainersState extends State<Containers> {
 
   void _init() {
     controller.listarContainers().then((value) {
-      if (value['status'] == 'success') {
+      if (value['status'] != 'success') {
         AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-      } else {
-        AppSnackBar().showSnack(context, "Erro ao pegar os dados");
+        return;
       }
-    }).catchError((e) {
-      AppSnackBar()
-          .showSnack(context, "Erro inesperado, Erro ao pegar os dados");
     });
   }
 

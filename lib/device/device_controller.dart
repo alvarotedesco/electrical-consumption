@@ -29,7 +29,7 @@ class DeviceController {
     try {
       state = DeviceState.loading;
       var response = await HttpUtil().post(
-        url: Underwear.createDeviceURL,
+        url: Underwear.devicesURL,
         data: device.toJson(),
       );
 
@@ -51,8 +51,8 @@ class DeviceController {
   Future<Map<String, dynamic>> saveDevice(DeviceModel device) async {
     try {
       state = DeviceState.loading;
-      var response = await HttpUtil().post(
-        url: Underwear.saveDeviceURL,
+      var response = await HttpUtil().put(
+        url: Underwear.devicesURL,
         data: device.toJson(),
       );
 
@@ -75,7 +75,7 @@ class DeviceController {
     try {
       state = DeviceState.loading;
       var response = await HttpUtil().get(
-        url: Underwear.listDevicesURL,
+        url: Underwear.devicesURL,
       );
 
       if (response.statusCode == 200) {
@@ -103,7 +103,7 @@ class DeviceController {
     try {
       state = DeviceState.loading;
       var response = await HttpUtil().delete(
-        url: Underwear.deleteDeviceURL,
+        url: Underwear.devicesURL,
         data: id,
       );
 

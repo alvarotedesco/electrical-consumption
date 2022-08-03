@@ -59,4 +59,21 @@ class HttpUtil {
       body: data,
     );
   }
+
+  Future<http.Response> put({String? url, headers, data}) async {
+    if (_session.token == null) {
+      // TODO: enviar para tela de Login
+    }
+
+    headers ??= {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer ${_session.token}",
+    };
+
+    return await http.put(
+      Uri.parse('${Underwear.baseURL}$url'),
+      headers: headers,
+      body: data,
+    );
+  }
 }

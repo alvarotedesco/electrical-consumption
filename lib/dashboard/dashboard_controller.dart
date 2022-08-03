@@ -23,6 +23,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -44,6 +45,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -64,6 +66,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -84,6 +87,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -104,6 +108,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -124,6 +129,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -144,6 +150,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -164,6 +171,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -184,6 +192,7 @@ class DashboardController {
       ),
       container: ContainerModel(
         name: 'Casa1',
+        flagId: 1,
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
@@ -205,7 +214,7 @@ class DashboardController {
     try {
       state = DashboardState.loading;
       var response = await HttpUtil().get(
-        url: '${Underwear.getContainerDevicesURL}/$containerId',
+        url: '${Underwear.containersURL}/$containerId',
       );
 
       if (response.statusCode == 200) {
