@@ -4,8 +4,10 @@ class SessionController {
   factory SessionController() => _session;
 
   String? token;
+  int? userId;
 
   SessionController._internal() {
     token;
+    userId;
   }
 }

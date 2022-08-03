@@ -27,14 +27,14 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  brasil_fields: ^1.4.5
-  url_launcher: ^6.1.5
+  
   flutter:
     sdk: flutter
   
   http: ^0.13.4
   shared_preferences: ^2.0.15
-  
+  brasil_fields: ^1.4.5
+  url_launcher: ^6.1.5
   syncfusion_flutter_charts: ^20.2.40
   
   # The following adds the Cupertino Icons font to your application.

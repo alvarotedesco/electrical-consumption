@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'session_controller.dart';
 import 'themes/constants.dart';
@@ -14,10 +15,11 @@ class HttpUtil {
     if (_session.token == null) {
       // TODO: enviar para tela de Login
     }
-
+    final _pref = await SharedPreferences.getInstance();
+    final token = _session.token ?? _pref.getString('token');
     headers ??= {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${_session.token}",
+      "Authorization": "Bearer $token",
     };
 
     return await http.post(
@@ -32,9 +34,11 @@ class HttpUtil {
       // TODO: enviar para tela de Login
     }
 
+    final _pref = await SharedPreferences.getInstance();
+    final token = _session.token ?? _pref.getString('token');
     headers ??= {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${_session.token}",
+      "Authorization": "Bearer $token",
     };
 
     return await http.get(
@@ -48,9 +52,11 @@ class HttpUtil {
       // TODO: enviar para tela de Login
     }
 
+    final _pref = await SharedPreferences.getInstance();
+    final token = _session.token ?? _pref.getString('token');
     headers ??= {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${_session.token}",
+      "Authorization": "Bearer $token",
     };
 
     return await http.delete(
@@ -65,9 +71,11 @@ class HttpUtil {
       // TODO: enviar para tela de Login
     }
 
+    final _pref = await SharedPreferences.getInstance();
+    final token = _session.token ?? _pref.getString('token');
     headers ??= {
       "Content-Type": "application/json",
-      "Authorization": "Bearer ${_session.token}",
+      "Authorization": "Bearer $token",
     };
 
     return await http.put(

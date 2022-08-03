@@ -9,13 +9,13 @@ class ContainerDeviceModel {
   final DeviceModel device;
   final int containerId;
   final int deviceId;
-  final double consTimeHours;
-  final int consTimeDays;
+  final double consuTime;
+  final int consuDays;
   final int quantity;
 
   ContainerDeviceModel({
-    required this.consTimeHours,
-    required this.consTimeDays,
+    required this.consuTime,
+    required this.consuDays,
     required this.containerId,
     required this.container,
     required this.deviceId,
@@ -27,10 +27,10 @@ class ContainerDeviceModel {
     return <String, dynamic>{
       'container': container.toMap(),
       'device': device.toMap(),
-      'containerId': containerId,
-      'deviceId': deviceId,
-      'consTimeHour': consTimeHours,
-      'consTimeDays': consTimeDays,
+      'container_id': containerId,
+      'device_id': deviceId,
+      'consu_time': consuTime,
+      'consu_days': consuDays,
       'quantity': quantity,
     };
   }
@@ -40,10 +40,10 @@ class ContainerDeviceModel {
       container:
           ContainerModel.fromMap(map['container'] as Map<String, dynamic>),
       device: DeviceModel.fromMap(map['device'] as Map<String, dynamic>),
-      containerId: map['containerId'] as int,
-      deviceId: map['deviceId'] as int,
-      consTimeHours: map['consTimeHour'] as double,
-      consTimeDays: map['consTimeDays'] as int,
+      containerId: map['container_id'] as int,
+      deviceId: map['device_id'] as int,
+      consuTime: map['consu_time'] as double,
+      consuDays: map['consu_days'] as int,
       quantity: map['quantity'] as int,
     );
   }

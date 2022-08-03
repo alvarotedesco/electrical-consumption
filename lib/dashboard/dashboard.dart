@@ -84,8 +84,8 @@ class _DashboardState extends State<Dashboard> {
                 yValueMapper: (ContainerDeviceModel device, index) {
                   return getNumber(
                     power: device.device.power,
-                    days: device.consTimeDays,
-                    hours: device.consTimeHours,
+                    days: device.consuDays,
+                    hours: device.consuTime,
                     quantity: device.quantity,
                   );
                 },

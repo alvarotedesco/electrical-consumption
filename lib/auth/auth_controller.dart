@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:electrical_comsuption/auth/auth_state.dart';
 import 'package:electrical_comsuption/session_controller.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../http_util.dart';
 import '../models/user.dart';
@@ -16,6 +17,7 @@ class AuthController {
   var session = SessionController();
 
   Future<Map<String, dynamic>> login(UserModel user) async {
+    var pref = await SharedPreferences.getInstance();
     try {
       state = AuthState.loading;
       var response = await HttpUtil().post(
@@ -28,6 +30,7 @@ class AuthController {
         Map<String, dynamic> resposta = jsonDecode(response.body);
 
         session.token = resposta["token"];
+        pref.setString('token', resposta["token"]);
         state = AuthState.success;
         return {"status": "success", "data": resposta};
       }
