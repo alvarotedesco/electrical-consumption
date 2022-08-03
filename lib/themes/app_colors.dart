@@ -31,4 +31,5 @@ class AppColors {
   static const grey = Color.fromARGB(255, 155, 155, 155);
   static const blue = Color.fromARGB(255, 38, 70, 175);
   static const orange = Color.fromARGB(255, 226, 131, 18);
+  static const darkOrange = Color.fromARGB(255, 255, 123, 0);
 }
