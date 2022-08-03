@@ -32,16 +32,29 @@ class MyApp extends StatelessWidget {
         '/login': (_) => LoginPage(),
         '/registry': (_) => SignUpPage(),
         '/painel': (_) => Containers(),
-        '/home': (context) =>
-            Home(painelId: ModalRoute.of(context)!.settings.arguments as int),
+        '/home': (context) {
+          if (ModalRoute.of(context)!.settings.arguments == null) {
+            return LoginPage();
+          }
+          return Home(
+              containerId: ModalRoute.of(context)!.settings.arguments as int);
+        },
         '/demo': (_) => Demonstration(),
         '/user': (_) => UserArea(),
-        '/editar-dispositivo': (context) => DeviceArea(
-              device: ModalRoute.of(context)!.settings.arguments as DeviceModel,
-            ),
+        '/editar-dispositivo': (context) {
+          if (ModalRoute.of(context)!.settings.arguments == null) {
+            return LoginPage();
+          }
+          return DeviceArea(
+            device: ModalRoute.of(context)!.settings.arguments as DeviceModel,
+          );
+        },
         '/novo-dispositivo': (_) => DeviceArea(),
         '/novo-painel': (_) => ContainerArea(),
         '/editar-painel': (context) {
+          if (ModalRoute.of(context)!.settings.arguments == null) {
+            return LoginPage();
+          }
           return ContainerArea(
             container:
                 ModalRoute.of(context)!.settings.arguments as ContainerModel,

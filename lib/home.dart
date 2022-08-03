@@ -6,10 +6,10 @@ import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  final int painelId;
+  final int containerId;
 
   const Home({
-    required this.painelId,
+    required this.containerId,
     super.key,
   });
 
@@ -26,10 +26,10 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    painelid = widget.painelId;
+    painelid = widget.containerId;
 
     items = [
-      Principal(painelId: painelid ?? 0),
+      Principal(containerId: painelid ?? 0),
       Devices(),
       Dashboard(),
     ];
