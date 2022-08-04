@@ -14,13 +14,15 @@ class FloatingCustomButtonWidget extends StatefulWidget {
   String? heroTagNew;
 
   final bool cancel;
+  final bool canDelete;
   final bool selected;
-  final bool newButton;
+  final bool canCreate;
 
   FloatingCustomButtonWidget({
     required this.selected,
-    this.newButton = true,
+    this.canCreate = true,
     this.cancel = false,
+    this.canDelete = true,
     this.onConfirmButton,
     this.onCancelButton,
     this.onDeleteButton,
@@ -65,18 +67,19 @@ class _FloatingCustomButtonWidgetState
                 size: 40,
               ),
             ),
-            SizedBox(height: 20),
-            FloatingActionButton(
-              heroTag: widget.heroTagDelete,
-              tooltip: "Excluir",
-              onPressed: widget.onDeleteButton,
-              child: Icon(
-                Icons.delete_forever,
-                size: 40,
+            if (widget.canDelete) ...[
+              SizedBox(height: 20),
+              FloatingActionButton(
+                heroTag: widget.heroTagDelete,
+                tooltip: "Excluir",
+                onPressed: widget.onDeleteButton,
+                child: Icon(
+                  Icons.delete_forever,
+                  size: 40,
+                ),
               ),
-            ),
-          ],
-          if (widget.newButton)
+            ]
+          ] else if (widget.canCreate)
             FloatingActionButton(
               heroTag: widget.heroTagNew,
               tooltip: "Novo",
@@ -106,7 +109,7 @@ class _FloatingCustomButtonWidgetState
               size: 40,
             ),
           ),
-        ],
+        ]
       ],
     );
   }
