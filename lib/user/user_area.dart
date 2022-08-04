@@ -6,6 +6,7 @@ import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
 import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../themes/constants.dart';
 import 'user_state.dart';
@@ -19,62 +20,67 @@ class UserArea extends StatefulWidget {
 
 class _UserAreaState extends State<UserArea> {
   final controller = UserController();
-  final TextEditingController controllerInputName = TextEditingController();
-  final TextEditingController controllerInputEmail = TextEditingController();
+  final TextEditingController controllerInputEmail1 = TextEditingController();
+  final TextEditingController controllerInputEmail2 = TextEditingController();
+  bool canEdit = false;
   String error = '';
-  bool selected = false;
+  bool isSelected = false;
 
-  Widget _infoUser(info, {email = false}) {
-    if (email) {
-      return GestureDetector(
-        onTap: () => {
-          setState(() => {
-                selected = !selected,
-              })
-        },
-        child: Container(
-          padding: EdgeInsets.only(left: 20),
-          alignment: Alignment.centerLeft,
-          width: double.infinity,
-          height: 50,
-          decoration: BoxDecoration(
-            color: AppColors.transparent,
-            borderRadius: BorderRadius.all(Radius.circular(80)),
-            border: Border.fromBorderSide(
-              BorderSide(
-                color: AppColors.secondary,
-                width: 2,
+  Widget _infoUser(info, {email = false, selected = false}) {
+    return Container(
+      padding: EdgeInsets.only(left: 10),
+      alignment: Alignment.centerLeft,
+      width: double.infinity,
+      height: 50,
+      decoration: BoxDecoration(
+        color: selected ? AppColors.secondary : AppColors.transparent,
+        borderRadius: BorderRadius.all(Radius.circular(80)),
+        border: Border.fromBorderSide(
+          BorderSide(
+            color: AppColors.secondary,
+            width: 2,
+          ),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (selected)
+            Center(
+              child: Icon(
+                Icons.check,
+                size: 45,
+                color: AppColors.white,
               ),
+            )
+          else
+            Row(
+              children: [
+                if (email)
+                  Container(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Icon(
+                      Icons.mail_outline_rounded,
+                      color: AppColors.white60,
+                    ),
+                  )
+                else
+                  Container(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Icon(
+                      Icons.person_outline_rounded,
+                      color: AppColors.white60,
+                    ),
+                  ),
+                Text(
+                  info,
+                  style: AppTextStyles.h1WhiteBold,
+                ),
+              ],
             ),
-          ),
-          child: Text(
-            info,
-            style: AppTextStyles.h1WhiteBold,
-          ),
-        ),
-      );
-    } else {
-      return Container(
-        padding: EdgeInsets.only(left: 20),
-        alignment: Alignment.centerLeft,
-        width: double.infinity,
-        height: 50,
-        decoration: BoxDecoration(
-          color: AppColors.transparent,
-          borderRadius: BorderRadius.all(Radius.circular(80)),
-          border: Border.fromBorderSide(
-            BorderSide(
-              color: AppColors.secondary,
-              width: 2,
-            ),
-          ),
-        ),
-        child: Text(
-          info,
-          style: AppTextStyles.h1WhiteBold,
-        ),
-      );
-    }
+        ],
+      ),
+    );
   }
 
   Widget _errorWidget() {
@@ -110,10 +116,14 @@ class _UserAreaState extends State<UserArea> {
           userArea: true,
         ),
         floatingActionButton: FloatingCustomButtonWidget(
-          selected: selected,
+          selected: isSelected,
           canCreate: false,
           delete: false,
-          onEditButton: (() => {}),
+          onEditButton: (() => {
+                setState(() => {
+                      canEdit = !canEdit,
+                    }),
+              }),
         ),
         body: SingleChildScrollView(
           child: Container(
@@ -152,14 +162,38 @@ class _UserAreaState extends State<UserArea> {
                           children: [
                             _infoUser(controller.user!.cpf),
                             SizedBox(height: 20),
-                            Visibility(
+                            GestureDetector(
+                              onLongPress: () => {
+                                setState(() => {
+                                      if (canEdit) canEdit != canEdit,
+                                      isSelected = !isSelected,
+                                    })
+                              },
                               child: _infoUser(
                                 controller.user!.email,
                                 email: true,
+                                selected: isSelected,
                               ),
-                              visible: selected,
                             ),
                             SizedBox(height: 20),
+                            Visibility(
+                              visible: canEdit,
+                              child: Column(
+                                children: [
+                                  InputDecorationWidget(
+                                    controller: controllerInputEmail1,
+                                    label: 'Novo e-mail',
+                                    textInputType: TextInputType.emailAddress,
+                                  ),
+                                  SizedBox(height: 20),
+                                  InputDecorationWidget(
+                                    controller: controllerInputEmail1,
+                                    label: 'Confirmar novo e-mail',
+                                    textInputType: TextInputType.emailAddress,
+                                  ),
+                                ],
+                              ),
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
