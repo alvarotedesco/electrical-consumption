@@ -178,7 +178,6 @@ class _ContainersState extends State<Containers> {
       setState(() {});
     });
 
-    // TODO: pegar os Paineis do banco
     _init();
   }
 

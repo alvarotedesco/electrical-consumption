@@ -112,7 +112,7 @@ class _UserAreaState extends State<UserArea> {
         floatingActionButton: FloatingCustomButtonWidget(
           selected: selected,
           canCreate: false,
-          delete: false,
+          canDelete: false,
           onEditButton: (() => {}),
         ),
         body: SingleChildScrollView(
@@ -153,11 +153,11 @@ class _UserAreaState extends State<UserArea> {
                             _infoUser(controller.user!.cpf),
                             SizedBox(height: 20),
                             Visibility(
+                              visible: selected,
                               child: _infoUser(
                                 controller.user!.email,
                                 email: true,
                               ),
-                              visible: selected,
                             ),
                             SizedBox(height: 20),
                             Row(

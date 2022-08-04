@@ -115,7 +115,7 @@ class _PrincipalState extends State<Principal> {
       floatingActionButton: FloatingCustomButtonWidget(
         selected: _selectedDevice != null,
         onDeleteButton: _onDelete,
-        newButton: false,
+        canCreate: false,
       ),
       body: controller.state != PrincipalState.success
           ? _errorWidget()

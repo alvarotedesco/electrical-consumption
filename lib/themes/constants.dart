@@ -41,9 +41,9 @@ class Meias {
 
 class Underwear {
   // static const String baseURL = 'http://25.72.151.164:8080/';
-  // static const String baseURL =
-  //     'https://electrical-consumption.herokuapp.com/api/';
-  static const String baseURL = 'http://127.0.0.1:8000/api/';
+  static const String baseURL =
+      'https://electrical-consumption.herokuapp.com/api/';
+  // static const String baseURL = 'http://127.0.0.1:8000/api/';
 
   static const String loginURL = 'login';
   static const String registerURL = 'register';
