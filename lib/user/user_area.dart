@@ -116,15 +116,20 @@ class _UserAreaState extends State<UserArea> {
           userArea: true,
         ),
         floatingActionButton: FloatingCustomButtonWidget(
-          selected: isSelected,
-          canCreate: false,
-          delete: false,
-          onEditButton: (() => {
-                setState(() => {
-                      canEdit = !canEdit,
-                    }),
-              }),
-        ),
+            selected: isSelected,
+            canCreate: false,
+            delete: false,
+            cancel: canEdit,
+            onEditButton: () => {
+                  setState(() => {
+                        canEdit = !canEdit,
+                      }),
+                },
+            onCancelButton: () => {
+                  setState(() => {
+                        canEdit = !canEdit,
+                      }),
+                }),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(20),
@@ -165,7 +170,7 @@ class _UserAreaState extends State<UserArea> {
                             GestureDetector(
                               onLongPress: () => {
                                 setState(() => {
-                                      if (canEdit) canEdit != canEdit,
+                                      if (canEdit) canEdit = !canEdit,
                                       isSelected = !isSelected,
                                     })
                               },
