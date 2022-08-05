@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../http_util.dart';
@@ -13,13 +12,7 @@ class PrincipalController {
   set state(PrincipalState state) => stateNotifier.value = state;
   PrincipalState get state => stateNotifier.value;
 
-  List<DeviceModel> _dropDevices = [
-    // DeviceModel(power: 600.0, name: "ventilador", id: 1),
-    // DeviceModel(power: 9.0, name: "Lampada LED", id: 2),
-    // DeviceModel(power: 100.0, name: "Carregador Notebook", id: 3),
-    // DeviceModel(power: 200.0, name: "Outro Item", id: 4),
-    // DeviceModel(power: 1500.0, name: "Microondas", id: 5),
-  ];
+  List<DeviceModel> _dropDevices = [];
   List<DeviceModel> _containerDevices = [];
   final List<TextEditingController> _hoursControllers = [];
   final List<TextEditingController> _daysControllers = [];
@@ -31,7 +24,17 @@ class PrincipalController {
   List<DeviceModel> get containerDevices => _containerDevices;
   List<DeviceModel> get dropDevices => _dropDevices;
 
+  int containerId = 0;
+
   void addDevice({DeviceModel? device, bool control = false}) {
+    for (var i = 0; i < _containerDevices.length; i++) {
+      if (_containerDevices[i].id == device!.id) {
+        _qtdControllers[i].text =
+            (int.parse(_qtdControllers[i].text) + 1).toString();
+        return;
+      }
+    }
+
     _hoursControllers.add(TextEditingController(text: '1'));
     _daysControllers.add(TextEditingController(text: '1'));
     _qtdControllers.add(TextEditingController(text: '1'));
@@ -40,6 +43,18 @@ class PrincipalController {
 
   void _addDevice(DeviceModel device) {
     _containerDevices.add(device);
+
+    var data = <String, Map<String, Map<String, String>>>{'devices': {}};
+
+    for (var i = 0; i < _containerDevices.length; i++) {
+      data['devices']![_containerDevices[i].id.toString()] = {
+        'consu_time': _hoursControllers[i].text,
+        'consu_days': _daysControllers[i].text,
+        'quantity': _qtdControllers[i].text
+      };
+    }
+
+    addContainerDevice(data);
   }
 
   Future<Map<String, dynamic>> getContainerDevice(int containerId) async {
@@ -108,14 +123,32 @@ class PrincipalController {
     }
   }
 
-  Future<Map<String, dynamic>> removeContainerDevice(
-    int containerId,
-    int deviceId,
-  ) async {
+  Future<Map<String, dynamic>> addContainerDevice(data) async {
+    try {
+      state = PrincipalState.loading;
+      var response = await HttpUtil().put(
+        url: '${Underwear.containersURL}/$containerId',
+        data: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        state = PrincipalState.success;
+        return {"status": "success", "data": response.body};
+      }
+
+      state = PrincipalState.error;
+      return {"status": "error", "data": response.statusCode};
+    } on Exception {
+      state = PrincipalState.error;
+      return {"status": "error"};
+    }
+  }
+
+  Future<Map<String, dynamic>> removeContainerDevice(int deviceId) async {
     try {
       state = PrincipalState.loading;
       var response = await HttpUtil().delete(
-        url: '${Underwear.deleteContainerDeviceURL}/$containerId/$deviceId',
+        url: '${Underwear.containerDeviceURL}/$containerId/$deviceId',
       );
 
       if (response.statusCode == 200) {

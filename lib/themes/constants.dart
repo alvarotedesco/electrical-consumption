@@ -56,9 +56,7 @@ class Underwear {
   static const String flagsURL = 'flags'; // apiResource
   static const String containersURL = 'containers'; // apiResource
   static const String devicesURL = 'devices'; // apiResource
-
-  static const String deleteContainerDeviceURL = 'delete-container-device';
-  // /{container_id}/{device_id}
+  static const String containerDeviceURL = 'container-device'; //apiResource
 
   // static const String listDevicesURL = 'device/list?page=0';
   static const String dicasURL =

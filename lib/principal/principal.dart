@@ -78,7 +78,7 @@ class _PrincipalState extends State<Principal> {
   }
 
   void _onDelete() {
-    controller.removeContainerDevice(widget.containerId, _selectedDevice!.id!);
+    controller.removeContainerDevice(_selectedDevice!.id!);
   }
 
   Widget? _errorWidget() {
@@ -98,6 +98,7 @@ class _PrincipalState extends State<Principal> {
     controller.stateNotifier.addListener(() {
       setState(() {});
     });
+    controller.containerId = widget.containerId;
 
     controller.getContainerDevice(widget.containerId).catchError((e) {
       AppSnackBar().showSnack(
@@ -133,14 +134,26 @@ class _PrincipalState extends State<Principal> {
                   SizedBox(height: 10),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
+                    height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 3,
+                        color: AppColors.primary,
+                      ),
+                      borderRadius: BorderRadius.circular(80),
+                    ),
                     child: DropdownButton(
                       borderRadius: BorderRadius.circular(10),
                       isExpanded: true,
+                      underline: SizedBox(height: 0),
+                      iconSize: 25,
                       elevation: 5,
                       hint: Text(
                         'Selecione um Dispositivo',
                         style: AppTextStyles.h1WhiteBold,
                       ),
+                      dropdownColor: AppColors.primary,
+                      style: AppTextStyles.h1WhiteBold,
                       items: controller.dropDevices
                           .map<DropdownMenuItem<DeviceModel>>((value) {
                         return DropdownMenuItem<DeviceModel>(
