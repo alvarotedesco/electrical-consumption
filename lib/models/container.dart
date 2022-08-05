@@ -10,6 +10,9 @@ class ContainerModel {
   final int? userId;
   final int flagId;
   final int? id;
+  final double? kwTotal;
+  final double? rsTotal;
+  final int? qtdDevices;
 
   ContainerModel({
     required this.flagId,
@@ -17,6 +20,9 @@ class ContainerModel {
     this.userId,
     this.flag,
     this.id,
+    this.kwTotal,
+    this.rsTotal,
+    this.qtdDevices,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +32,9 @@ class ContainerModel {
       'user_id': userId ?? SessionController().userId,
       'flag_id': flagId,
       'id': id,
+      'kw_total': kwTotal,
+      'rs_total': rsTotal,
+      'qtd_devices': qtdDevices,
     };
   }
 
@@ -38,6 +47,9 @@ class ContainerModel {
       userId: map['user_id'] != null ? map['user_id'] as int : null,
       flagId: map['flag_id'] as int,
       id: map['id'] != null ? map['id'] as int : null,
+      kwTotal: map['kw_total'] != null ? map['kw_total'] as double : null,
+      rsTotal: map['rs_total'] != null ? map['rs_total'] as double : null,
+      qtdDevices: map['qtd_devices'] != null ? map['qtd_devices'] as int : null,
     );
   }
 

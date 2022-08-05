@@ -76,6 +76,14 @@ class _ContainersState extends State<Containers> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [
+                          Icon(
+                            Icons.flag_rounded,
+                          ),
+                        ],
+                      ),
                       Center(
                         child: Text(
                           controller.listContainers[i].name,
@@ -92,20 +100,24 @@ class _ContainersState extends State<Containers> {
                         ),
                       Column(
                         children: [
+                          Text(
+                            "Dispositivos: ${controller.listContainers[i].qtdDevices}",
+                            style: AppTextStyles.h1WhiteBold,
+                          ),
                           Wrap(
-                            children: const [
+                            children: [
                               Text(
                                 "Cons. total: ",
                                 style: AppTextStyles.h1WhiteBold,
                               ),
                               Text(
-                                "${0.0} Kw/h",
+                                "${controller.listContainers[i].kwTotal} kWh",
                                 style: AppTextStyles.h1WhiteBold,
                               ),
                             ],
                           ),
                           Text(
-                            "Total: R\$ ${0.0}",
+                            "Total: R\$ ${controller.listContainers[i].rsTotal}",
                             style: AppTextStyles.h1WhiteBold,
                           ),
                         ],
