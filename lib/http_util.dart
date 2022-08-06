@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:electrical_comsuption/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,82 +9,108 @@ import 'themes/constants.dart';
 
 class HttpUtil {
   final _session = SessionController();
+  final _pref = SharedPreferences.getInstance();
 
   Future<http.Response> post({
     String? url,
     Map<String, String>? headers,
     data,
   }) async {
-    if (_session.token == null) {
-      // TODO: enviar para tela de Login
-    }
-    final _pref = await SharedPreferences.getInstance();
-    final token = _session.token ?? _pref.getString('token');
+    final token = _session.token ?? (await _pref).getString('token');
     headers ??= {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",
     };
 
-    return await http.post(
+    var resp = await http.post(
       Uri.parse('${Underwear.baseURL}$url'),
       headers: headers,
       body: data,
     );
+
+    var respp = jsonDecode(resp.body);
+    if (respp is Map &&
+        respp.containsKey('status') &&
+        respp['status'] == "Token is Expired") {
+      navigatorKey.currentState
+          ?.pushNamedAndRemoveUntil('/login', (route) => false);
+      return resp;
+    } else {
+      return resp;
+    }
   }
 
   Future<http.Response> get({String? url, headers}) async {
-    if (_session.token == null) {
-      // TODO: enviar para tela de Login
-    }
-
-    final _pref = await SharedPreferences.getInstance();
-    final token = _session.token ?? _pref.getString('token');
+    final token = _session.token ?? (await _pref).getString('token');
     headers ??= {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",
     };
 
-    return await http.get(
+    var resp = await http.get(
       Uri.parse('${Underwear.baseURL}$url'),
       headers: headers,
     );
+
+    var respp = jsonDecode(resp.body);
+    if (respp is Map &&
+        respp.containsKey('status') &&
+        respp['status'] == "Token is Expired") {
+      navigatorKey.currentState
+          ?.pushNamedAndRemoveUntil('/login', (route) => false);
+      return resp;
+    } else {
+      return resp;
+    }
   }
 
   Future<http.Response> delete({String? url, headers, data}) async {
-    if (_session.token == null) {
-      // TODO: enviar para tela de Login
-    }
-
-    final _pref = await SharedPreferences.getInstance();
-    final token = _session.token ?? _pref.getString('token');
+    final token = _session.token ?? (await _pref).getString('token');
     headers ??= {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",
     };
 
-    return await http.delete(
+    var resp = await http.delete(
       Uri.parse('${Underwear.baseURL}$url'),
       headers: headers,
       body: data,
     );
+
+    var respp = jsonDecode(resp.body);
+    if (respp is Map &&
+        respp.containsKey('status') &&
+        respp['status'] == "Token is Expired") {
+      navigatorKey.currentState
+          ?.pushNamedAndRemoveUntil('/login', (route) => false);
+      return resp;
+    } else {
+      return resp;
+    }
   }
 
   Future<http.Response> put({String? url, headers, data}) async {
-    if (_session.token == null) {
-      // TODO: enviar para tela de Login
-    }
-
-    final _pref = await SharedPreferences.getInstance();
-    final token = _session.token ?? _pref.getString('token');
+    final token = _session.token ?? (await _pref).getString('token');
     headers ??= {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",
     };
 
-    return await http.put(
+    var resp = await http.put(
       Uri.parse('${Underwear.baseURL}$url'),
       headers: headers,
       body: data,
     );
+
+    var respp = jsonDecode(resp.body);
+    if (respp is Map &&
+        respp.containsKey('status') &&
+        respp['status'] == "Token is Expired") {
+      navigatorKey.currentState
+          ?.pushNamedAndRemoveUntil('/login', (route) => false);
+      return resp;
+    } else {
+      return resp;
+    }
   }
 }
