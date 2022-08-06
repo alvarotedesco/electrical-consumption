@@ -50,7 +50,7 @@ class AppTextStyles {
   );
 
   static const TextStyle h3WhiteBold = TextStyle(
-    fontFamily: "Montserrat",
+    fontFamily: "Roboto",
     color: AppColors.white,
     fontWeight: FontWeight.bold,
     fontSize: 14,

@@ -27,7 +27,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),
@@ -49,7 +49,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),
@@ -70,7 +70,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),
@@ -91,7 +91,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),
@@ -112,7 +112,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),
@@ -133,7 +133,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),
@@ -154,7 +154,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),
@@ -175,7 +175,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),
@@ -196,7 +196,7 @@ class DashboardController {
         flag: FlagModel(
           id: 1,
           name: 'Bandeira Verde',
-          plus: 0,
+          cost: 0,
           icon: 1,
         ),
       ),

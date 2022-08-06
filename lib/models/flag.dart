@@ -3,12 +3,12 @@ import 'dart:convert';
 class FlagModel {
   int icon;
   String name;
-  double plus;
+  double cost;
   int id;
 
   FlagModel({
     required this.name,
-    required this.plus,
+    required this.cost,
     required this.id,
     required this.icon,
   });
@@ -16,7 +16,7 @@ class FlagModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
-      'plus': plus,
+      'cost': cost,
       'icon': icon,
       'id': id,
     };
@@ -26,7 +26,7 @@ class FlagModel {
     return FlagModel(
       icon: map['icon'] as int,
       name: map['name'] as String,
-      plus: map['plus'] as double,
+      cost: map['cost'] as double,
       id: map['id'] as int,
     );
   }

@@ -31,7 +31,7 @@ class _ContainerAreaState extends State<ContainerArea> {
 
   FlagModel feeFlag = FlagModel(
     name: 'Bandeira Verde',
-    plus: 0,
+    cost: 0,
     id: 1,
     icon: 1,
   );

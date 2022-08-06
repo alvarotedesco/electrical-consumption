@@ -99,26 +99,27 @@ class _ContainersState extends State<Containers> {
                           ),
                         ),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Dispositivos: ${controller.listContainers[i].qtdDevices}",
-                            style: AppTextStyles.h1WhiteBold,
+                            style: AppTextStyles.h3WhiteBold,
                           ),
                           Wrap(
                             children: [
                               Text(
-                                "Cons. total: ",
-                                style: AppTextStyles.h1WhiteBold,
+                                "Consumo: ",
+                                style: AppTextStyles.h3WhiteBold,
                               ),
                               Text(
                                 "${controller.listContainers[i].kwTotal} kWh",
-                                style: AppTextStyles.h1WhiteBold,
+                                style: AppTextStyles.h3WhiteBold,
                               ),
                             ],
                           ),
                           Text(
-                            "Total: R\$ ${controller.listContainers[i].rsTotal}",
-                            style: AppTextStyles.h1WhiteBold,
+                            "Gasto: R\$ ${controller.listContainers[i].rsTotal}",
+                            style: AppTextStyles.h3WhiteBold,
                           ),
                         ],
                       ),
