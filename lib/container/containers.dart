@@ -31,9 +31,6 @@ class _ContainersState extends State<Containers> {
         child: Wrap(
           runSpacing: 5,
           spacing: 10,
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          runAlignment: WrapAlignment.center,
           children: [
             for (var i = 0; i < controller.listContainers.length; i++) ...[
               GestureDetector(
@@ -45,7 +42,6 @@ class _ContainersState extends State<Containers> {
                       });
                     } else {
                       setState(() {
-                        _containerSelected = null;
                         _containerSelected = controller.listContainers[i];
                       });
                     }
@@ -72,53 +68,62 @@ class _ContainersState extends State<Containers> {
                         ? AppColors.secondary
                         : AppColors.primary,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.topRight,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Icon(
-                            Icons.flag_rounded,
-                          ),
-                        ],
-                      ),
-                      Center(
-                        child: Text(
-                          controller.listContainers[i].name,
-                          style: AppTextStyles.h1WhiteBold,
+                      Positioned(
+                        top: -20,
+                        right: -20,
+                        child: Icon(
+                          Icons.flag,
+                          size: 30,
+                          color: AppColors()
+                              .selectColor(controller.listContainers[i].flagId),
                         ),
                       ),
-                      if (_containerSelected == controller.listContainers[i])
-                        Center(
-                          child: Icon(
-                            Icons.check,
-                            size: 50,
-                            color: AppColors.white,
-                          ),
-                        ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Dispositivos: ${controller.listContainers[i].qtdDevices}",
-                            style: AppTextStyles.h1WhiteBold,
+                          Center(
+                            child: Text(
+                              controller.listContainers[i].name,
+                              style: AppTextStyles.h1WhiteBold,
+                            ),
                           ),
-                          Wrap(
+                          if (_containerSelected ==
+                              controller.listContainers[i])
+                            Center(
+                              child: Icon(
+                                Icons.check,
+                                size: 50,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          Column(
                             children: [
                               Text(
-                                "Cons. total: ",
-                                style: AppTextStyles.h1WhiteBold,
+                                "Dispositivos: ${controller.listContainers[i].qtdDevices}",
+                                style: AppTextStyles.h2WhiteBold,
+                              ),
+                              Wrap(
+                                children: [
+                                  Text(
+                                    "Cons. total: ",
+                                    style: AppTextStyles.h2WhiteBold,
+                                  ),
+                                  Text(
+                                    "${controller.listContainers[i].kwTotal} kWh",
+                                    style: AppTextStyles.h2WhiteBold,
+                                  ),
+                                ],
                               ),
                               Text(
-                                "${controller.listContainers[i].kwTotal} kWh",
-                                style: AppTextStyles.h1WhiteBold,
+                                "Total: R\$ ${controller.listContainers[i].rsTotal}",
+                                style: AppTextStyles.h2WhiteBold,
                               ),
                             ],
-                          ),
-                          Text(
-                            "Total: R\$ ${controller.listContainers[i].rsTotal}",
-                            style: AppTextStyles.h1WhiteBold,
                           ),
                         ],
                       ),
