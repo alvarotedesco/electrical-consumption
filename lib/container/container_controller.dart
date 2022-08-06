@@ -98,7 +98,7 @@ class ContainerController {
     try {
       state = ContainerState.loading;
       var response = await HttpUtil().put(
-        url: Underwear.containersURL,
+        url: "${Underwear.containersURL}/${container.id}",
         data: container.toJson(),
       );
 
@@ -119,7 +119,6 @@ class ContainerController {
   Future<Map<String, dynamic>> listarContainers() async {
     try {
       state = ContainerState.loading;
-
       var response = await HttpUtil().get(
         url: Underwear.containersURL,
       );
