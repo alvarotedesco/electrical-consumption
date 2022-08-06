@@ -30,6 +30,7 @@ class AuthController {
         Map<String, dynamic> resposta = jsonDecode(response.body);
 
         session.token = resposta["token"];
+        session.userId = resposta["user"]["id"];
         pref.setString('token', resposta["token"]);
         state = AuthState.success;
         return {"status": "success", "data": resposta};
