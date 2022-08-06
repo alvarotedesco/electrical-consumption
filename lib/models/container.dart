@@ -32,9 +32,6 @@ class ContainerModel {
       'user_id': userId ?? SessionController().userId,
       'flag_id': flagId,
       'id': id,
-      'kw_total': kwTotal,
-      'rs_total': rsTotal,
-      'qtd_devices': qtdDevices,
     };
   }
 

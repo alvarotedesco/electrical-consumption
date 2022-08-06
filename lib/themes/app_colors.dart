@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
+  Color selectColor(int color) {
+    return color == 1
+        ? AppColors.green
+        : color == 2
+            ? AppColors.yellow
+            : color == 3
+                ? AppColors.red
+                : color == 4
+                    ? AppColors.darkRed
+                    : AppColors.grey;
+  }
+
   static const MaterialColor primarySwatch = MaterialColor(
     0xFF320f6e,
     <int, Color>{

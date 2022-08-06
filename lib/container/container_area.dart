@@ -31,22 +31,10 @@ class _ContainerAreaState extends State<ContainerArea> {
 
   FlagModel feeFlag = FlagModel(
     name: 'Bandeira Verde',
-    plus: 0,
+    cost: 0,
     id: 1,
     icon: 1,
   );
-
-  Color _selectColor(int color) {
-    return color == 1
-        ? AppColors.green
-        : color == 2
-            ? AppColors.yellow
-            : color == 3
-                ? AppColors.red
-                : color == 4
-                    ? AppColors.darkRed
-                    : AppColors.grey;
-  }
 
   Future<void> _saveNewPanel(String? name) async {
     // TODO: salvar os paineis no banco
@@ -157,8 +145,10 @@ class _ContainerAreaState extends State<ContainerArea> {
                               value: value,
                               child: Row(
                                 children: [
-                                  Icon(Icons.flag,
-                                      color: _selectColor(value.icon)),
+                                  Icon(
+                                    Icons.flag,
+                                    color: AppColors().selectColor(value.icon),
+                                  ),
                                   SizedBox(width: 20),
                                   Text(value.name),
                                 ],
