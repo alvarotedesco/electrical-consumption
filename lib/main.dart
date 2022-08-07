@@ -8,12 +8,12 @@ import 'package:electrical_comsuption/home.dart';
 import 'package:electrical_comsuption/models/container.dart';
 import 'package:electrical_comsuption/models/device.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
-import 'package:electrical_comsuption/themes/constants.dart';
 import 'package:electrical_comsuption/user/user_area.dart';
-import 'package:electrical_comsuption/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -37,7 +37,10 @@ class MyApp extends StatelessWidget {
             return LoginPage();
           }
           return Home(
-              containerId: ModalRoute.of(context)!.settings.arguments as int);
+            containerId:
+                (ModalRoute.of(context)!.settings.arguments as List)[0]!,
+            name: (ModalRoute.of(context)!.settings.arguments as List)[1]!,
+          );
         },
         '/demo': (_) => Demonstration(),
         '/user': (_) => UserArea(),

@@ -114,7 +114,9 @@ class _PrincipalState extends State<Principal> {
     super.initState();
 
     controller.stateNotifier.addListener(() {
-      setState(() {});
+      setState(() {
+        _getTotal();
+      });
     });
     controller.containerId = widget.containerId;
 

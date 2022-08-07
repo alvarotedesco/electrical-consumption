@@ -31,9 +31,6 @@ class _ContainersState extends State<Containers> {
         child: Wrap(
           runSpacing: 5,
           spacing: 10,
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          runAlignment: WrapAlignment.center,
           children: [
             for (var i = 0; i < controller.listContainers.length; i++) ...[
               GestureDetector(
@@ -45,7 +42,6 @@ class _ContainersState extends State<Containers> {
                       });
                     } else {
                       setState(() {
-                        _containerSelected = null;
                         _containerSelected = controller.listContainers[i];
                       });
                     }
@@ -59,7 +55,10 @@ class _ContainersState extends State<Containers> {
                   Navigator.pushNamed(
                     context,
                     '/home',
-                    arguments: controller.listContainers[i].id,
+                    arguments: [
+                      controller.listContainers[i].id,
+                      controller.listContainers[i].name
+                    ],
                   );
                 },
                 child: Container(
@@ -72,54 +71,63 @@ class _ContainersState extends State<Containers> {
                         ? AppColors.secondary
                         : AppColors.primary,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.topRight,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Icon(
-                            Icons.flag_rounded,
-                          ),
-                        ],
-                      ),
-                      Center(
-                        child: Text(
-                          controller.listContainers[i].name,
-                          style: AppTextStyles.h1WhiteBold,
+                      Positioned(
+                        top: -20,
+                        right: -20,
+                        child: Icon(
+                          Icons.flag,
+                          size: 30,
+                          color: AppColors()
+                              .selectColor(controller.listContainers[i].flagId),
                         ),
                       ),
-                      if (_containerSelected == controller.listContainers[i])
-                        Center(
-                          child: Icon(
-                            Icons.check,
-                            size: 50,
-                            color: AppColors.white,
-                          ),
-                        ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Dispositivos: ${controller.listContainers[i].qtdDevices}",
-                            style: AppTextStyles.h3WhiteBold,
+                          Center(
+                            child: Text(
+                              controller.listContainers[i].name,
+                              style: AppTextStyles.h1WhiteBold,
+                            ),
                           ),
-                          Wrap(
+                          if (_containerSelected ==
+                              controller.listContainers[i])
+                            Center(
+                              child: Icon(
+                                Icons.check,
+                                size: 50,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Consumo: ",
+                                "Dispositivos: ${controller.listContainers[i].qtdDevices}",
                                 style: AppTextStyles.h3WhiteBold,
                               ),
+                              Wrap(
+                                children: [
+                                  Text(
+                                    "Consumo: ",
+                                    style: AppTextStyles.h3WhiteBold,
+                                  ),
+                                  Text(
+                                    "${controller.listContainers[i].kwTotal} kWh",
+                                    style: AppTextStyles.h3WhiteBold,
+                                  ),
+                                ],
+                              ),
                               Text(
-                                "${controller.listContainers[i].kwTotal} kWh",
+                                "Gasto: R\$ ${controller.listContainers[i].rsTotal}",
                                 style: AppTextStyles.h3WhiteBold,
                               ),
                             ],
-                          ),
-                          Text(
-                            "Gasto: R\$ ${controller.listContainers[i].rsTotal}",
-                            style: AppTextStyles.h3WhiteBold,
                           ),
                         ],
                       ),
