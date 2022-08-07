@@ -11,6 +11,7 @@ class InputDecorationWidget extends StatelessWidget {
   final TextInputType? textInputType;
   final VoidCallback? onPressed;
   final bool passwordVisible;
+  final TextStyle? textStyle;
   final TextStyle? style;
   final bool isPassword;
   final String? label;
@@ -25,6 +26,7 @@ class InputDecorationWidget extends StatelessWidget {
     this.onSubmited,
     this.onPressed,
     this.onChanged,
+    this.textStyle,
     this.style,
     super.key,
   });
@@ -35,7 +37,7 @@ class InputDecorationWidget extends StatelessWidget {
       children: [
         TextFormField(
           obscureText: isPassword ? !passwordVisible : false,
-          style: AppTextStyles.h1White,
+          style: textStyle ?? AppTextStyles.h1White,
           inputFormatters: inputFormatters,
           onFieldSubmitted: onSubmited,
           keyboardType: textInputType,
