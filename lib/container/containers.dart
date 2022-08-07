@@ -55,7 +55,10 @@ class _ContainersState extends State<Containers> {
                   Navigator.pushNamed(
                     context,
                     '/home',
-                    arguments: controller.listContainers[i].id,
+                    arguments: [
+                      controller.listContainers[i].id,
+                      controller.listContainers[i].name
+                    ],
                   );
                 },
                 child: Container(

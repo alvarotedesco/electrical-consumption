@@ -96,7 +96,9 @@ class _PrincipalState extends State<Principal> {
     super.initState();
 
     controller.stateNotifier.addListener(() {
-      setState(() {});
+      setState(() {
+        _getTotal();
+      });
     });
     controller.containerId = widget.containerId;
 
@@ -121,17 +123,10 @@ class _PrincipalState extends State<Principal> {
       body: controller.state != PrincipalState.success
           ? _errorWidget()
           : Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Center(
-                    child: Text(
-                      panelName,
-                      style: AppTextStyles.h1WhiteBold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     height: 50,
@@ -249,66 +244,24 @@ class _PrincipalState extends State<Principal> {
                                       ),
                                     ),
                                     Expanded(
-                                      child: TextField(
-                                        controller:
-                                            controller.hoursControllers[index],
-                                        keyboardType: TextInputType.number,
+                                      child: Text(
+                                        controller.hoursControllers[index].text,
                                         style: AppTextStyles.h3WhiteBold,
                                         textAlign: TextAlign.center,
-                                        inputFormatters: [
-                                          LengthLimitingTextInputFormatter(2),
-                                        ],
-                                        onChanged: (tex) {
-                                          if (tex != "" &&
-                                              int.parse(tex) >= 24) {
-                                            controller.hoursControllers[index]
-                                                .text = '24';
-                                          }
-
-                                          _getTotal();
-                                        },
                                       ),
                                     ),
                                     Expanded(
-                                      child: TextField(
-                                        controller:
-                                            controller.daysControllers[index],
-                                        keyboardType: TextInputType.number,
+                                      child: Text(
+                                        controller.daysControllers[index].text,
                                         style: AppTextStyles.h3WhiteBold,
                                         textAlign: TextAlign.center,
-                                        inputFormatters: [
-                                          LengthLimitingTextInputFormatter(2),
-                                        ],
-                                        onChanged: (tex) {
-                                          if (tex != "") {
-                                            if (int.parse(tex) >= 99) {
-                                              controller.daysControllers[index]
-                                                  .text = '99';
-                                            }
-                                            _getTotal();
-                                          }
-                                        },
                                       ),
                                     ),
                                     Expanded(
-                                      child: TextField(
-                                        keyboardType: TextInputType.number,
-                                        controller:
-                                            controller.qtdControllers[index],
+                                      child: Text(
+                                        controller.qtdControllers[index].text,
                                         style: AppTextStyles.h3WhiteBold,
                                         textAlign: TextAlign.center,
-                                        inputFormatters: [
-                                          LengthLimitingTextInputFormatter(3),
-                                        ],
-                                        onChanged: (tex) {
-                                          if (tex != "") {
-                                            if (int.parse(tex) >= 999) {
-                                              controller.qtdControllers[index]
-                                                  .text = '999';
-                                            }
-                                            _getTotal();
-                                          }
-                                        },
                                       ),
                                     ),
                                   ],

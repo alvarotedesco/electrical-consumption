@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   final int containerId;
+  final String name;
 
   const Home({
     required this.containerId,
+    required this.name,
     super.key,
   });
 
@@ -29,7 +31,7 @@ class _HomeState extends State<Home> {
     painelid = widget.containerId;
 
     items = [
-      Principal(containerId: painelid ?? 0),
+      Principal(containerId: painelid!),
       Devices(),
       Dashboard(),
     ];
@@ -42,7 +44,7 @@ class _HomeState extends State<Home> {
         child: Scaffold(
           appBar: CustomAppBar(
             label: currentIndex == 0
-                ? 'Nome do Painel'
+                ? widget.name
                 : currentIndex == 1
                     ? 'Meus Dispositivos'
                     : 'Estatisticas',

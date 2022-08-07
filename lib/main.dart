@@ -37,7 +37,10 @@ class MyApp extends StatelessWidget {
             return LoginPage();
           }
           return Home(
-              containerId: ModalRoute.of(context)!.settings.arguments as int);
+            containerId:
+                (ModalRoute.of(context)!.settings.arguments as List)[0]!,
+            name: (ModalRoute.of(context)!.settings.arguments as List)[1]!,
+          );
         },
         '/demo': (_) => Demonstration(),
         '/user': (_) => UserArea(),
