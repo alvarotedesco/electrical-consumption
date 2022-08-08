@@ -24,6 +24,20 @@ class Luvas {
   static const String selectFlag = 'Selecionar uma bandeira:';
   static const String goBack = 'Voltar';
   static const String leave = 'Sair';
+  static const String confirmPassword = 'Digite a senha para concluir';
+  static const String newEmail = 'Novo e-mail';
+  static const String confirmNewEmail = 'Confirmar novo e-mail';
+  static const String confirmOldPassword = 'Digite a senha atual';
+  static const String newPassword = 'Nova senha';
+  static const String confirmNewPassword = 'Confirmar nova senha';
+  static const String editEmail = 'Editar e-mail';
+  static const String editingEmail = 'Editando e-mail';
+  static const String editPassword = 'Editar senha';
+  static const String editingPassword = 'Editando senha';
+  static const String editAvatar = 'Editar imagem';
+  static const String editingAvatar = 'Editando imagem';
+  static const String save = 'Salvar';
+  static const String cancel = 'Cancelar';
 }
 
 class Meias {
@@ -44,6 +58,7 @@ class Underwear {
 
   static const String getUserURL = 'show-user';
   static const String updateUserURL = 'update-user';
+  static const String updateUserV1URL = 'update-user-v1';
   static const String deleteUserURL = 'delete-user';
 
   static const String flagsURL = 'flags'; // apiResource

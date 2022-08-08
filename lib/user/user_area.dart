@@ -1,5 +1,10 @@
+import 'dart:convert';
+
+import 'package:electrical_comsuption/http_util.dart';
+import 'package:electrical_comsuption/models/user.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
+import 'package:electrical_comsuption/user/user_config.dart';
 import 'package:electrical_comsuption/user/user_controller.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
@@ -20,11 +25,14 @@ class UserArea extends StatefulWidget {
 
 class _UserAreaState extends State<UserArea> {
   final controller = UserController();
-  final TextEditingController controllerInputEmail1 = TextEditingController();
-  final TextEditingController controllerInputEmail2 = TextEditingController();
-  bool canEdit = false;
+  final TextEditingController controllerNewEmail = TextEditingController();
+  final TextEditingController controllerConfirmNewEmail =
+      TextEditingController();
+  bool canEditEmail = false;
   String error = '';
-  bool isSelected = false;
+  bool canEditPassword = false;
+  bool editingPassword = true;
+  bool editingEmail = true;
 
   Widget _infoUser(info, {email = false, selected = false}) {
     return Container(
@@ -115,21 +123,6 @@ class _UserAreaState extends State<UserArea> {
         appBar: CustomAppBar(
           userArea: true,
         ),
-        floatingActionButton: FloatingCustomButtonWidget(
-            selected: isSelected,
-            canCreate: false,
-            canDelete: false,
-            cancel: canEdit,
-            onEditButton: () => {
-                  setState(() => {
-                        canEdit = !canEdit,
-                      }),
-                },
-            onCancelButton: () => {
-                  setState(() => {
-                        canEdit = !canEdit,
-                      }),
-                }),
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(20),
@@ -167,47 +160,37 @@ class _UserAreaState extends State<UserArea> {
                           children: [
                             _infoUser(controller.user!.cpf),
                             SizedBox(height: 20),
-                            GestureDetector(
-                              onLongPress: () => {
-                                setState(() => {
-                                      if (canEdit) canEdit = !canEdit,
-                                      isSelected = !isSelected,
-                                    })
-                              },
-                              child: _infoUser(
-                                controller.user!.email,
-                                email: true,
-                                selected: isSelected,
-                              ),
-                            ),
+                            _infoUser(controller.user!.email),
                             SizedBox(height: 20),
-                            Visibility(
-                              visible: canEdit,
-                              child: Column(
+                            SizedBox(
+                              width: double.infinity,
+                              child: Wrap(
+                                spacing: 10,
+                                runSpacing: 3,
+                                alignment: WrapAlignment.spaceBetween,
                                 children: [
-                                  InputDecorationWidget(
-                                    controller: controllerInputEmail1,
-                                    label: 'Novo e-mail',
-                                    textInputType: TextInputType.emailAddress,
+                                  AppButtonWidget(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => UserConfig(
+                                            data: controller,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    texto: 'Configurações',
+                                    color: AppColors.secondary,
                                   ),
-                                  SizedBox(height: 20),
-                                  InputDecorationWidget(
-                                    controller: controllerInputEmail1,
-                                    label: 'Confirmar novo e-mail',
-                                    textInputType: TextInputType.emailAddress,
+                                  AppButtonWidget(
+                                    onPressed: () {},
+                                    width: 145,
+                                    texto: 'Excluir conta',
+                                    color: AppColors.darkOrange,
                                   ),
                                 ],
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                AppButtonWidget(
-                                  onPressed: () => {},
-                                  texto: 'Excluir conta',
-                                  color: AppColors.darkOrange,
-                                ),
-                              ],
                             ),
                           ],
                         ),
