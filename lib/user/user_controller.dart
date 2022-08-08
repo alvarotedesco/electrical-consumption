@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:electrical_comsuption/http_util.dart';
 import 'package:electrical_comsuption/models/user.dart';
 import 'package:electrical_comsuption/user/user_state.dart';
-import 'package:flutter/foundation.dart';
-import 'package:http/src/response.dart';
+import 'package:flutter/material.dart';
 
 import '../themes/constants.dart';
 
@@ -13,11 +10,7 @@ class UserController {
   UserState get state => stateNotifier.value;
   set state(UserState state) => stateNotifier.value = state;
 
-  UserModel? _user = UserModel(
-    email: 'email_teste@outlook.com',
-    cpf: '12456799632',
-    name: 'Um Nome Qualquer De Teste',
-  );
+  UserModel? _user;
 
   UserModel? get user => _user;
 

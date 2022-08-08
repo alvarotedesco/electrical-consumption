@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:electrical_comsuption/models/device.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../http_util.dart';
 import '../themes/constants.dart';

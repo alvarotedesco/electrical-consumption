@@ -1,17 +1,10 @@
-import 'dart:convert';
-
-import 'package:electrical_comsuption/http_util.dart';
-import 'package:electrical_comsuption/models/user.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/user/user_config.dart';
 import 'package:electrical_comsuption/user/user_controller.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
-import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
-import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../themes/constants.dart';
 import 'user_state.dart';
@@ -24,15 +17,9 @@ class UserArea extends StatefulWidget {
 }
 
 class _UserAreaState extends State<UserArea> {
-  final controller = UserController();
-  final TextEditingController controllerNewEmail = TextEditingController();
-  final TextEditingController controllerConfirmNewEmail =
-      TextEditingController();
-  bool canEditEmail = false;
+  final UserController controller = UserController();
+
   String error = '';
-  bool canEditPassword = false;
-  bool editingPassword = true;
-  bool editingEmail = true;
 
   Widget _infoUser(info, {email = false, selected = false}) {
     return Container(
@@ -111,7 +98,6 @@ class _UserAreaState extends State<UserArea> {
       setState(() {});
     });
 
-    // TODO: fazer o get das informaçoes do Usuario
     controller.getUserInfo().then((value) => error = value['data'].toString());
   }
 
@@ -165,29 +151,29 @@ class _UserAreaState extends State<UserArea> {
                             SizedBox(
                               width: double.infinity,
                               child: Wrap(
-                                spacing: 10,
-                                runSpacing: 3,
                                 alignment: WrapAlignment.spaceBetween,
+                                runSpacing: 3,
+                                spacing: 10,
                                 children: [
                                   AppButtonWidget(
+                                    color: AppColors.secondary,
+                                    texto: 'Configurações',
                                     onPressed: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => UserConfig(
-                                            data: controller,
+                                            controller: controller,
                                           ),
                                         ),
                                       );
                                     },
-                                    texto: 'Configurações',
-                                    color: AppColors.secondary,
                                   ),
                                   AppButtonWidget(
-                                    onPressed: () {},
-                                    width: 145,
-                                    texto: 'Excluir conta',
                                     color: AppColors.darkOrange,
+                                    texto: 'Excluir conta',
+                                    width: 145,
+                                    onPressed: () {},
                                   ),
                                 ],
                               ),
