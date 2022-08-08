@@ -3,10 +3,8 @@ import 'package:electrical_comsuption/auth/sign_up.dart';
 import 'package:electrical_comsuption/container/container_area.dart';
 import 'package:electrical_comsuption/container/containers.dart';
 import 'package:electrical_comsuption/demo/demonstration_page.dart';
-import 'package:electrical_comsuption/device/device_area.dart';
 import 'package:electrical_comsuption/home.dart';
-import 'package:electrical_comsuption/models/container.dart';
-import 'package:electrical_comsuption/models/device.dart';
+import 'package:electrical_comsuption/session_controller.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/user/user_area.dart';
 import 'package:flutter/material.dart';
@@ -33,36 +31,32 @@ class MyApp extends StatelessWidget {
         '/registry': (_) => SignUpPage(),
         '/painel': (_) => Containers(),
         '/home': (context) {
-          if (ModalRoute.of(context)!.settings.arguments == null) {
+          if (SessionController().container == null) {
             return LoginPage();
           }
-          return Home(
-            containerId:
-                (ModalRoute.of(context)!.settings.arguments as List)[0]!,
-            name: (ModalRoute.of(context)!.settings.arguments as List)[1]!,
-          );
+          return Home();
         },
         '/demo': (_) => Demonstration(),
         '/user': (_) => UserArea(),
-        '/editar-dispositivo': (context) {
-          if (ModalRoute.of(context)!.settings.arguments == null) {
-            return LoginPage();
-          }
-          return DeviceArea(
-            device: ModalRoute.of(context)!.settings.arguments as DeviceModel,
-          );
-        },
-        '/novo-dispositivo': (_) => DeviceArea(),
+        // '/editar-dispositivo': (context) {
+        //   if (ModalRoute.of(context)!.settings.arguments == null) {
+        //     return LoginPage();
+        //   }
+        //   return DeviceArea(
+        //     device: ModalRoute.of(context)!.settings.arguments as DeviceModel,
+        //   );
+        // },
+        // '/novo-dispositivo': (_) => DeviceArea(),
         '/novo-painel': (_) => ContainerArea(),
-        '/editar-painel': (context) {
-          if (ModalRoute.of(context)!.settings.arguments == null) {
-            return LoginPage();
-          }
-          return ContainerArea(
-            container:
-                ModalRoute.of(context)!.settings.arguments as ContainerModel,
-          );
-        },
+        // '/editar-painel': (context) {
+        //   if (ModalRoute.of(context)!.settings.arguments == null) {
+        //     return LoginPage();
+        //   }
+        //   return ContainerArea(
+        //     container:
+        //         ModalRoute.of(context)!.settings.arguments as ContainerModel,
+        //   );
+        // },
       },
     );
   }
