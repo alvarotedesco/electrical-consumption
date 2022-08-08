@@ -3,10 +3,12 @@ import 'package:electrical_comsuption/models/device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../models/user.dart';
 import '../principal/principal_controller.dart';
 import '../themes/app_colors.dart';
 import '../themes/app_text_styles.dart';
 import '../themes/constants.dart';
+import '../user/user_controller.dart';
 import 'button_widget.dart';
 import 'input_decoration_widget.dart';
 import 'snackbar_widget.dart';
@@ -235,6 +237,224 @@ class BoxDialog {
           ),
         );
       },
+    );
+  }
+
+  Future<dynamic> userConfigEmail(
+    UserController controller, {
+    DeviceModel? device,
+  }) {
+    final TextEditingController ctrlNewEmail = TextEditingController();
+    final TextEditingController ctrlConfirmNewEmail = TextEditingController();
+
+    final TextEditingController ctrlOldPassword = TextEditingController();
+
+    bool passwordVisible = false;
+
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+        backgroundColor: AppColors.darkBlue,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: AppColors.white),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+        title: Center(
+          child: Text(
+            Luvas.editingEmail,
+            style: AppTextStyles.h2WhiteBold,
+          ),
+        ),
+        content: StatefulBuilder(
+          builder: (context, state) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InputDecorationWidget(
+                textInputType: TextInputType.emailAddress,
+                style: AppTextStyles.h3WhiteBold,
+                controller: ctrlNewEmail,
+                label: Luvas.newEmail,
+              ),
+              InputDecorationWidget(
+                textInputType: TextInputType.emailAddress,
+                style: AppTextStyles.h3WhiteBold,
+                controller: ctrlConfirmNewEmail,
+                label: Luvas.confirmNewEmail,
+              ),
+              InputDecorationWidget(
+                textInputType: TextInputType.text,
+                passwordVisible: passwordVisible,
+                style: AppTextStyles.h3WhiteBold,
+                label: Luvas.confirmPassword,
+                controller: ctrlOldPassword,
+                isPassword: true,
+                onPressed: () {
+                  state(() {
+                    passwordVisible = !passwordVisible;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          AppButtonWidget(
+            texto: Luvas.cancel,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          AppButtonWidget(
+            texto: Luvas.save,
+            onPressed: () {
+              if (ctrlNewEmail.text == ctrlConfirmNewEmail.text) {
+                var data = UserModel(
+                  cpf: controller.user!.cpf,
+                  name: controller.user!.name,
+                  password: ctrlOldPassword.text,
+                  email: controller.user!.email,
+                  newEmail: ctrlConfirmNewEmail.text,
+                  avatarUrl: controller.user!.avatarUrl,
+                );
+
+                controller.updateUserV1Info(data).then((_) {
+                  Navigator.pop(context);
+                  AppSnackBar().showSnack(
+                    context,
+                    "Email atualizado com sucesso!",
+                  );
+                });
+              } else {
+                AppSnackBar().showSnack(
+                  context,
+                  "E-mails não correspodem! Tente novamente.",
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> userConfigPassword(
+    UserController controller, {
+    DeviceModel? device,
+  }) {
+    final TextEditingController ctrlOldPassword = TextEditingController();
+    final TextEditingController ctrlNewPassword = TextEditingController();
+    final TextEditingController ctrlConfirmNewPassword =
+        TextEditingController();
+
+    bool oldPasswordVisible = false;
+    bool newPasswordVisible = false;
+    bool confirmPasswordVisible = false;
+
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: AppColors.white),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+        backgroundColor: AppColors.darkBlue,
+        title: Center(
+          child: Text(
+            Luvas.editingPassword,
+            style: AppTextStyles.h2WhiteBold,
+          ),
+        ),
+        contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+        content: StatefulBuilder(
+          builder: (context, state) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InputDecorationWidget(
+                passwordVisible: oldPasswordVisible,
+                textInputType: TextInputType.text,
+                style: AppTextStyles.h3WhiteBold,
+                label: Luvas.confirmOldPassword,
+                controller: ctrlOldPassword,
+                isPassword: true,
+                onPressed: () {
+                  state(() => oldPasswordVisible = !oldPasswordVisible);
+                },
+              ),
+              InputDecorationWidget(
+                passwordVisible: newPasswordVisible,
+                textInputType: TextInputType.text,
+                style: AppTextStyles.h3WhiteBold,
+                controller: ctrlNewPassword,
+                label: Luvas.newPassword,
+                isPassword: true,
+                onPressed: () {
+                  state(() {
+                    newPasswordVisible = !newPasswordVisible;
+                  });
+                },
+              ),
+              InputDecorationWidget(
+                passwordVisible: confirmPasswordVisible,
+                controller: ctrlConfirmNewPassword,
+                textInputType: TextInputType.text,
+                style: AppTextStyles.h3WhiteBold,
+                label: Luvas.confirmNewPassword,
+                isPassword: true,
+                onPressed: () {
+                  state(() {
+                    confirmPasswordVisible = !confirmPasswordVisible;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          AppButtonWidget(
+            texto: Luvas.cancel,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          AppButtonWidget(
+            texto: Luvas.save,
+            onPressed: () {
+              if (ctrlNewPassword.text == ctrlConfirmNewPassword.text) {
+                var data = UserModel(
+                  cpf: controller.user!.cpf,
+                  name: controller.user!.name,
+                  password: ctrlOldPassword.text,
+                  email: controller.user!.email,
+                  avatarUrl: controller.user!.avatarUrl,
+                  newPassword: ctrlConfirmNewPassword.text,
+                );
+
+                controller.updateUserV1Info(data).then(
+                  (_) {
+                    Navigator.pop(context);
+                    AppSnackBar().showSnack(
+                      context,
+                      "Senha atualizada com sucesso!",
+                    );
+                  },
+                );
+              } else {
+                AppSnackBar().showSnack(
+                  context,
+                  "Senhas não correspodem! Tente novamente.",
+                );
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
