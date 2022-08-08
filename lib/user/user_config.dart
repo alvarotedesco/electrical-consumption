@@ -20,20 +20,6 @@ class UserConfig extends StatefulWidget {
 }
 
 class _UserConfigState extends State<UserConfig> {
-  final TextEditingController ctrlNewEmail = TextEditingController();
-  final TextEditingController ctrlConfirmNewEmail = TextEditingController();
-
-  final TextEditingController ctrlOldPassword = TextEditingController();
-  final TextEditingController ctrlNewPassword = TextEditingController();
-  final TextEditingController ctrlConfirmNewPassword = TextEditingController();
-
-  bool editingEmail = true;
-  bool editingPassword = true;
-  bool passwordVisible = false;
-  bool oldPasswordVisible = false;
-  bool newPasswordVisible = false;
-  bool confirmPasswordVisible = false;
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
