@@ -2,12 +2,9 @@ import 'package:electrical_comsuption/models/device.dart';
 import 'package:electrical_comsuption/principal/principal_state.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
-import 'package:electrical_comsuption/widgets/button_widget.dart';
-import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
+import 'package:electrical_comsuption/widgets/box_widget.dart';
 import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
-import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../widgets/snackbar_widget.dart';
 import 'principal_controller.dart';
@@ -65,142 +62,6 @@ class _PrincipalState extends State<Principal> {
     totalKw = tots.toStringAsFixed(2);
   }
 
-  Future<dynamic> _clickOnDevice(int index, DeviceModel deviceSelected) {
-    return showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        int timeControl2 = 0;
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: AppColors.white, width: 1),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          backgroundColor: AppColors.darkBlue,
-          title: Center(
-            child: Text(
-              deviceSelected.name,
-              style: AppTextStyles.h2WhiteBold,
-            ),
-          ),
-          actions: [
-            AppButtonWidget(
-              onPressed: () {
-                controller.makeDataToSave();
-                Navigator.pop(context, timeControl2);
-              },
-              texto: "Ok",
-              color: AppColors.primary,
-              style: AppTextStyles.h2WhiteBold,
-            )
-          ],
-          content: StatefulBuilder(
-            builder: (context, state) => Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (var index = 0; index < 2; index++) ...[
-                      Radio<int>(
-                        activeColor: AppColors.secondary,
-                        value: index,
-                        groupValue: timeControl2,
-                        onChanged: (val) {
-                          state(() {
-                            timeControl2 = val as int;
-                          });
-                        },
-                      ),
-                      if (index == 0)
-                        Text(
-                          "Horas",
-                          style: AppTextStyles.h3WhiteBold,
-                        ),
-                      if (index == 1)
-                        Text(
-                          "Minutos",
-                          style: AppTextStyles.h3WhiteBold,
-                        ),
-                    ],
-                  ],
-                ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Expanded(
-                      child: InputDecorationWidget(
-                        controller: controller.hoursControllers[index],
-                        textStyle: AppTextStyles.h2WhiteBold,
-                        textInputType: TextInputType.number,
-                        style: AppTextStyles.h2WhiteBold,
-                        label: 'Tempo de uso',
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(4),
-                        ],
-                        onChanged: (tex) {
-                          if (tex != "" &&
-                              timeControl2 == 0 &&
-                              int.parse(tex) >= 24) {
-                            controller.hoursControllers[index].text = '24';
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: InputDecorationWidget(
-                        controller: controller.daysControllers[index],
-                        textStyle: AppTextStyles.h2WhiteBold,
-                        textInputType: TextInputType.number,
-                        style: AppTextStyles.h2WhiteBold,
-                        label: "Dias de uso",
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(2),
-                        ],
-                        onChanged: (tex) {
-                          if (tex != "") {
-                            if (int.parse(tex) >= 99) {
-                              controller.daysControllers[index].text = '99';
-                            }
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: InputDecorationWidget(
-                        controller: controller.qtdControllers[index],
-                        textStyle: AppTextStyles.h2WhiteBold,
-                        textInputType: TextInputType.number,
-                        style: AppTextStyles.h2WhiteBold,
-                        label: "Quantidade",
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(3),
-                        ],
-                        onChanged: (tex) {
-                          if (tex != "") {
-                            if (int.parse(tex) >= 999) {
-                              controller.qtdControllers[index].text = '999';
-                            }
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void _onDelete() {
     controller.containerDevices.removeAt(_actualIndexDevice!);
     controller.daysControllers.removeAt(_actualIndexDevice!);
@@ -251,10 +112,9 @@ class _PrincipalState extends State<Principal> {
         selected: _selectedDevice != null,
         onDeleteButton: _onDelete,
         onEditButton: () async {
-          timeControl = await _clickOnDevice(
-            _actualIndexDevice!,
-            _selectedDevice!,
-          );
+          timeControl = await BoxDialog(context: context)
+              .clickOnDevice(controller, _actualIndexDevice!);
+
           if (timeControl == 1) {
             controller
                 .hoursControllers[_actualIndexDevice!].text = (double.parse(
@@ -349,10 +209,10 @@ class _PrincipalState extends State<Principal> {
                             itemBuilder: (context, index) {
                               return ListTile(
                                 onTap: () async {
-                                  timeControl = await _clickOnDevice(
-                                    index,
-                                    controller.containerDevices[index],
-                                  );
+                                  timeControl = await BoxDialog(
+                                    context: context,
+                                  ).clickOnDevice(controller, index);
+
                                   if (timeControl == 1) {
                                     controller.hoursControllers[index].text =
                                         (double.parse(controller

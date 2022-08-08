@@ -12,17 +12,8 @@ class DeviceController {
   set state(DeviceState state) => stateNotifier.value = state;
   DeviceState get state => stateNotifier.value;
 
-  List<DeviceModel> _listDevices = [
-    DeviceModel(power: 400, name: "nome de dispositivo"),
-    DeviceModel(power: 500, name: "disposito500"),
-    DeviceModel(power: 600, name: "disposito600"),
-    DeviceModel(power: 700, name: "cavalo"),
-    DeviceModel(power: 800, name: "camelo"),
-    DeviceModel(power: 900, name: "melancia"),
-    DeviceModel(power: 10000, name: "outra fruta aleatoria"),
-    DeviceModel(power: 100, name: "penultimo dispositivo"),
-    DeviceModel(power: 9, name: "lampada led"),
-  ];
+  List<DeviceModel> _listDevices = [];
+
   List<DeviceModel> get listDevices => _listDevices;
 
   Future<Map<String, dynamic>> createDevice(DeviceModel device) async {
@@ -34,10 +25,9 @@ class DeviceController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        Map<String, dynamic> resposta = jsonDecode(response.body);
-
         state = DeviceState.success;
-        return {"status": "success", "data": resposta};
+        listarDevices();
+        return {"status": "success"};
       }
 
       state = DeviceState.error;
@@ -52,15 +42,14 @@ class DeviceController {
     try {
       state = DeviceState.loading;
       var response = await HttpUtil().put(
-        url: Underwear.devicesURL,
+        url: '${Underwear.devicesURL}/${device.id}',
         data: device.toJson(),
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> resposta = jsonDecode(response.body);
-
         state = DeviceState.success;
-        return {"status": "success", "data": resposta};
+        listarDevices();
+        return {"status": "success"};
       }
 
       state = DeviceState.error;
@@ -103,15 +92,12 @@ class DeviceController {
     try {
       state = DeviceState.loading;
       var response = await HttpUtil().delete(
-        url: Underwear.devicesURL,
-        data: id,
+        url: '${Underwear.devicesURL}/$id',
       );
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> resposta = jsonDecode(response.body);
-
         state = DeviceState.success;
-        return {"status": "success", "data": resposta};
+        return {"status": "success"};
       }
 
       state = DeviceState.error;
