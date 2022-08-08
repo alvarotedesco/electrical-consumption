@@ -53,12 +53,13 @@ class _ContainersState extends State<Containers> {
                     });
                   }
                 },
-                onTap: () {
+                onTap: () async {
                   session.container = controller.listContainers[i];
-                  Navigator.pushNamed(
+                  await Navigator.pushNamed(
                     context,
                     '/home',
                   );
+                  _init();
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),

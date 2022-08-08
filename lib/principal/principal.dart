@@ -1,5 +1,6 @@
 import 'package:electrical_comsuption/models/device.dart';
 import 'package:electrical_comsuption/principal/principal_state.dart';
+import 'package:electrical_comsuption/session_controller.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/box_widget.dart';
@@ -23,6 +24,7 @@ class Principal extends StatefulWidget {
 
 class _PrincipalState extends State<Principal> {
   final PrincipalController controller = PrincipalController();
+  final SessionController session = SessionController();
 
   final productController = TextEditingController();
   final nomeEqController = TextEditingController();
@@ -58,6 +60,7 @@ class _PrincipalState extends State<Principal> {
     }
 
     double toR = tots * 1.04;
+    toR += toR * session.container!.flag!.cost;
     totalReais = toR.toStringAsFixed(2);
     totalKw = tots.toStringAsFixed(2);
   }
@@ -95,13 +98,14 @@ class _PrincipalState extends State<Principal> {
     });
     controller.containerId = widget.containerId;
 
-    controller.getContainerDevice(widget.containerId).catchError((e) {
+    controller.getContainerDevice(widget.containerId).then((_) {
+      controller.getDevices().then((value) => setState(() => _getTotal()));
+    }).catchError((e) {
       AppSnackBar().showSnack(
         context,
         "Erro inesperado, Erro ao pegar os dados",
       );
     });
-    controller.getDevices().then((value) => setState(() => _getTotal()));
   }
 
   @override

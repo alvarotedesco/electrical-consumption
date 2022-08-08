@@ -7,9 +7,7 @@ import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  const Home({
-    super.key,
-  });
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -17,7 +15,9 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final SessionController session = SessionController();
+
   int currentIndex = 0;
+
   List<Widget> items = [];
 
   @override
@@ -43,10 +43,12 @@ class _HomeState extends State<Home> {
                     ? 'Meus Dispositivos'
                     : 'Estatisticas',
           ),
-          body: IndexedStack(
-            index: currentIndex,
-            children: items,
-          ),
+          body: items[currentIndex],
+
+          // body: IndexedStack(
+          //   index: currentIndex,
+          //   children: items,
+          // ),
           bottomNavigationBar: BottomNavigationBar(
             unselectedItemColor: AppColors.secondary,
             backgroundColor: AppColors.primary,
