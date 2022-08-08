@@ -1,6 +1,7 @@
 import 'package:electrical_comsuption/container/container_controller.dart';
 import 'package:electrical_comsuption/container/container_state.dart';
 import 'package:electrical_comsuption/models/container.dart';
+import 'package:electrical_comsuption/session_controller.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
@@ -19,6 +20,7 @@ class Containers extends StatefulWidget {
 
 class _ContainersState extends State<Containers> {
   final controller = ContainerController();
+  final SessionController session = SessionController();
 
   bool edit = false;
   bool onLong = false;
@@ -52,13 +54,10 @@ class _ContainersState extends State<Containers> {
                   }
                 },
                 onTap: () {
+                  session.container = controller.listContainers[i];
                   Navigator.pushNamed(
                     context,
                     '/home',
-                    arguments: [
-                      controller.listContainers[i].id,
-                      controller.listContainers[i].name
-                    ],
                   );
                 },
                 child: Container(

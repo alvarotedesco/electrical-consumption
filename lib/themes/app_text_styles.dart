@@ -43,6 +43,13 @@ class AppTextStyles {
     fontSize: 16,
   );
 
+  static const TextStyle h2BlackBold = TextStyle(
+    fontFamily: "Montserrat",
+    color: AppColors.black,
+    fontWeight: FontWeight.bold,
+    fontSize: 14,
+  );
+
   static const TextStyle h2White = TextStyle(
     fontFamily: "Montserrat",
     color: AppColors.white,

@@ -47,10 +47,7 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
-      Navigator.pushNamed(
-        context,
-        '/painel',
-      );
+      Navigator.pushNamed(context, '/painel');
     });
   }
 
@@ -87,6 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                       passwordVisible: passwordVisible,
                       controller: passwordController,
                       label: Luvas.password,
+                      onSubmited: (_) => _login(),
                       isPassword: true,
                       onPressed: () {
                         setState(() => passwordVisible = !passwordVisible);

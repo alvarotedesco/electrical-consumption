@@ -1,17 +1,13 @@
 import 'package:electrical_comsuption/dashboard/dashboard.dart';
 import 'package:electrical_comsuption/device/devices.dart';
 import 'package:electrical_comsuption/principal/principal.dart';
+import 'package:electrical_comsuption/session_controller.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  final int containerId;
-  final String name;
-
   const Home({
-    required this.containerId,
-    required this.name,
     super.key,
   });
 
@@ -20,18 +16,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final SessionController session = SessionController();
   int currentIndex = 0;
-  int? painelid;
   List<Widget> items = [];
 
   @override
   void initState() {
     super.initState();
 
-    painelid = widget.containerId;
-
     items = [
-      Principal(containerId: painelid!),
+      Principal(containerId: session.container!.id!),
       Devices(),
       Dashboard(),
     ];
@@ -44,7 +38,7 @@ class _HomeState extends State<Home> {
         child: Scaffold(
           appBar: CustomAppBar(
             label: currentIndex == 0
-                ? widget.name
+                ? session.container!.name
                 : currentIndex == 1
                     ? 'Meus Dispositivos'
                     : 'Estatisticas',

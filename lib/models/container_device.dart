@@ -5,7 +5,7 @@ import 'package:electrical_comsuption/models/container.dart';
 import 'package:electrical_comsuption/models/device.dart';
 
 class ContainerDeviceModel {
-  final ContainerModel container;
+  final ContainerModel? container;
   final DeviceModel device;
   final int containerId;
   final int deviceId;
@@ -17,15 +17,15 @@ class ContainerDeviceModel {
     required this.consuTime,
     required this.consuDays,
     required this.containerId,
-    required this.container,
     required this.deviceId,
     required this.quantity,
     required this.device,
+    this.container,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'container': container.toMap(),
+      'container': container?.toMap(),
       'device': device.toMap(),
       'container_id': containerId,
       'device_id': deviceId,
@@ -37,8 +37,9 @@ class ContainerDeviceModel {
 
   factory ContainerDeviceModel.fromMap(Map<String, dynamic> map) {
     return ContainerDeviceModel(
-      container:
-          ContainerModel.fromMap(map['container'] as Map<String, dynamic>),
+      container: map['container'] != null
+          ? ContainerModel.fromMap(map['container'] as Map<String, dynamic>)
+          : null,
       device: DeviceModel.fromMap(map['device'] as Map<String, dynamic>),
       containerId: map['container_id'] as int,
       deviceId: map['device_id'] as int,

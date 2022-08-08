@@ -1,5 +1,6 @@
 import 'package:electrical_comsuption/device/device_controller.dart';
 import 'package:electrical_comsuption/models/device.dart';
+import 'package:electrical_comsuption/widgets/box_widget.dart';
 import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -19,11 +20,43 @@ class _DevicesState extends State<Devices> {
 
   DeviceModel? _selectedDevice;
 
-  void _newDevice() {
-    Navigator.pushNamed(
-      context,
-      '/novo-dispositivo',
+  void _save(String name, String power, {DeviceModel? device}) {
+    DeviceModel device2 = DeviceModel(
+      power: double.parse(power),
+      name: name,
+      id: device?.id,
     );
+
+    if (device == null) {
+      controller.createDevice(device2).then((value) {
+        if (value['status'] == 'success') {
+          AppSnackBar()
+              .showSnack(context, "Dispositivo cadastrado com sucesso!");
+          return;
+        }
+
+        AppSnackBar()
+            .showSnack(context, "Não foi possivel cadastrar seu Dispositivo!");
+      });
+    } else {
+      controller.saveDevice(device2).then((value) {
+        if (value['status'] == 'success') {
+          AppSnackBar().showSnack(context, "Dispositivo alterado com sucesso!");
+          return;
+        }
+
+        AppSnackBar()
+            .showSnack(context, "Não foi possivel alterar o dispositivo!");
+      });
+    }
+  }
+
+  void _newDevice() async {
+    var ok = await BoxDialog(context: context).editDevice(controller) as List;
+
+    if (ok.isNotEmpty) {
+      _save(ok[0], ok[1]);
+    }
   }
 
   void _init() {
@@ -55,13 +88,21 @@ class _DevicesState extends State<Devices> {
         backgroundColor: AppColors.darkBlue,
         floatingActionButton: FloatingCustomButtonWidget(
           onNewButton: _newDevice,
-          onEditButton: () {
-            Navigator.of(context)
-                .pushNamed('/editar-dispositivo', arguments: _selectedDevice);
+          onEditButton: () async {
+            var ok = await BoxDialog(context: context).editDevice(
+              controller,
+              device: _selectedDevice,
+            ) as List;
+
+            if (ok.isNotEmpty) {
+              _save(ok[0], ok[1], device: _selectedDevice!);
+            }
+
+            _selectedDevice = null;
           },
           onDeleteButton: () async {
             await controller.deleteDevice(_selectedDevice!.id as int);
-            _init();
+            setState(() => _init());
           },
           selected: _selectedDevice != null,
         ),
@@ -91,9 +132,18 @@ class _DevicesState extends State<Devices> {
                             _selectedDevice = controller.listDevices[index];
                           });
                         },
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/editar-dispositivo',
-                              arguments: controller.listDevices[index]);
+                        onTap: () async {
+                          var ok = await BoxDialog(context: context).editDevice(
+                            controller,
+                            device: controller.listDevices[index],
+                          ) as List;
+
+                          if (ok.isNotEmpty) {
+                            _save(ok[0], ok[1],
+                                device: controller.listDevices[index]);
+                          }
+
+                          _selectedDevice = null;
                         },
                         title: Text(
                           controller.listDevices[index].name,

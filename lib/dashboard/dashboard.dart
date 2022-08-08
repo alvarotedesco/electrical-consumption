@@ -25,11 +25,16 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
+    super.initState();
     _selectionBehavior = SelectionBehavior(
       enable: true,
       unselectedColor: AppColors.grey,
     );
-    super.initState();
+    controller.stateNotifier.addListener(() {
+      setState(() {});
+    });
+
+    controller.getContainerDevice();
   }
 
   @override
@@ -75,6 +80,11 @@ class _DashboardState extends State<Dashboard> {
             ),
             // Enable tooltip
             tooltipBehavior: TooltipBehavior(enable: true),
+            onTooltipRender: (tooltip) {
+              tooltip.header =
+                  controller.data[tooltip.pointIndex as int].device.name;
+              tooltip.text = "${tooltip.text!.split(':').last}%";
+            },
             series: <CircularSeries<ContainerDeviceModel, String>>[
               PieSeries<ContainerDeviceModel, String>(
                 dataSource: controller.data,

@@ -2,11 +2,9 @@ import 'package:electrical_comsuption/models/device.dart';
 import 'package:electrical_comsuption/principal/principal_state.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
-import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
+import 'package:electrical_comsuption/widgets/box_widget.dart';
 import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
-import 'package:electrical_comsuption/widgets/input_decoration_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../widgets/snackbar_widget.dart';
 import 'principal_controller.dart';
@@ -31,9 +29,14 @@ class _PrincipalState extends State<Principal> {
   final pwrEqController = TextEditingController();
   final control = TextEditingController();
 
+  DeviceModel? _selectedDevice;
+
   String totalReais = "0.0";
   String totalKw = "0.0";
   String panelName = '';
+
+  int timeControl = 0;
+  int? _actualIndexDevice;
 
   List<String> texts = [
     'Nome',
@@ -43,12 +46,10 @@ class _PrincipalState extends State<Principal> {
     'Qtd',
   ];
 
-  DeviceModel? _selectedDevice;
-
   void _getTotal() {
     double tots = 0.0;
     for (var i = 0; i < controller.containerDevices.length; i++) {
-      int hour = int.parse(controller.hoursControllers[i].text);
+      double hour = double.parse(controller.hoursControllers[i].text);
       int day = int.parse(controller.daysControllers[i].text);
       int qtd = int.parse(controller.qtdControllers[i].text);
       double pwr = controller.containerDevices[i].power;
@@ -57,46 +58,22 @@ class _PrincipalState extends State<Principal> {
     }
 
     double toR = tots * 1.04;
-    setState(() {
-      totalReais = toR.toStringAsFixed(2);
-      totalKw = tots.toStringAsFixed(2);
-    });
-  }
-
-  Future _clickOnDevice(DeviceModel deviceSelected) {
-    // Navigator.pushNamed(
-    //   context,
-    //   '/editar-dispositivo',
-    //   arguments: controller.containerDevices[index],
-    // ).then((value) {
-    //   controller.getContainerDevice(widget.containerId).catchError((e) {
-    //     AppSnackBar().showSnack(
-    //       context,
-    //       "Erro inesperado, Erro ao pegar os dados",
-    //     );
-    //   });
-    // });
-    return showDialog<Widget>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              title: Text(
-                deviceSelected.name,
-                style: AppTextStyles.h3BlackBold,
-              ),
-              actions: [
-                InputDecorationWidget(
-                  textInputType: TextInputType.number,
-                  controller: TextEditingController(
-                    text: '${deviceSelected.power}',
-                  ),
-                  label: 'Potência',
-                ),
-              ],
-            ));
+    totalReais = toR.toStringAsFixed(2);
+    totalKw = tots.toStringAsFixed(2);
   }
 
   void _onDelete() {
-    controller.removeContainerDevice(_selectedDevice!.id!);
+    controller.containerDevices.removeAt(_actualIndexDevice!);
+    controller.daysControllers.removeAt(_actualIndexDevice!);
+    controller.hoursControllers.removeAt(_actualIndexDevice!);
+    controller.qtdControllers.removeAt(_actualIndexDevice!);
+    controller.makeDataToSave();
+    _actualIndexDevice = null;
+    _selectedDevice = null;
+  }
+
+  void _addDevice(DeviceModel device) {
+    setState(() => controller.addDevice(device: device));
   }
 
   Widget? _errorWidget() {
@@ -114,9 +91,7 @@ class _PrincipalState extends State<Principal> {
     super.initState();
 
     controller.stateNotifier.addListener(() {
-      setState(() {
-        _getTotal();
-      });
+      setState(() => _getTotal());
     });
     controller.containerId = widget.containerId;
 
@@ -126,7 +101,7 @@ class _PrincipalState extends State<Principal> {
         "Erro inesperado, Erro ao pegar os dados",
       );
     });
-    controller.getDevices().then((value) => _getTotal());
+    controller.getDevices().then((value) => setState(() => _getTotal()));
   }
 
   @override
@@ -136,34 +111,38 @@ class _PrincipalState extends State<Principal> {
       floatingActionButton: FloatingCustomButtonWidget(
         selected: _selectedDevice != null,
         onDeleteButton: _onDelete,
+        onEditButton: () async {
+          timeControl = await BoxDialog(context: context)
+              .clickOnDevice(controller, _actualIndexDevice!);
+
+          if (timeControl == 1) {
+            controller
+                .hoursControllers[_actualIndexDevice!].text = (double.parse(
+                        controller.hoursControllers[_actualIndexDevice!].text) /
+                    60)
+                .toStringAsFixed(2);
+          }
+        },
         canCreate: false,
       ),
       body: controller.state != PrincipalState.success
           ? _errorWidget()
           : Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: Text(
-                        panelName,
-                        style: AppTextStyles.h1WhiteBold,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 3,
+                        color: AppColors.primary,
                       ),
+                      borderRadius: BorderRadius.circular(80),
                     ),
-                    SizedBox(height: 10),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 3,
-                          color: AppColors.primary,
-                        ),
-                        borderRadius: BorderRadius.circular(80),
-                      ),
-                      child: DropdownButton(
+                    child: DropdownButton(
                         borderRadius: BorderRadius.circular(10),
                         isExpanded: true,
                         underline: SizedBox(height: 0),
@@ -182,226 +161,192 @@ class _PrincipalState extends State<Principal> {
                             child: Text(value.name),
                           );
                         }).toList(),
-                        onChanged: (value) {
-                          print({'Item selecionado => ': value});
-                          setState(() {
-                            controller.addDevice(device: value as DeviceModel);
-                          });
-                        },
-                      ),
+                        onChanged: (val) {
+                          _addDevice(val as DeviceModel);
+                        }),
+                  ),
+                  SizedBox(height: 10),
+                  Container(
+                    padding: EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.black60,
                     ),
-                    SizedBox(height: 10),
-                    Container(
-                      padding: EdgeInsets.only(top: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppColors.black60,
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                for (var index = 0; index < 5; index++) ...[
-                                  Expanded(
-                                    flex: index == 0
-                                        ? 4
-                                        : index == 1
-                                            ? 2
-                                            : 1,
-                                    child: Center(
-                                      child: Text(
-                                        texts[index],
-                                        style: AppTextStyles.h3WhiteBold,
-                                      ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              for (var index = 0; index < 5; index++) ...[
+                                Expanded(
+                                  flex: index == 0
+                                      ? 4
+                                      : index == 1
+                                          ? 2
+                                          : 1,
+                                  child: Center(
+                                    child: Text(
+                                      texts[index],
+                                      style: AppTextStyles.h3WhiteBold,
                                     ),
                                   ),
-                                ]
-                              ],
-                            ),
+                                ),
+                              ]
+                            ],
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height -
-                                kBottomNavigationBarHeight -
-                                kToolbarHeight -
-                                183,
-                            child: ListView.builder(
-                              padding: EdgeInsets.all(0),
-                              itemCount: controller.containerDevices.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  onTap: () => _clickOnDevice(
-                                      controller.containerDevices[index]),
-                                  onLongPress: () {
-                                    setState(() {
-                                      if (_selectedDevice == null) {
-                                        _selectedDevice =
-                                            controller.containerDevices[index];
-                                      } else {
-                                        _selectedDevice = null;
-                                      }
-                                    });
-                                  },
-                                  title: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        flex: 4,
-                                        child: InkWell(
-                                          child: Text(
-                                            controller
-                                                .containerDevices[index].name,
-                                            style: AppTextStyles.h3WhiteBold,
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Center(
-                                          child: Text(
-                                            controller
-                                                .containerDevices[index].power
-                                                .toString(),
-                                            style: AppTextStyles.h3WhiteBold,
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: TextField(
-                                          controller: controller
-                                              .hoursControllers[index],
-                                          keyboardType: TextInputType.number,
-                                          style: AppTextStyles.h3WhiteBold,
-                                          textAlign: TextAlign.center,
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(2),
-                                          ],
-                                          onChanged: (tex) {
-                                            if (tex != "" &&
-                                                int.parse(tex) >= 24) {
-                                              controller.hoursControllers[index]
-                                                  .text = '24';
-                                            }
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height -
+                              kBottomNavigationBarHeight -
+                              kToolbarHeight -
+                              183,
+                          child: ListView.builder(
+                            padding: EdgeInsets.all(0),
+                            itemCount: controller.containerDevices.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onTap: () async {
+                                  timeControl = await BoxDialog(
+                                    context: context,
+                                  ).clickOnDevice(controller, index);
 
-                                            _getTotal();
-                                          },
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: TextField(
-                                          controller:
-                                              controller.daysControllers[index],
-                                          keyboardType: TextInputType.number,
+                                  if (timeControl == 1) {
+                                    controller.hoursControllers[index].text =
+                                        (double.parse(controller
+                                                    .hoursControllers[index]
+                                                    .text) /
+                                                60)
+                                            .toStringAsFixed(2);
+                                  }
+                                },
+                                onLongPress: () {
+                                  setState(() {
+                                    if (_selectedDevice == null) {
+                                      _selectedDevice =
+                                          controller.containerDevices[index];
+                                      _actualIndexDevice = index;
+                                    } else {
+                                      _selectedDevice = null;
+                                      _actualIndexDevice = null;
+                                    }
+                                  });
+                                },
+                                title: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 4,
+                                      child: InkWell(
+                                        child: Text(
+                                          controller
+                                              .containerDevices[index].name,
                                           style: AppTextStyles.h3WhiteBold,
-                                          textAlign: TextAlign.center,
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(2),
-                                          ],
-                                          onChanged: (tex) {
-                                            if (tex != "") {
-                                              if (int.parse(tex) >= 99) {
-                                                controller
-                                                    .daysControllers[index]
-                                                    .text = '99';
-                                              }
-                                              _getTotal();
-                                            }
-                                          },
                                         ),
                                       ),
-                                      Expanded(
-                                        child: TextField(
-                                          keyboardType: TextInputType.number,
-                                          controller:
-                                              controller.qtdControllers[index],
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Center(
+                                        child: Text(
+                                          controller
+                                              .containerDevices[index].power
+                                              .toString(),
                                           style: AppTextStyles.h3WhiteBold,
-                                          textAlign: TextAlign.center,
-                                          inputFormatters: [
-                                            LengthLimitingTextInputFormatter(3),
-                                          ],
-                                          onChanged: (tex) {
-                                            if (tex != "") {
-                                              if (int.parse(tex) >= 999) {
-                                                controller.qtdControllers[index]
-                                                    .text = '999';
-                                              }
-                                              _getTotal();
-                                            }
-                                          },
                                         ),
                                       ),
-                                    ],
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        controller.hoursControllers[index].text,
+                                        style: AppTextStyles.h3WhiteBold,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        controller.daysControllers[index].text,
+                                        style: AppTextStyles.h3WhiteBold,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        controller.qtdControllers[index].text,
+                                        style: AppTextStyles.h3WhiteBold,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(bottom: 8),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        "Consumo: ",
+                                        style: AppTextStyles.h1WhiteBold,
+                                      ),
+                                    ),
                                   ),
-                                );
-                              },
-                            ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 20),
+                                      child: Text(
+                                        '$totalKw kWh',
+                                        style: AppTextStyles.h1WhiteBold,
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Text(
+                                        "Gasto: ",
+                                        style: AppTextStyles.h1WhiteBold,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(right: 20),
+                                      child: Text(
+                                        'R\$ $totalReais',
+                                        style: AppTextStyles.h1WhiteBold,
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          Container(
-                            margin: EdgeInsets.only(bottom: 8),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Text(
-                                          "Consumo: ",
-                                          style: AppTextStyles.h1WhiteBold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(right: 20),
-                                        child: Text(
-                                          '$totalKw kWh',
-                                          style: AppTextStyles.h1WhiteBold,
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Text(
-                                          "Gasto: ",
-                                          style: AppTextStyles.h1WhiteBold,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: EdgeInsets.only(right: 20),
-                                        child: Text(
-                                          'R\$ $totalReais',
-                                          style: AppTextStyles.h1WhiteBold,
-                                          textAlign: TextAlign.right,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
     );

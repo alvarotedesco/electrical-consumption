@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:electrical_comsuption/models/container_device.dart';
 import 'package:flutter/material.dart';
 
 import '../http_util.dart';
@@ -26,7 +27,11 @@ class PrincipalController {
 
   int containerId = 0;
 
-  void addDevice({DeviceModel? device, bool control = false}) {
+  void addDevice({
+    DeviceModel? device,
+    ContainerDeviceModel? contDev,
+    bool control = false,
+  }) {
     for (var i = 0; i < _containerDevices.length; i++) {
       if (_containerDevices[i].id == device!.id) {
         _qtdControllers[i].text =
@@ -35,15 +40,20 @@ class PrincipalController {
       }
     }
 
-    _hoursControllers.add(TextEditingController(text: '1'));
-    _daysControllers.add(TextEditingController(text: '1'));
-    _qtdControllers.add(TextEditingController(text: '1'));
-    if (!control) _addDevice(device!);
+    _hoursControllers.add(TextEditingController(
+        text: contDev != null ? contDev.consuTime.toString() : '1'));
+    _daysControllers.add(TextEditingController(
+        text: contDev != null ? contDev.consuDays.toString() : '1'));
+    _qtdControllers.add(TextEditingController(
+        text: contDev != null ? contDev.quantity.toString() : '1'));
+
+    if (!control) {
+      _containerDevices.add(device!);
+      makeDataToSave();
+    }
   }
 
-  void _addDevice(DeviceModel device) {
-    _containerDevices.add(device);
-
+  void makeDataToSave() {
     var data = <String, Map<String, Map<String, String>>>{'devices': {}};
 
     for (var i = 0; i < _containerDevices.length; i++) {
@@ -54,7 +64,7 @@ class PrincipalController {
       };
     }
 
-    addContainerDevice(data);
+    saveContainerDevice(data);
   }
 
   Future<Map<String, dynamic>> getContainerDevice(int containerId) async {
@@ -68,16 +78,19 @@ class PrincipalController {
       if (response.statusCode == 200) {
         Map resposta = jsonDecode(response.body);
 
-        List devices = resposta['devices'];
+        List contDevs = resposta['cont_dev'];
 
-        if (devices.isEmpty) {
+        if (contDevs.isEmpty) {
           state = PrincipalState.empty;
           return {"status": "empty", "data": resposta};
         }
 
-        _containerDevices = devices.map((e) {
-          addDevice(control: true);
-          return DeviceModel.fromMap(e);
+        _containerDevices = contDevs.map((contDev) {
+          addDevice(
+              contDev:
+                  ContainerDeviceModel.fromMap(contDev as Map<String, dynamic>),
+              control: true);
+          return DeviceModel.fromMap(contDev['device']);
         }).toList();
 
         state = PrincipalState.success;
@@ -123,7 +136,7 @@ class PrincipalController {
     }
   }
 
-  Future<Map<String, dynamic>> addContainerDevice(data) async {
+  Future<Map<String, dynamic>> saveContainerDevice(data) async {
     try {
       state = PrincipalState.loading;
       var response = await HttpUtil().put(
@@ -144,25 +157,25 @@ class PrincipalController {
     }
   }
 
-  Future<Map<String, dynamic>> removeContainerDevice(int deviceId) async {
-    try {
-      state = PrincipalState.loading;
-      var response = await HttpUtil().delete(
-        url: '${Underwear.containerDeviceURL}/$containerId/$deviceId',
-      );
+//   Future<Map<String, dynamic>> removeContainerDevice(int deviceId) async {
+//     try {
+//       state = PrincipalState.loading;
+//       var response = await HttpUtil().delete(
+//         url: '${Underwear.containerDeviceURL}/$containerId/$deviceId',
+//       );
 
-      if (response.statusCode == 200) {
-        getContainerDevice(containerId);
+//       if (response.statusCode == 200) {
+//         getContainerDevice(containerId);
 
-        state = PrincipalState.success;
-        return {"status": "success", "data": response.body};
-      }
+//         state = PrincipalState.success;
+//         return {"status": "success", "data": response.body};
+//       }
 
-      state = PrincipalState.error;
-      return {"status": "error", "data": response.statusCode};
-    } on Exception {
-      state = PrincipalState.error;
-      return {"status": "error"};
-    }
-  }
+//       state = PrincipalState.error;
+//       return {"status": "error", "data": response.statusCode};
+//     } on Exception {
+//       state = PrincipalState.error;
+//       return {"status": "error"};
+//     }
+//   }
 }
