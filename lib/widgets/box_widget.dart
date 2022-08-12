@@ -321,13 +321,22 @@ class BoxDialog {
                   avatarUrl: controller.user!.avatarUrl,
                 );
 
-                controller.updateUserV1Info(data).then((_) {
-                  Navigator.pop(context);
-                  AppSnackBar().showSnack(
-                    context,
-                    "Email atualizado com sucesso!",
-                  );
-                });
+                controller.updateUserV1Info(data).then(
+                  (resp) {
+                    if (resp['status'] == 'error') {
+                      AppSnackBar().showSnack(
+                        context,
+                        "Senha atual inserida incorreta!",
+                      );
+                    } else {
+                      Navigator.pop(context);
+                      AppSnackBar().showSnack(
+                        context,
+                        "E-mails alterado com sucesso!.",
+                      );
+                    }
+                  },
+                );
               } else {
                 AppSnackBar().showSnack(
                   context,
@@ -437,12 +446,19 @@ class BoxDialog {
                 );
 
                 controller.updateUserV1Info(data).then(
-                  (_) {
-                    Navigator.pop(context);
-                    AppSnackBar().showSnack(
-                      context,
-                      "Senha atualizada com sucesso!",
-                    );
+                  (resp) {
+                    if (resp['status'] == 'error') {
+                      AppSnackBar().showSnack(
+                        context,
+                        "Senha atual inserida incorreta!",
+                      );
+                    } else {
+                      Navigator.pop(context);
+                      AppSnackBar().showSnack(
+                        context,
+                        "Senha atualizada com sucesso!",
+                      );
+                    }
                   },
                 );
               } else {

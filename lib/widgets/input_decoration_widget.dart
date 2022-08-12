@@ -15,12 +15,14 @@ class InputDecorationWidget extends StatelessWidget {
   final TextStyle? style;
   final bool isPassword;
   final String? label;
+  final bool hasError;
 
   const InputDecorationWidget({
     this.passwordVisible = false,
     required this.textInputType,
     required this.controller,
     this.isPassword = false,
+    this.hasError = false,
     this.inputFormatters,
     required this.label,
     this.onSubmited,
@@ -56,6 +58,15 @@ class InputDecorationWidget extends StatelessWidget {
               borderSide: BorderSide(width: 5, color: AppColors.primary),
               borderRadius: BorderRadius.circular(80),
             ),
+            errorBorder: hasError
+                ? OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 3,
+                      color: AppColors.red,
+                    ),
+                    borderRadius: BorderRadius.circular(80),
+                  )
+                : null,
             suffixIcon: isPassword
                 ? Container(
                     padding: const EdgeInsets.only(right: 10),
