@@ -69,6 +69,7 @@ class DeviceController {
 
       if (response.statusCode == 200) {
         List<dynamic> resposta = jsonDecode(response.body);
+
         if (resposta.isEmpty) {
           state = DeviceState.empty;
           return {"status": "empty"};
@@ -96,6 +97,7 @@ class DeviceController {
       );
 
       if (response.statusCode == 200) {
+        listarDevices();
         state = DeviceState.success;
         return {"status": "success"};
       }

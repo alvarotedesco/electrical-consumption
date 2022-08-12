@@ -81,7 +81,7 @@ class PrincipalController {
         List contDevs = resposta['cont_dev'];
 
         if (contDevs.isEmpty) {
-          state = PrincipalState.empty;
+          PrincipalState.success;
           return {"status": "empty", "data": resposta};
         }
 
@@ -117,7 +117,7 @@ class PrincipalController {
         List devices = jsonDecode(response.body);
 
         if (devices.isEmpty) {
-          state = PrincipalState.empty;
+          state = PrincipalState.success;
           return {"status": "empty", "data": devices};
         }
 

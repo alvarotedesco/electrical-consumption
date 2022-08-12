@@ -9,14 +9,14 @@ import 'themes/constants.dart';
 
 class HttpUtil {
   final _session = SessionController();
-  final _pref = SharedPreferences.getInstance();
 
   Future<http.Response> post({
     String? url,
     Map<String, String>? headers,
     data,
   }) async {
-    final token = _session.token ?? (await _pref).getString('token');
+    final pref = await SharedPreferences.getInstance();
+    final token = _session.token ?? pref.getString('token');
     headers ??= {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",
@@ -41,7 +41,8 @@ class HttpUtil {
   }
 
   Future<http.Response> get({String? url, headers}) async {
-    final token = _session.token ?? (await _pref).getString('token');
+    final pref = await SharedPreferences.getInstance();
+    final token = _session.token ?? pref.getString('token');
     headers ??= {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",
@@ -65,7 +66,8 @@ class HttpUtil {
   }
 
   Future<http.Response> delete({String? url, headers, data}) async {
-    final token = _session.token ?? (await _pref).getString('token');
+    final pref = await SharedPreferences.getInstance();
+    final token = _session.token ?? pref.getString('token');
     headers ??= {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",
@@ -90,7 +92,8 @@ class HttpUtil {
   }
 
   Future<http.Response> put({String? url, headers, data}) async {
-    final token = _session.token ?? (await _pref).getString('token');
+    final pref = await SharedPreferences.getInstance();
+    final token = _session.token ?? pref.getString('token');
     headers ??= {
       "Content-Type": "application/json",
       "Authorization": "Bearer $token",

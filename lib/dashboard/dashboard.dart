@@ -83,7 +83,6 @@ class _DashboardState extends State<Dashboard> {
             onTooltipRender: (tooltip) {
               tooltip.header =
                   controller.data[tooltip.pointIndex as int].device.name;
-              tooltip.text = "${tooltip.text!.split(':').last}%";
             },
             series: <CircularSeries<ContainerDeviceModel, String>>[
               PieSeries<ContainerDeviceModel, String>(

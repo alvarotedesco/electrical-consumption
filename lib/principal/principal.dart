@@ -59,8 +59,7 @@ class _PrincipalState extends State<Principal> {
       tots += hour * day * qtd * pwr / 1000;
     }
 
-    double toR = tots * 1.04;
-    toR += toR * session.container!.flag!.cost;
+    double toR = (tots * 1.04) + (tots * session.container!.flag!.cost);
     totalReais = toR.toStringAsFixed(2);
     totalKw = tots.toStringAsFixed(2);
   }
@@ -167,6 +166,8 @@ class _PrincipalState extends State<Principal> {
                         }).toList(),
                         onChanged: (val) {
                           _addDevice(val as DeviceModel);
+                          _getTotal();
+                          controller.makeDataToSave();
                         }),
                   ),
                   SizedBox(height: 10),
@@ -212,6 +213,12 @@ class _PrincipalState extends State<Principal> {
                             itemCount: controller.containerDevices.length,
                             itemBuilder: (context, index) {
                               return ListTile(
+                                selected: _selectedDevice ==
+                                    controller.containerDevices[index],
+                                selectedTileColor: _selectedDevice ==
+                                        controller.containerDevices[index]
+                                    ? AppColors.secondary
+                                    : null,
                                 onTap: () async {
                                   timeControl = await BoxDialog(
                                     context: context,
@@ -244,12 +251,9 @@ class _PrincipalState extends State<Principal> {
                                   children: [
                                     Expanded(
                                       flex: 4,
-                                      child: InkWell(
-                                        child: Text(
-                                          controller
-                                              .containerDevices[index].name,
-                                          style: AppTextStyles.h3WhiteBold,
-                                        ),
+                                      child: Text(
+                                        controller.containerDevices[index].name,
+                                        style: AppTextStyles.h3WhiteBold,
                                       ),
                                     ),
                                     Expanded(

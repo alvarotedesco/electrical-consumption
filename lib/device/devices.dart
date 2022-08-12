@@ -60,12 +60,7 @@ class _DevicesState extends State<Devices> {
   }
 
   void _init() {
-    controller.listarDevices().then((resp) {
-      if (resp['status'] != 'success') {
-        AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-        return;
-      }
-    });
+    controller.listarDevices();
   }
 
   @override

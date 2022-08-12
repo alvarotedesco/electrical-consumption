@@ -9,7 +9,6 @@ import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/floating_button_widget.dart';
-import '../widgets/snackbar_widget.dart';
 
 class Containers extends StatefulWidget {
   const Containers({super.key});
@@ -175,12 +174,7 @@ class _ContainersState extends State<Containers> {
   }
 
   void _init() {
-    controller.listarContainers().then((value) {
-      if (value['status'] != 'success') {
-        AppSnackBar().showSnack(context, "Erro ao pegar os dados");
-        return;
-      }
-    });
+    controller.listarContainers();
   }
 
   void clear() {
