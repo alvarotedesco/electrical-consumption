@@ -158,8 +158,8 @@ class _UserAreaState extends State<UserArea> {
                                   AppButtonWidget(
                                     color: AppColors.secondary,
                                     texto: 'Configurações',
-                                    onPressed: () {
-                                      Navigator.push(
+                                    onPressed: () async {
+                                      await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => UserConfig(
@@ -167,6 +167,8 @@ class _UserAreaState extends State<UserArea> {
                                           ),
                                         ),
                                       );
+                                      controller.getUserInfo().then((value) =>
+                                          error = value['data'].toString());
                                     },
                                   ),
                                   AppButtonWidget(
