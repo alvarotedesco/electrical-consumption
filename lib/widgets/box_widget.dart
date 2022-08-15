@@ -326,13 +326,13 @@ class BoxDialog {
                     if (resp['status'] == 'error') {
                       AppSnackBar().showSnack(
                         context,
-                        "Senha atual inserida incorreta!",
+                        "Senha atual incorreta!",
                       );
                     } else {
                       Navigator.pop(context);
                       AppSnackBar().showSnack(
                         context,
-                        "E-mails alterado com sucesso!.",
+                        "E-mail alterado com sucesso!.",
                       );
                     }
                   },
@@ -450,7 +450,7 @@ class BoxDialog {
                     if (resp['status'] == 'error') {
                       AppSnackBar().showSnack(
                         context,
-                        "Senha atual inserida incorreta!",
+                        "Senha atual incorreta!",
                       );
                     } else {
                       Navigator.pop(context);
