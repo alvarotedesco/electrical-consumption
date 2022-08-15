@@ -40,13 +40,12 @@ class BoxDialog {
           ),
           actions: [
             AppButtonWidget(
+              style: AppTextStyles.h2WhiteBold,
+              color: AppColors.primary,
+              texto: "Ok",
               onPressed: () {
-                controller.makeDataToSave();
                 Navigator.pop(context, timeControl2);
               },
-              texto: "Ok",
-              color: AppColors.primary,
-              style: AppTextStyles.h2WhiteBold,
             )
           ],
           content: StatefulBuilder(
