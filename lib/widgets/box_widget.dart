@@ -40,13 +40,12 @@ class BoxDialog {
           ),
           actions: [
             AppButtonWidget(
+              style: AppTextStyles.h2WhiteBold,
+              color: AppColors.primary,
+              texto: "Ok",
               onPressed: () {
-                controller.makeDataToSave();
                 Navigator.pop(context, timeControl2);
               },
-              texto: "Ok",
-              color: AppColors.primary,
-              style: AppTextStyles.h2WhiteBold,
             )
           ],
           content: StatefulBuilder(
@@ -326,13 +325,13 @@ class BoxDialog {
                     if (resp['status'] == 'error') {
                       AppSnackBar().showSnack(
                         context,
-                        "Senha atual inserida incorreta!",
+                        "Senha atual incorreta!",
                       );
                     } else {
                       Navigator.pop(context);
                       AppSnackBar().showSnack(
                         context,
-                        "E-mails alterado com sucesso!.",
+                        "E-mail alterado com sucesso!.",
                       );
                     }
                   },
@@ -450,7 +449,7 @@ class BoxDialog {
                     if (resp['status'] == 'error') {
                       AppSnackBar().showSnack(
                         context,
-                        "Senha atual inserida incorreta!",
+                        "Senha atual incorreta!",
                       );
                     } else {
                       Navigator.pop(context);

@@ -150,34 +150,24 @@ class _UserAreaState extends State<UserArea> {
                             SizedBox(height: 20),
                             SizedBox(
                               width: double.infinity,
-                              child: Wrap(
-                                alignment: WrapAlignment.spaceBetween,
-                                runSpacing: 3,
-                                spacing: 10,
-                                children: [
-                                  AppButtonWidget(
-                                    color: AppColors.secondary,
-                                    texto: 'Configurações',
-                                    onPressed: () async {
-                                      await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => UserConfig(
-                                            controller: controller,
-                                          ),
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: AppButtonWidget(
+                                  color: AppColors.secondary,
+                                  texto: 'Configurações',
+                                  onPressed: () async {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => UserConfig(
+                                          controller: controller,
                                         ),
-                                      );
-                                      controller.getUserInfo().then((value) =>
-                                          error = value['data'].toString());
-                                    },
-                                  ),
-                                  AppButtonWidget(
-                                    color: AppColors.darkOrange,
-                                    texto: 'Excluir conta',
-                                    width: 145,
-                                    onPressed: () {},
-                                  ),
-                                ],
+                                      ),
+                                    );
+                                    controller.getUserInfo().then((value) =>
+                                        error = value['data'].toString());
+                                  },
+                                ),
                               ),
                             ),
                           ],

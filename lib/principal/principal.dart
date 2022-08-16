@@ -6,6 +6,7 @@ import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/box_widget.dart';
 import 'package:electrical_comsuption/widgets/floating_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../widgets/snackbar_widget.dart';
 import 'principal_controller.dart';
@@ -33,8 +34,8 @@ class _PrincipalState extends State<Principal> {
 
   DeviceModel? _selectedDevice;
 
-  String totalReais = "0.0";
-  String totalKw = "0.0";
+  double totalReais = 0.0;
+  double totalKw = 0.0;
   String panelName = '';
 
   int timeControl = 0;
@@ -60,8 +61,8 @@ class _PrincipalState extends State<Principal> {
     }
 
     double toR = (tots * 1.04) + (tots * session.container!.flag!.cost);
-    totalReais = toR.toStringAsFixed(2);
-    totalKw = tots.toStringAsFixed(2);
+    totalReais = toR;
+    totalKw = tots;
   }
 
   void _onDelete() {
@@ -106,6 +107,8 @@ class _PrincipalState extends State<Principal> {
       );
     });
   }
+
+  NumberFormat formatter = NumberFormat('##0.0#', 'pt_BR');
 
   @override
   Widget build(BuildContext context) {
@@ -232,6 +235,7 @@ class _PrincipalState extends State<Principal> {
                                                 60)
                                             .toStringAsFixed(2);
                                   }
+                                  controller.makeDataToSave();
                                 },
                                 onLongPress: () {
                                   setState(() {
@@ -315,7 +319,7 @@ class _PrincipalState extends State<Principal> {
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 20),
                                       child: Text(
-                                        '$totalKw kWh',
+                                        '${formatter.format(totalKw)} kWh',
                                         style: AppTextStyles.h1WhiteBold,
                                         textAlign: TextAlign.right,
                                       ),
@@ -340,7 +344,7 @@ class _PrincipalState extends State<Principal> {
                                     child: Padding(
                                       padding: EdgeInsets.only(right: 20),
                                       child: Text(
-                                        'R\$ $totalReais',
+                                        'R\$ ${formatter.format(totalReais)}',
                                         style: AppTextStyles.h1WhiteBold,
                                         textAlign: TextAlign.right,
                                       ),

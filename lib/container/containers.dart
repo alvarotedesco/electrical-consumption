@@ -7,6 +7,7 @@ import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:electrical_comsuption/widgets/button_widget.dart';
 import 'package:electrical_comsuption/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../widgets/floating_button_widget.dart';
 
@@ -117,13 +118,13 @@ class _ContainersState extends State<Containers> {
                                     style: AppTextStyles.h3WhiteBold,
                                   ),
                                   Text(
-                                    "${controller.listContainers[i].kwTotal} kWh",
+                                    "${NumberFormat('##0.0#', 'pt_BR').format(controller.listContainers[i].kwTotal)} kWh",
                                     style: AppTextStyles.h3WhiteBold,
                                   ),
                                 ],
                               ),
                               Text(
-                                "Gasto: R\$ ${controller.listContainers[i].rsTotal}",
+                                "Gasto: R\$ ${NumberFormat('##0.0#', 'pt_BR').format(controller.listContainers[i].rsTotal)}",
                                 style: AppTextStyles.h3WhiteBold,
                               ),
                             ],

@@ -36,6 +36,7 @@ class Luvas {
   static const String editingPassword = 'Editando senha';
   static const String editAvatar = 'Editar imagem';
   static const String editingAvatar = 'Editando imagem';
+  static const String deleteAccount = 'Excluir conta';
   static const String save = 'Salvar';
   static const String cancel = 'Cancelar';
 }
