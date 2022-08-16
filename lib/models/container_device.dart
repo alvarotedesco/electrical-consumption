@@ -43,7 +43,7 @@ class ContainerDeviceModel {
       device: DeviceModel.fromMap(map['device'] as Map<String, dynamic>),
       containerId: map['container_id'] as int,
       deviceId: map['device_id'] as int,
-      consuTime: map['consu_time'] as double,
+      consuTime: (map['consu_time'] * 1.0),
       consuDays: map['consu_days'] as int,
       quantity: map['quantity'] as int,
     );

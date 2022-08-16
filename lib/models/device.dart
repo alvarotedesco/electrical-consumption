@@ -32,7 +32,7 @@ class DeviceModel {
     return DeviceModel(
       description:
           map['description'] != null ? map['description'] as String : null,
-      power: map['power'] as double,
+      power: (map['power'] * 1.0),
       userId: map['user_id'] != null ? map['user_id'] as int : null,
       name: map['name'] as String,
       id: map['id'] != null ? map['id'] as int : null,
