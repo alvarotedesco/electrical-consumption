@@ -31,7 +31,8 @@ class HttpUtil {
     var respp = jsonDecode(resp.body);
     if (respp is Map &&
         respp.containsKey('status') &&
-        respp['status'] == "Token is Expired") {
+        (respp['status'] == "Token is Expired" ||
+            respp['status'] == "Authorization Token not found")) {
       navigatorKey.currentState
           ?.pushNamedAndRemoveUntil('/login', (route) => false);
       return resp;
@@ -56,7 +57,8 @@ class HttpUtil {
     var respp = jsonDecode(resp.body);
     if (respp is Map &&
         respp.containsKey('status') &&
-        respp['status'] == "Token is Expired") {
+        (respp['status'] == "Token is Expired" ||
+            respp['status'] == "Authorization Token not found")) {
       navigatorKey.currentState
           ?.pushNamedAndRemoveUntil('/login', (route) => false);
       return resp;
@@ -82,7 +84,8 @@ class HttpUtil {
     var respp = jsonDecode(resp.body);
     if (respp is Map &&
         respp.containsKey('status') &&
-        respp['status'] == "Token is Expired") {
+        (respp['status'] == "Token is Expired" ||
+            respp['status'] == "Authorization Token not found")) {
       navigatorKey.currentState
           ?.pushNamedAndRemoveUntil('/login', (route) => false);
       return resp;
@@ -108,7 +111,8 @@ class HttpUtil {
     var respp = jsonDecode(resp.body);
     if (respp is Map &&
         respp.containsKey('status') &&
-        respp['status'] == "Token is Expired") {
+        (respp['status'] == "Token is Expired" ||
+            respp['status'] == "Authorization Token not found")) {
       navigatorKey.currentState
           ?.pushNamedAndRemoveUntil('/login', (route) => false);
       return resp;
