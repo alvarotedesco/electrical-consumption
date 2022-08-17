@@ -26,7 +26,7 @@ class FlagModel {
     return FlagModel(
       icon: map['icon'] as int,
       name: map['name'] as String,
-      cost: map['cost'] as double,
+      cost: (map['cost'] * 1.0),
       id: map['id'] as int,
     );
   }

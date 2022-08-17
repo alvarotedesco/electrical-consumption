@@ -44,8 +44,8 @@ class ContainerModel {
       userId: map['user_id'] != null ? map['user_id'] as int : null,
       flagId: map['flag_id'] as int,
       id: map['id'] != null ? map['id'] as int : null,
-      kwTotal: map['kw_total'] != null ? map['kw_total'] as double : null,
-      rsTotal: map['rs_total'] != null ? map['rs_total'] as double : null,
+      kwTotal: map['kw_total'] != null ? (map['kw_total'] * 1.0) : null,
+      rsTotal: map['rs_total'] != null ? (map['rs_total'] * 1.0) : null,
       qtdDevices: map['qtd_devices'] != null ? map['qtd_devices'] as int : null,
     );
   }
