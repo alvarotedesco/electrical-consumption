@@ -2,6 +2,7 @@ import 'package:electrical_comsuption/device/device_controller.dart';
 import 'package:electrical_comsuption/models/device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
 import '../principal/principal_controller.dart';
@@ -466,6 +467,89 @@ class BoxDialog {
                   "Senhas não correspodem! Tente novamente.",
                 );
               }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<dynamic> userDeleteAccount({
+    required UserController controller,
+  }) {
+    final TextEditingController confirmPassword = TextEditingController();
+
+    bool confirmPasswordVisible = false;
+
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: AppColors.white),
+          borderRadius: BorderRadius.all(
+            Radius.circular(15.0),
+          ),
+        ),
+        backgroundColor: AppColors.darkBlue,
+        title: Center(
+          child: Text(
+            Luvas.editingPassword,
+            style: AppTextStyles.h2WhiteBold,
+          ),
+        ),
+        contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+        content: StatefulBuilder(
+          builder: (context, state) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              InputDecorationWidget(
+                passwordVisible: confirmPasswordVisible,
+                textInputType: TextInputType.text,
+                style: AppTextStyles.h3WhiteBold,
+                label: Luvas.confirmPassword,
+                controller: confirmPassword,
+                isPassword: true,
+                onPressed: () {
+                  state(() => confirmPasswordVisible = !confirmPasswordVisible);
+                },
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          AppButtonWidget(
+            texto: Luvas.cancel,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          AppButtonWidget(
+            texto: Luvas.save,
+            onPressed: () {
+              controller.deleteUser(confirmPassword.text).then(
+                (resp) async {
+                  if (resp['status'] == 'error') {
+                    AppSnackBar().showSnack(
+                      context,
+                      "Senha incorreta!",
+                    );
+                  } else {
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    await preferences.remove('token');
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/login',
+                      (route) => false,
+                    );
+                    AppSnackBar().showSnack(
+                      context,
+                      resp['data'],
+                    );
+                  }
+                },
+              );
             },
           ),
         ],

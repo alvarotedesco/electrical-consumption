@@ -1,6 +1,8 @@
+import 'package:electrical_comsuption/session_controller.dart';
 import 'package:electrical_comsuption/themes/app_colors.dart';
 import 'package:electrical_comsuption/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../themes/constants.dart';
@@ -77,10 +79,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 IconButton(
                   icon: Icon(Icons.logout_rounded),
                   splashRadius: 20,
-                  onPressed: () {
-                    Navigator.pushNamed(
+                  onPressed: () async {
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    await preferences.clear();
+                    SessionController teste = SessionController();
+                    teste.token = '';
+                    Navigator.pushNamedAndRemoveUntil(
                       context,
                       '/login',
+                      (route) => false,
                     );
                   },
                 ),

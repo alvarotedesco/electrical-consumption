@@ -22,17 +22,6 @@ class UserConfig extends StatefulWidget {
 }
 
 class _UserConfigState extends State<UserConfig> {
-  _userDeleteAccount() {
-    Navigator.pushNamed(
-      context,
-      '/login',
-    );
-    AppSnackBar().showSnack(
-      context,
-      "Conta excluida com sucesso!",
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -105,7 +94,8 @@ class _UserConfigState extends State<UserConfig> {
                 color: AppColors.grey,
               ),
               GestureDetector(
-                onTap: () => _userDeleteAccount(),
+                onTap: () => BoxDialog(context: context)
+                    .userDeleteAccount(controller: widget.controller),
                 child: Row(
                   children: [
                     Container(

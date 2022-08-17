@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:electrical_comsuption/http_util.dart';
 import 'package:electrical_comsuption/models/user.dart';
 import 'package:electrical_comsuption/user/user_state.dart';
@@ -42,6 +44,29 @@ class UserController {
       var response = await HttpUtil().put(
         url: Underwear.updateUserV1URL,
         data: data.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        // _user = UserModel.fromJson(response.body);
+
+        state = UserState.success;
+        return {"status": "success", "data": response.body};
+      }
+
+      state = UserState.error;
+      return {"status": "error", "data": response};
+    } on Exception {
+      state = UserState.error;
+      return {"status": "error"};
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteUser(String userPassword) async {
+    try {
+      state = UserState.loading;
+      var response = await HttpUtil().delete(
+        url: Underwear.deleteUserURL,
+        data: jsonEncode(userPassword),
       );
 
       if (response.statusCode == 200) {
