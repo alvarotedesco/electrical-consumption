@@ -49,7 +49,14 @@ class PrincipalController {
 
     if (!control) {
       _containerDevices.add(device!);
-      makeDataToSave();
+      try {
+        makeDataToSave();
+      } on Exception {
+        _containerDevices.removeLast();
+        _hoursControllers.removeLast();
+        _daysControllers.removeLast();
+        _qtdControllers.removeLast();
+      }
     }
   }
 
@@ -95,6 +102,14 @@ class PrincipalController {
 
         state = PrincipalState.success;
         return {"status": "success", "data": resposta};
+      }
+
+      if (response.statusCode == 429) {
+        state = PrincipalState.success;
+        return {
+          "status": "success",
+          "data": "tentativa de duplicar os dispositivos do container"
+        };
       }
 
       state = PrincipalState.error;
@@ -149,9 +164,18 @@ class PrincipalController {
         return {"status": "success", "data": response.body};
       }
 
+      if (response.statusCode == 429) {
+        state = PrincipalState.error;
+        throw Exception();
+      }
+
       state = PrincipalState.error;
       return {"status": "error", "data": response.statusCode};
-    } on Exception {
+    } on Exception catch (e) {
+      if (e.toString() == "Exception") {
+        throw Exception();
+      }
+
       state = PrincipalState.error;
       return {"status": "error"};
     }

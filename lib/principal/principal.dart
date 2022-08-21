@@ -61,8 +61,10 @@ class _PrincipalState extends State<Principal> {
     }
 
     double toR = (tots * 1.04) + (tots * session.container!.flag!.cost);
-    totalReais = toR;
-    totalKw = tots;
+    setState(() {
+      totalReais = toR;
+      totalKw = tots;
+    });
   }
 
   void _onDelete() {
@@ -99,7 +101,7 @@ class _PrincipalState extends State<Principal> {
     controller.containerId = widget.containerId;
 
     controller.getContainerDevice(widget.containerId).then((_) {
-      controller.getDevices().then((value) => setState(() => _getTotal()));
+      controller.getDevices().then((value) => _getTotal());
     }).catchError((e) {
       AppSnackBar().showSnack(
         context,
@@ -235,6 +237,7 @@ class _PrincipalState extends State<Principal> {
                                                 60)
                                             .toStringAsFixed(2);
                                   }
+                                  _getTotal();
                                   controller.makeDataToSave();
                                 },
                                 onLongPress: () {
